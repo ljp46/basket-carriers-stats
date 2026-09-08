@@ -102,13 +102,44 @@ def parse_events(raw: str | None) -> dict[str, int]:
     return parsed
 
 
+def display_name(gamertag: str, aliases: dict[str, str]) -> str:
+    direct = aliases.get(gamertag)
+    if direct:
+        return direct
+    lowered = gamertag.casefold()
+    return next((alias for name, alias in aliases.items() if name.casefold() == lowered), gamertag)
+
+
+def normalize_profile(raw: dict[str, Any], aliases: dict[str, str]) -> dict[str, Any]:
+    gamertag = raw.get("name", "Unknown")
+    return {
+        "display_name": display_name(gamertag, aliases),
+        "gamertag": gamertag,
+        "pro_name": raw.get("proName"),
+        "height_cm": as_int(raw.get("proHeight")) or None,
+        "overall": as_int(raw.get("proOverall")) or None,
+        "nationality_id": raw.get("proNationality"),
+        "preferred_position": raw.get("favoritePosition"),
+        "position_id": raw.get("proPos"),
+        "season": {
+            "games_played": as_int(raw.get("gamesPlayed")),
+            "win_rate": as_int(raw.get("winRate")),
+            "goals": as_int(raw.get("goals")),
+            "assists": as_int(raw.get("assists")),
+            "average_rating": as_float(raw.get("ratingAve")),
+            "motm": as_int(raw.get("manOfTheMatch")),
+            "red_cards": as_int(raw.get("redCards")),
+        },
+    }
+
+
 def normalize_player(player_id: str, raw: dict[str, Any], aliases: dict[str, str]) -> dict[str, Any]:
     events = parse_events(raw.get("match_event_aggregate_0"))
     name = raw.get("playername") or player_id
     return {
         "player_id": player_id,
         "gamertag": name,
-        "display_name": aliases.get(name, name),
+        "display_name": display_name(name, aliases),
         "position_group": raw.get("pos", "unknown"),
         "archetype_id": raw.get("archetypeid"),
         "rating": as_float(raw.get("rating")),
@@ -141,12 +172,7 @@ def normalize_match(raw: dict[str, Any], match_type: str, config: dict[str, Any]
     opponent_id, opponent = opponent_entries[0] if opponent_entries else ("unknown", {})
     own_score = as_int(own.get("goals", own.get("score")))
     opponent_score = as_int(own.get("goalsAgainst", opponent.get("score")))
-    if own_score > opponent_score:
-        result = "W"
-    elif own_score < opponent_score:
-        result = "L"
-    else:
-        result = "D"
+    result = "W" if own_score > opponent_score else "L" if own_score < opponent_score else "D"
 
     player_groups = raw.get("players", {})
     own_players = player_groups.get(club_id, {})
@@ -179,6 +205,7 @@ def main() -> None:
     if not config:
         raise SystemExit("Missing or invalid config.json")
 
+    previous = load_json(DATA_PATH, {"matches": [], "profiles": []})
     fetched: list[dict[str, Any]] = []
     failures: list[str] = []
     for match_type in MATCH_TYPES:
@@ -199,7 +226,20 @@ def main() -> None:
         except RuntimeError as exc:
             failures.append(f"{match_type}: {exc}")
 
-    previous = load_json(DATA_PATH, {"matches": []})
+    profiles = previous.get("profiles", [])
+    try:
+        member_response = request_json(
+            "members/stats",
+            {"platform": config["platform"], "clubId": str(config["club_id"])},
+        )
+        profiles = [
+            normalize_profile(member, config["players"])
+            for member in member_response.get("members", [])
+            if display_name(member.get("name", ""), config["players"]) in config["players"].values()
+        ]
+    except RuntimeError as exc:
+        failures.append(f"members/stats: {exc}")
+
     by_id = {str(match["match_id"]): match for match in previous.get("matches", [])}
     for match in fetched:
         by_id[str(match["match_id"])] = match
@@ -216,6 +256,7 @@ def main() -> None:
             "pending_validation": ["interceptions"],
         },
         "last_updated": datetime.now(timezone.utc).isoformat(),
+        "profiles": profiles,
         "matches": matches,
     }
     write_json_atomic(DATA_PATH, payload)
@@ -225,11 +266,12 @@ def main() -> None:
             "ok": bool(fetched),
             "new_or_refreshed_matches": len(fetched),
             "stored_matches": len(matches),
+            "profiles_refreshed": len(profiles),
             "failures": failures,
             "checked_at": payload["last_updated"],
         },
     )
-    print(f"Stored {len(matches)} matches; fetched {len(fetched)} records.")
+    print(f"Stored {len(matches)} matches; fetched {len(fetched)} records; refreshed {len(profiles)} profiles.")
     if failures:
         print("Partial failures:", "; ".join(failures))
     if not fetched:
