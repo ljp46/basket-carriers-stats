@@ -29,14 +29,15 @@ MILESTONE_THRESHOLDS = {
     "motm": (10, 25, 50, 75, 100, 150, 200),
 }
 
-# Decoded from EA's match_event_aggregate_0 counters and verified against a
-# known three-match BASKET CARRIERS session. Interceptions remain deliberately
-# omitted until a second independent sample validates their event mapping.
+# Decoded from EA's match event counters and verified against independent
+# three-match BASKET CARRIERS sessions. Interceptions can spill into a later
+# aggregate field for players with a larger event payload.
 EVENT_CODES = {
     "second_assists": "218",
     "through_passes": "152",
     "dribbles_completed": "174",
     "take_ons": "112",
+    "interceptions": "6",
 }
 
 HEADERS = {
@@ -142,6 +143,10 @@ def normalize_profile(raw: dict[str, Any], aliases: dict[str, str]) -> dict[str,
 
 def normalize_player(player_id: str, raw: dict[str, Any], aliases: dict[str, str]) -> dict[str, Any]:
     events = parse_events(raw.get("match_event_aggregate_0"))
+    interception_events: dict[str, int] = {}
+    for index in range(4):
+        for code, value in parse_events(raw.get(f"match_event_aggregate_{index}")).items():
+            interception_events[code] = interception_events.get(code, 0) + value
     name = raw.get("playername") or player_id
     return {
         "player_id": player_id,
@@ -164,7 +169,7 @@ def normalize_player(player_id: str, raw: dict[str, Any], aliases: dict[str, str
         "through_passes": events.get(EVENT_CODES["through_passes"], 0),
         "dribbles_completed": events.get(EVENT_CODES["dribbles_completed"], 0),
         "take_ons": events.get(EVENT_CODES["take_ons"], 0),
-        "interceptions": None,
+        "interceptions": interception_events.get(EVENT_CODES["interceptions"], 0),
     }
 
 
