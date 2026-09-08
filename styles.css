@@ -176,6 +176,35 @@ select { color: var(--ink); background: var(--surface-2); border: 1px solid var(
 .next-landmark strong { font-size:.78rem; }
 .next-landmark small { color:var(--muted); font-size:.67rem; }
 
+.career-ledger { margin-top:13px; overflow:hidden; border:1px solid var(--line-strong); border-radius:17px; background:rgba(8,14,18,.9); }
+.career-ledger > summary { display:flex; align-items:center; justify-content:space-between; gap:20px; padding:20px 22px; cursor:pointer; list-style:none; background:linear-gradient(90deg,rgba(233,200,109,.065),transparent 42%); }
+.career-ledger > summary::-webkit-details-marker { display:none; }
+.career-ledger > summary h3 { margin-top:5px; font-family:"Cormorant Garamond",Georgia,serif; font-size:1.75rem; font-weight:600; line-height:1; }
+.career-open { display:flex; align-items:center; gap:11px; color:var(--muted); font-size:.6rem; font-weight:800; letter-spacing:.12em; }
+.career-open b { color:var(--gold); font-size:1.25rem; font-weight:400; transition:transform .2s ease; }
+.career-ledger[open] .career-open b { transform:rotate(180deg); }
+.career-ledger[open] > summary { border-bottom:1px solid var(--line); }
+.career-body { padding:20px; }
+.career-note { max-width:820px; margin-bottom:17px; color:var(--muted); font-size:.7rem; line-height:1.5; }
+.career-grid { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:11px; }
+.career-card { min-width:0; padding:17px; border:1px solid var(--line); border-radius:13px; background:linear-gradient(155deg,rgba(20,30,36,.95),rgba(7,13,17,.9)); }
+.career-card header { display:flex; align-items:flex-start; justify-content:space-between; gap:12px; }
+.career-card h4 { margin-top:5px; font-family:"Cormorant Garamond",Georgia,serif; font-size:1.5rem; font-weight:600; line-height:1; }
+.career-card header > strong { color:var(--gold); font-family:"Cormorant Garamond",Georgia,serif; font-size:2.35rem; font-weight:600; line-height:.8; }
+.career-card header > strong::after { display:block; margin-top:8px; color:var(--muted); font-family:Inter,ui-sans-serif,sans-serif; font-size:.48rem; font-weight:700; letter-spacing:.1em; text-align:right; content:"APPS"; }
+.career-section-label { margin:20px 0 8px; color:var(--muted); font-size:.57rem; font-weight:800; letter-spacing:.12em; text-transform:uppercase; }
+.tracked-label { color:var(--cyan); }
+.career-total-grid { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:1px; overflow:hidden; border:1px solid var(--line); border-radius:7px; background:var(--line); }
+.career-total-grid div { min-width:0; padding:8px; background:rgba(7,13,17,.91); }
+.career-total-grid strong, .career-total-grid span { display:block; }
+.career-total-grid strong { font-size:.9rem; }
+.career-total-grid span { overflow:hidden; color:var(--muted); font-size:.52rem; text-overflow:ellipsis; white-space:nowrap; }
+.career-advanced-grid { display:grid; grid-template-columns:1fr 1fr; gap:1px; overflow:hidden; border:1px solid var(--line); border-radius:7px; background:var(--line); }
+.career-advanced-grid div { min-width:0; padding:8px; background:rgba(7,13,17,.91); }
+.career-advanced-grid span, .career-advanced-grid strong { display:block; }
+.career-advanced-grid span { color:var(--muted); font-size:.52rem; }
+.career-advanced-grid strong { margin-top:2px; overflow:hidden; font-size:.76rem; text-overflow:ellipsis; white-space:nowrap; }
+
 .split { display: grid; grid-template-columns: minmax(0, 1.5fr) minmax(250px, .75fr); gap: 20px; align-items: start; }
 .match-help { margin: -8px 0 16px; color: var(--muted); font-size: .78rem; }
 .matches { display: grid; gap: 8px; }
@@ -220,6 +249,7 @@ select { color: var(--ink); background: var(--surface-2); border: 1px solid var(
 @media (max-width: 1050px) {
   .split { grid-template-columns: 1fr; }
   .insight-panel { position: static; }
+  .career-grid { grid-template-columns:1fr; }
 }
 @media (max-width: 860px) {
   .topbar { align-items: start; flex-direction: column; }
@@ -240,6 +270,9 @@ select { color: var(--ink); background: var(--surface-2); border: 1px solid var(
   .section-heading > .section-note { text-align:left; }
   .form-grid { grid-template-columns:1fr; }
   .form-stats { grid-template-columns:repeat(2,minmax(0,1fr)); }
+  .career-ledger > summary { align-items:flex-start; padding:17px; }
+  .career-open span { display:none; }
+  .career-body { padding:12px; }
   .player-ghost.cutout { right:-13%; width:74%; }
   .player-card h3 { font-size:1.75rem; }
 }

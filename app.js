@@ -190,6 +190,47 @@ function renderMilestones(data) {
         ${next ? `<div class="next-landmark"><span>Next landmark</span><strong>${next.target} ${MILESTONE_LABELS[next.metric]}</strong><small>${next.away} away</small></div>` : ""}
       </article>`;
   }).join("");
+  }
+
+function renderCareer(data) {
+  const profiles = new Map((data.profiles || []).map(profile => [profile.display_name, profile]));
+  const tracked = new Map(aggregatePlayers(data.matches || []).map(player => [player.name, player]));
+  document.querySelector("#career-stats").innerHTML = PLAYER_ORDER.map(name => {
+    const meta = PLAYER_META[name];
+    const profile = profiles.get(name) || {};
+    const season = profile.season || {};
+    const totals = profileTotals(profile);
+    const archive = tracked.get(name) || {};
+    const appearances = Math.max(totals.games_played, 1);
+    return `
+      <article class="career-card">
+        <header><div><p class="label">#${meta.number} · CLUB CAREER</p><h4>${meta.fullName}</h4></div><strong>${totals.games_played}</strong></header>
+        <p class="career-section-label">EA cumulative record</p>
+        <div class="career-total-grid">
+          <div><strong>${totals.goals}</strong><span>Goals</span></div>
+          <div><strong>${totals.assists}</strong><span>Assists</span></div>
+          <div><strong>${totals.contributions}</strong><span>G+A</span></div>
+          <div><strong>${oneDecimal(totals.goals / appearances)}</strong><span>Goals / app</span></div>
+          <div><strong>${oneDecimal(totals.assists / appearances)}</strong><span>Assists / app</span></div>
+          <div><strong>${oneDecimal(totals.contributions / appearances)}</strong><span>G+A / app</span></div>
+          <div><strong>${totals.motm}</strong><span>POTM</span></div>
+          <div><strong>${oneDecimal(season.average_rating)}</strong><span>Avg rating</span></div>
+          <div><strong>${season.win_rate ?? "—"}%</strong><span>Win rate</span></div>
+          <div><strong>${season.red_cards ?? 0}</strong><span>Red cards</span></div>
+        </div>
+        <p class="career-section-label tracked-label">Tracked advanced archive · ${archive.appearances || 0} matches</p>
+        <div class="career-advanced-grid">
+          <div><span>Goals / assists</span><strong>${archive.goals || 0} / ${archive.assists || 0}</strong></div>
+          <div><span>Second assists</span><strong>${archive.second_assists || 0}</strong></div>
+          <div><span>Shots · conversion</span><strong>${archive.shots || 0} · ${pct(archive.goals, archive.shots)}</strong></div>
+          <div><span>Passes · accuracy</span><strong>${archive.passes_made || 0}/${archive.passes_attempted || 0} · ${pct(archive.passes_made, archive.passes_attempted)}</strong></div>
+          <div><span>Through passes</span><strong>${archive.through_passes || 0}</strong></div>
+          <div><span>Dribbles · take-ons</span><strong>${archive.dribbles_completed || 0} · ${archive.take_ons || 0}</strong></div>
+          <div><span>Tackles</span><strong>${archive.tackles_made || 0}/${archive.tackles_attempted || 0}</strong></div>
+          <div><span>Archive rating</span><strong>${oneDecimal(archive.rating)}</strong></div>
+        </div>
+      </article>`;
+  }).join("");
 }
 
 function celebrationFor(data, playerName, matches) {
@@ -315,6 +356,7 @@ fetch("data/matches.json", {cache: "no-store"})
     const select = document.querySelector("#session-select");
     renderForm(data);
     renderMilestones(data);
+    renderCareer(data);
     select.innerHTML = sessions.map((session, index) => `<option value="${index}">${sessionLabel(session, index)}</option>`).join("");
     select.addEventListener("change", event => render(data, sessions, Number(event.target.value)));
     render(data, sessions, 0);

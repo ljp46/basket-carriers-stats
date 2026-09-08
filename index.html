@@ -8,7 +8,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&amp;family=Inter:wght@400;500;600;700;800;900&amp;display=swap" rel="stylesheet" />
-    <link rel="stylesheet" href="styles.css?v=5" />
+    <link rel="stylesheet" href="styles.css?v=6" />
   </head>
   <body>
     <main class="shell">
@@ -53,6 +53,16 @@
           <p class="section-note">Permanent achievements · live EA totals</p>
         </div>
         <div class="milestone-grid" id="milestones"></div>
+        <details class="career-ledger">
+          <summary>
+            <div><p class="label">CLUB LEDGER</p><h3>All-time club statistics</h3></div>
+            <div class="career-open"><span>OPEN CAREER RECORDS</span><b aria-hidden="true">⌄</b></div>
+          </summary>
+          <div class="career-body">
+            <p class="career-note">Cumulative totals come directly from EA. Advanced match data is shown separately because that archive begins when this dashboard started collecting.</p>
+            <div class="career-grid" id="career-stats"></div>
+          </div>
+        </details>
       </section>
 
       <section class="section split">
@@ -69,6 +79,6 @@
         </aside>
       </section>
     </main>
-    <script src="app.js?v=5" defer></script>
+    <script src="app.js?v=6" defer></script>
   </body>
 </html>
