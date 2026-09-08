@@ -13,6 +13,8 @@ on:
 
 permissions:
   contents: write
+  pages: write
+  id-token: write
 
 concurrency:
   group: fc-clubs-collector
@@ -20,6 +22,9 @@ concurrency:
 
 jobs:
   collect:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -40,3 +45,10 @@ jobs:
           git commit -m "data: collect latest FC Clubs matches"
           git pull --rebase origin main
           git push
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: .
+      - name: Publish refreshed dashboard
+        id: deployment
+        uses: actions/deploy-pages@v4
