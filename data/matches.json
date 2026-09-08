@@ -15,8 +15,182 @@
       "take_ons"
     ]
   },
-  "last_updated": "2026-09-08T22:00:20.783178+00:00",
+  "last_updated": "2026-09-08T22:39:29.633225+00:00",
   "matches": [
+    {
+      "human_players": 3,
+      "match_id": "1044034218280274",
+      "match_type": "leagueMatch",
+      "opponent": {
+        "club_id": "11156663",
+        "human_players": 5,
+        "name": "Any Chance FC"
+      },
+      "played_at": "2026-09-08T22:37:02+00:00",
+      "players": [
+        {
+          "archetype_id": "8",
+          "assists": 0,
+          "display_name": "Door",
+          "dribbles_completed": 6,
+          "gamertag": "Sidney257965",
+          "goals": 0,
+          "interceptions": null,
+          "motm": 0,
+          "passes_attempted": 6,
+          "passes_made": 6,
+          "player_id": "1796485428",
+          "position_group": "midfielder",
+          "rating": 7.0,
+          "red_cards": 0,
+          "second_assists": 0,
+          "seconds_played": 5534,
+          "shots": 0,
+          "tackles_attempted": 4,
+          "tackles_made": 2,
+          "take_ons": 1,
+          "through_passes": 0
+        },
+        {
+          "archetype_id": "11",
+          "assists": 2,
+          "display_name": "Hole",
+          "dribbles_completed": 20,
+          "gamertag": "Xd leechy",
+          "goals": 0,
+          "interceptions": null,
+          "motm": 0,
+          "passes_attempted": 30,
+          "passes_made": 22,
+          "player_id": "1007239554189",
+          "position_group": "forward",
+          "rating": 8.2,
+          "red_cards": 0,
+          "second_assists": 1,
+          "seconds_played": 5534,
+          "shots": 1,
+          "tackles_attempted": 5,
+          "tackles_made": 2,
+          "take_ons": 3,
+          "through_passes": 3
+        },
+        {
+          "archetype_id": "11",
+          "assists": 0,
+          "display_name": "Bobby",
+          "dribbles_completed": 15,
+          "gamertag": "kidljp46",
+          "goals": 2,
+          "interceptions": null,
+          "motm": 0,
+          "passes_attempted": 15,
+          "passes_made": 13,
+          "player_id": "1009209437400",
+          "position_group": "forward",
+          "rating": 8.1,
+          "red_cards": 0,
+          "second_assists": 0,
+          "seconds_played": 5534,
+          "shots": 5,
+          "tackles_attempted": 8,
+          "tackles_made": 4,
+          "take_ons": 9,
+          "through_passes": 8
+        }
+      ],
+      "result": "L",
+      "score_against": 3,
+      "score_for": 2,
+      "timestamp": 1788907022,
+      "winner_by_dnf": false
+    },
+    {
+      "human_players": 3,
+      "match_id": "1043858729080269",
+      "match_type": "leagueMatch",
+      "opponent": {
+        "club_id": "8600958",
+        "human_players": 3,
+        "name": "Stage2"
+      },
+      "played_at": "2026-09-08T22:18:16+00:00",
+      "players": [
+        {
+          "archetype_id": "8",
+          "assists": 0,
+          "display_name": "Door",
+          "dribbles_completed": 10,
+          "gamertag": "Sidney257965",
+          "goals": 0,
+          "interceptions": null,
+          "motm": 0,
+          "passes_attempted": 12,
+          "passes_made": 12,
+          "player_id": "1796485428",
+          "position_group": "midfielder",
+          "rating": 7.0,
+          "red_cards": 0,
+          "second_assists": 0,
+          "seconds_played": 5569,
+          "shots": 0,
+          "tackles_attempted": 1,
+          "tackles_made": 0,
+          "take_ons": 1,
+          "through_passes": 0
+        },
+        {
+          "archetype_id": "11",
+          "assists": 1,
+          "display_name": "Hole",
+          "dribbles_completed": 29,
+          "gamertag": "Xd leechy",
+          "goals": 2,
+          "interceptions": null,
+          "motm": 1,
+          "passes_attempted": 36,
+          "passes_made": 32,
+          "player_id": "1007239554189",
+          "position_group": "forward",
+          "rating": 9.8,
+          "red_cards": 0,
+          "second_assists": 0,
+          "seconds_played": 5569,
+          "shots": 5,
+          "tackles_attempted": 6,
+          "tackles_made": 1,
+          "take_ons": 4,
+          "through_passes": 10
+        },
+        {
+          "archetype_id": "11",
+          "assists": 2,
+          "display_name": "Bobby",
+          "dribbles_completed": 25,
+          "gamertag": "kidljp46",
+          "goals": 1,
+          "interceptions": null,
+          "motm": 0,
+          "passes_attempted": 28,
+          "passes_made": 22,
+          "player_id": "1009209437400",
+          "position_group": "forward",
+          "rating": 9.1,
+          "red_cards": 0,
+          "second_assists": 0,
+          "seconds_played": 5569,
+          "shots": 4,
+          "tackles_attempted": 6,
+          "tackles_made": 2,
+          "take_ons": 9,
+          "through_passes": 11
+        }
+      ],
+      "result": "W",
+      "score_against": 1,
+      "score_for": 3,
+      "timestamp": 1788905896,
+      "winner_by_dnf": false
+    },
     {
       "human_players": 3,
       "match_id": "1043932280740432",
@@ -1143,11 +1317,11 @@
       "season": {
         "assists": 29,
         "average_rating": 7.4,
-        "games_played": 92,
+        "games_played": 94,
         "goals": 36,
         "motm": 7,
         "red_cards": 2,
-        "win_rate": 63
+        "win_rate": 62
       }
     },
     {
@@ -1160,13 +1334,13 @@
       "preferred_position": "forward",
       "pro_name": "HOLE",
       "season": {
-        "assists": 68,
+        "assists": 71,
         "average_rating": 8.3,
-        "games_played": 92,
-        "goals": 135,
-        "motm": 12,
+        "games_played": 94,
+        "goals": 137,
+        "motm": 13,
         "red_cards": 3,
-        "win_rate": 63
+        "win_rate": 62
       }
     },
     {
@@ -1179,13 +1353,13 @@
       "preferred_position": "forward",
       "pro_name": "R. Bobby",
       "season": {
-        "assists": 112,
+        "assists": 114,
         "average_rating": 8.6,
-        "games_played": 92,
-        "goals": 107,
+        "games_played": 94,
+        "goals": 110,
         "motm": 43,
         "red_cards": 1,
-        "win_rate": 63
+        "win_rate": 62
       }
     }
   ]
