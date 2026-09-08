@@ -15,7 +15,7 @@
       "take_ons"
     ]
   },
-  "last_updated": "2026-09-08T11:16:17.416520+00:00",
+  "last_updated": "2026-09-08T12:06:01.756419+00:00",
   "matches": [
     {
       "human_players": 3,
@@ -886,6 +886,65 @@
       "score_for": 3,
       "timestamp": 1788470167,
       "winner_by_dnf": false
+    }
+  ],
+  "profiles": [
+    {
+      "display_name": "Door",
+      "gamertag": "Sidney257965",
+      "height_cm": 175,
+      "nationality_id": "158",
+      "overall": 89,
+      "position_id": "14",
+      "preferred_position": "midfielder",
+      "pro_name": "door",
+      "season": {
+        "assists": 28,
+        "average_rating": 7.4,
+        "games_played": 91,
+        "goals": 36,
+        "motm": 7,
+        "red_cards": 2,
+        "win_rate": 62
+      }
+    },
+    {
+      "display_name": "Hole",
+      "gamertag": "Xd leechy",
+      "height_cm": 165,
+      "nationality_id": "116",
+      "overall": 88,
+      "position_id": "25",
+      "preferred_position": "forward",
+      "pro_name": "HOLE",
+      "season": {
+        "assists": 68,
+        "average_rating": 8.3,
+        "games_played": 91,
+        "goals": 134,
+        "motm": 12,
+        "red_cards": 3,
+        "win_rate": 62
+      }
+    },
+    {
+      "display_name": "Bobby",
+      "gamertag": "kidljp46",
+      "height_cm": 188,
+      "nationality_id": "116",
+      "overall": 89,
+      "position_id": "25",
+      "preferred_position": "forward",
+      "pro_name": "R. Bobby",
+      "season": {
+        "assists": 111,
+        "average_rating": 8.6,
+        "games_played": 91,
+        "goals": 104,
+        "motm": 42,
+        "red_cards": 1,
+        "win_rate": 62
+      }
     }
   ]
 }
