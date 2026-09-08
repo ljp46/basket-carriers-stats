@@ -21,6 +21,13 @@ DATA_PATH = ROOT / "data" / "matches.json"
 STATUS_PATH = ROOT / "data" / "status.json"
 BASE_URL = "https://proclubs.ea.com/api/fc"
 MATCH_TYPES = ("leagueMatch", "friendlyMatch", "playoffMatch")
+MILESTONE_THRESHOLDS = {
+    "games_played": (50, 100, 150, 200, 250, 300, 400, 500),
+    "goals": (50, 100, 150, 200, 250, 300, 400, 500),
+    "assists": (50, 100, 150, 200, 250, 300, 400, 500),
+    "contributions": (100, 200, 300, 400, 500, 750, 1000),
+    "motm": (10, 25, 50, 75, 100, 150, 200),
+}
 
 # Decoded from EA's match_event_aggregate_0 counters and verified against a
 # known three-match BASKET CARRIERS session. Interceptions remain deliberately
@@ -161,6 +168,53 @@ def normalize_player(player_id: str, raw: dict[str, Any], aliases: dict[str, str
     }
 
 
+def profile_totals(profile: dict[str, Any]) -> dict[str, int]:
+    season = profile.get("season", {})
+    goals = as_int(season.get("goals"))
+    assists = as_int(season.get("assists"))
+    return {
+        "games_played": as_int(season.get("games_played")),
+        "goals": goals,
+        "assists": assists,
+        "contributions": goals + assists,
+        "motm": as_int(season.get("motm")),
+    }
+
+
+def update_milestones(
+    previous: dict[str, Any], profiles: list[dict[str, Any]], matches: list[dict[str, Any]], detected_at: str
+) -> list[dict[str, Any]]:
+    milestones = list(previous.get("milestones", []))
+    known = {
+        (item.get("player"), item.get("metric"), as_int(item.get("threshold")))
+        for item in milestones
+    }
+    old_profiles = {item.get("display_name"): item for item in previous.get("profiles", [])}
+    latest_match_id = str(matches[0]["match_id"]) if matches else None
+
+    for profile in profiles:
+        player = profile.get("display_name")
+        current = profile_totals(profile)
+        old_profile = old_profiles.get(player)
+        old = profile_totals(old_profile) if old_profile else {}
+        for metric, thresholds in MILESTONE_THRESHOLDS.items():
+            for threshold in thresholds:
+                if current[metric] < threshold or (player, metric, threshold) in known:
+                    continue
+                witnessed = bool(old_profile and old.get(metric, 0) < threshold <= current[metric])
+                milestones.append({
+                    "player": player,
+                    "metric": metric,
+                    "threshold": threshold,
+                    "value_when_detected": current[metric],
+                    "detected_at": detected_at,
+                    "celebrate_match_id": latest_match_id if witnessed else None,
+                    "baseline": not witnessed,
+                })
+                known.add((player, metric, threshold))
+    return milestones
+
+
 def normalize_match(raw: dict[str, Any], match_type: str, config: dict[str, Any]) -> dict[str, Any] | None:
     club_id = str(config["club_id"])
     clubs = raw.get("clubs", {})
@@ -245,6 +299,8 @@ def main() -> None:
         by_id[str(match["match_id"])] = match
     matches = sorted(by_id.values(), key=lambda match: match["timestamp"], reverse=True)
 
+    updated_at = datetime.now(timezone.utc).isoformat()
+    milestones = update_milestones(previous, profiles, matches, updated_at)
     payload = {
         "club": {
             "club_id": str(config["club_id"]),
@@ -255,8 +311,9 @@ def main() -> None:
             "verified": ["second_assists", "through_passes", "dribbles_completed", "take_ons"],
             "pending_validation": ["interceptions"],
         },
-        "last_updated": datetime.now(timezone.utc).isoformat(),
+        "last_updated": updated_at,
         "profiles": profiles,
+        "milestones": milestones,
         "matches": matches,
     }
     write_json_atomic(DATA_PATH, payload)

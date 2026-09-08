@@ -15,7 +15,7 @@
       "take_ons"
     ]
   },
-  "last_updated": "2026-09-08T13:33:05.572047+00:00",
+  "last_updated": "2026-09-08T13:56:27.065162+00:00",
   "matches": [
     {
       "human_players": 3,
@@ -886,6 +886,161 @@
       "score_for": 3,
       "timestamp": 1788470167,
       "winner_by_dnf": false
+    }
+  ],
+  "milestones": [
+    {
+      "baseline": true,
+      "celebrate_match_id": null,
+      "detected_at": "2026-09-08T13:56:27.065162+00:00",
+      "metric": "games_played",
+      "player": "Door",
+      "threshold": 50,
+      "value_when_detected": 91
+    },
+    {
+      "baseline": true,
+      "celebrate_match_id": null,
+      "detected_at": "2026-09-08T13:56:27.065162+00:00",
+      "metric": "games_played",
+      "player": "Hole",
+      "threshold": 50,
+      "value_when_detected": 91
+    },
+    {
+      "baseline": true,
+      "celebrate_match_id": null,
+      "detected_at": "2026-09-08T13:56:27.065162+00:00",
+      "metric": "goals",
+      "player": "Hole",
+      "threshold": 50,
+      "value_when_detected": 134
+    },
+    {
+      "baseline": true,
+      "celebrate_match_id": null,
+      "detected_at": "2026-09-08T13:56:27.065162+00:00",
+      "metric": "goals",
+      "player": "Hole",
+      "threshold": 100,
+      "value_when_detected": 134
+    },
+    {
+      "baseline": true,
+      "celebrate_match_id": null,
+      "detected_at": "2026-09-08T13:56:27.065162+00:00",
+      "metric": "assists",
+      "player": "Hole",
+      "threshold": 50,
+      "value_when_detected": 68
+    },
+    {
+      "baseline": true,
+      "celebrate_match_id": null,
+      "detected_at": "2026-09-08T13:56:27.065162+00:00",
+      "metric": "contributions",
+      "player": "Hole",
+      "threshold": 100,
+      "value_when_detected": 202
+    },
+    {
+      "baseline": true,
+      "celebrate_match_id": null,
+      "detected_at": "2026-09-08T13:56:27.065162+00:00",
+      "metric": "contributions",
+      "player": "Hole",
+      "threshold": 200,
+      "value_when_detected": 202
+    },
+    {
+      "baseline": true,
+      "celebrate_match_id": null,
+      "detected_at": "2026-09-08T13:56:27.065162+00:00",
+      "metric": "motm",
+      "player": "Hole",
+      "threshold": 10,
+      "value_when_detected": 12
+    },
+    {
+      "baseline": true,
+      "celebrate_match_id": null,
+      "detected_at": "2026-09-08T13:56:27.065162+00:00",
+      "metric": "games_played",
+      "player": "Bobby",
+      "threshold": 50,
+      "value_when_detected": 91
+    },
+    {
+      "baseline": true,
+      "celebrate_match_id": null,
+      "detected_at": "2026-09-08T13:56:27.065162+00:00",
+      "metric": "goals",
+      "player": "Bobby",
+      "threshold": 50,
+      "value_when_detected": 104
+    },
+    {
+      "baseline": true,
+      "celebrate_match_id": null,
+      "detected_at": "2026-09-08T13:56:27.065162+00:00",
+      "metric": "goals",
+      "player": "Bobby",
+      "threshold": 100,
+      "value_when_detected": 104
+    },
+    {
+      "baseline": true,
+      "celebrate_match_id": null,
+      "detected_at": "2026-09-08T13:56:27.065162+00:00",
+      "metric": "assists",
+      "player": "Bobby",
+      "threshold": 50,
+      "value_when_detected": 111
+    },
+    {
+      "baseline": true,
+      "celebrate_match_id": null,
+      "detected_at": "2026-09-08T13:56:27.065162+00:00",
+      "metric": "assists",
+      "player": "Bobby",
+      "threshold": 100,
+      "value_when_detected": 111
+    },
+    {
+      "baseline": true,
+      "celebrate_match_id": null,
+      "detected_at": "2026-09-08T13:56:27.065162+00:00",
+      "metric": "contributions",
+      "player": "Bobby",
+      "threshold": 100,
+      "value_when_detected": 215
+    },
+    {
+      "baseline": true,
+      "celebrate_match_id": null,
+      "detected_at": "2026-09-08T13:56:27.065162+00:00",
+      "metric": "contributions",
+      "player": "Bobby",
+      "threshold": 200,
+      "value_when_detected": 215
+    },
+    {
+      "baseline": true,
+      "celebrate_match_id": null,
+      "detected_at": "2026-09-08T13:56:27.065162+00:00",
+      "metric": "motm",
+      "player": "Bobby",
+      "threshold": 10,
+      "value_when_detected": 42
+    },
+    {
+      "baseline": true,
+      "celebrate_match_id": null,
+      "detected_at": "2026-09-08T13:56:27.065162+00:00",
+      "metric": "motm",
+      "player": "Bobby",
+      "threshold": 25,
+      "value_when_detected": 42
     }
   ],
   "profiles": [

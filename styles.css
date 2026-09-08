@@ -124,6 +124,7 @@ select { color: var(--ink); background: var(--surface-2); border: 1px solid var(
 .player-content { position: relative; z-index: 1; }
 .player-card header { display: flex; min-height: 122px; justify-content: space-between; align-items: start; gap: 10px; }
 .player-card h3 { display:flex; align-items:baseline; gap:8px; margin-top:3px; font-size: 2rem; font-weight: 600; line-height: .9; }
+.milestone-ribbon { display:inline-flex; align-items:center; margin:-2px 0 17px; padding:7px 10px; border:1px solid rgba(233,200,109,.46); border-radius:7px; color:#f5dfa0; background:linear-gradient(90deg,rgba(173,124,28,.22),rgba(233,200,109,.07)); box-shadow:0 0 24px rgba(233,200,109,.08); font-size:.64rem; font-weight:900; letter-spacing:.12em; text-transform:uppercase; }
 .shirt-number { color: var(--lime); font-size: .78em; }
 .comparison { margin-top: 8px; color: var(--muted); font-size: .61rem; font-weight: 700; letter-spacing: .11em; }
 .rating { color: #071006; background: var(--lime); border-radius: 7px; padding: 6px 9px; font-weight: 900; }
@@ -134,6 +135,46 @@ select { color: var(--ink); background: var(--surface-2); border: 1px solid var(
 .stat-list div { padding: 10px; background: rgba(7, 13, 17, .91); backdrop-filter: blur(6px); }
 .stat-list span { display: block; color: var(--muted); font-size: .67rem; }
 .stat-list strong { font-size: 1rem; }
+
+.section-heading > .section-note { max-width:370px; color:var(--muted); font-size:.72rem; line-height:1.45; text-align:right; }
+.form-grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:12px; }
+.form-card, .milestone-card { border:1px solid var(--line); border-radius:16px; background:linear-gradient(145deg,rgba(19,29,35,.95),rgba(8,14,18,.94)); }
+.form-card { min-height:230px; padding:19px; }
+.team-form { background:radial-gradient(circle at 5% 0,rgba(202,255,61,.09),transparent 45%),linear-gradient(145deg,rgba(19,29,35,.96),rgba(8,14,18,.94)); }
+.form-top { display:flex; align-items:flex-start; justify-content:space-between; gap:12px; }
+.form-card h3, .milestone-card h3 { margin-top:5px; font-family:"Cormorant Garamond",Georgia,serif; font-size:1.55rem; font-weight:600; line-height:1; }
+.form-status { padding:6px 8px; border:1px solid currentColor; border-radius:999px; font-size:.6rem; font-weight:900; letter-spacing:.08em; text-transform:uppercase; }
+.form-status.hot { color:var(--lime); box-shadow:0 0 18px rgba(202,255,61,.1); }
+.form-status.rising { color:var(--cyan); }
+.form-status.strong { color:#a9e9ca; }
+.form-status.steady { color:#b4c0c6; }
+.form-status.cooling { color:var(--amber); }
+.form-status.searching { color:var(--red); }
+.form-sequence { display:flex; gap:5px; margin-top:23px; }
+.form-result { display:grid; place-items:center; width:27px; height:27px; border-radius:5px; color:#07100a; font-size:.67rem; font-weight:900; }
+.form-result.W { background:var(--lime); } .form-result.D { background:var(--amber); } .form-result.L { background:var(--red); }
+.form-stats { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:1px; margin-top:17px; overflow:hidden; border:1px solid var(--line); border-radius:8px; background:var(--line); }
+.form-stats div { min-width:0; padding:10px; background:rgba(7,13,17,.88); }
+.form-stats strong, .form-stats span { display:block; }
+.form-stats strong { font-family:"Cormorant Garamond",Georgia,serif; font-size:1.35rem; font-weight:600; }
+.form-stats span { overflow:hidden; color:var(--muted); font-size:.59rem; text-overflow:ellipsis; white-space:nowrap; }
+.form-context { margin-top:12px; color:var(--muted); font-size:.65rem; line-height:1.45; }
+
+.milestone-grid { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:12px; }
+.milestone-card { position:relative; min-height:260px; padding:20px; overflow:hidden; }
+.milestone-card::after { position:absolute; right:-35px; top:-45px; width:150px; height:150px; border:1px solid rgba(233,200,109,.11); border-radius:50%; content:""; box-shadow:0 0 70px rgba(233,200,109,.05); }
+.milestone-card:nth-child(1) { border-top-color:rgba(202,255,61,.35); }
+.milestone-card:nth-child(2) { border-top-color:rgba(101,223,250,.35); }
+.milestone-card:nth-child(3) { border-top-color:rgba(233,200,109,.35); }
+.milestone-player { display:flex; align-items:center; gap:12px; }
+.milestone-number { display:grid; place-items:center; width:45px; height:45px; flex:0 0 auto; border:1px solid rgba(233,200,109,.35); border-radius:50%; color:var(--gold); font-family:"Cormorant Garamond",Georgia,serif; font-size:1.3rem; font-weight:700; }
+.honour-list { display:flex; flex-wrap:wrap; gap:6px; margin-top:20px; }
+.honour-list > span { padding:7px 9px; border:1px solid var(--line); border-radius:7px; color:var(--muted); background:rgba(5,10,13,.62); font-size:.61rem; text-transform:uppercase; }
+.honour-list strong { margin-right:5px; color:var(--ink); font-size:.82rem; }
+.next-landmark { display:grid; grid-template-columns:1fr auto; gap:3px 10px; margin-top:19px; padding-top:14px; border-top:1px solid var(--line); }
+.next-landmark span { grid-column:1/-1; color:var(--gold); font-size:.58rem; font-weight:800; letter-spacing:.13em; text-transform:uppercase; }
+.next-landmark strong { font-size:.78rem; }
+.next-landmark small { color:var(--muted); font-size:.67rem; }
 
 .split { display: grid; grid-template-columns: minmax(0, 1.5fr) minmax(250px, .75fr); gap: 20px; align-items: start; }
 .match-help { margin: -8px 0 16px; color: var(--muted); font-size: .78rem; }
@@ -184,7 +225,7 @@ select { color: var(--ink); background: var(--surface-2); border: 1px solid var(
   .topbar { align-items: start; flex-direction: column; }
   .scoreboard { grid-template-columns: 1fr; }
   .scoreboard-grid { grid-template-columns: repeat(2, 1fr); }
-  .player-grid, .match-player-grid { grid-template-columns: 1fr; }
+  .player-grid, .match-player-grid, .milestone-grid { grid-template-columns: 1fr; }
   .player-card { min-height: 0; }
   .player-ghost { max-width: 390px; }
 }
@@ -196,6 +237,9 @@ select { color: var(--ink); background: var(--surface-2); border: 1px solid var(
   .match summary { grid-template-columns: 44px 1fr auto 16px; gap: 9px; }
   .match-context { display: none; }
   .section-heading { align-items: start; flex-direction: column; }
+  .section-heading > .section-note { text-align:left; }
+  .form-grid { grid-template-columns:1fr; }
+  .form-stats { grid-template-columns:repeat(2,minmax(0,1fr)); }
   .player-ghost.cutout { right:-13%; width:74%; }
   .player-card h3 { font-size:1.75rem; }
 }

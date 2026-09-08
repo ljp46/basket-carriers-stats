@@ -6,10 +6,22 @@ const PLAYER_META = {
   Hole: {fullName: "Closed Hole", number: "51", comparison: "Lionel Messi", image: "assets/players/messi.jpeg", imageClass: "photo messi"},
   Door: {fullName: "Car Door", number: "47", comparison: "Jorginho", image: "assets/players/jorginho.jpeg", imageClass: "photo jorginho"}
 };
+const MILESTONE_THRESHOLDS = {
+  games_played: [50, 100, 150, 200, 250, 300, 400, 500],
+  goals: [50, 100, 150, 200, 250, 300, 400, 500],
+  assists: [50, 100, 150, 200, 250, 300, 400, 500],
+  contributions: [100, 200, 300, 400, 500, 750, 1000],
+  motm: [10, 25, 50, 75, 100, 150, 200]
+};
+const MILESTONE_LABELS = {
+  games_played: "appearances", goals: "club goals", assists: "assists",
+  contributions: "goal contributions", motm: "POTM awards"
+};
 
 const sum = (items, key) => items.reduce((total, item) => total + (Number(item[key]) || 0), 0);
 const pct = (made, attempted) => attempted ? `${Math.round((made / attempted) * 100)}%` : "—";
 const oneDecimal = value => Number(value || 0).toFixed(1);
+const signed = value => `${value > 0 ? "+" : ""}${oneDecimal(value)}`;
 const contributionInvolvement = (player, goals) => goals ? pct(Number(player.goals) + Number(player.assists), goals) : "—";
 const metresToFeet = cm => {
   if (!cm) return "—";
@@ -68,6 +80,123 @@ function playerProfile(data, player) {
   };
 }
 
+function profileTotals(profile = {}) {
+  const season = profile.season || {};
+  const goals = Number(season.goals) || 0;
+  const assists = Number(season.assists) || 0;
+  return {
+    games_played: Number(season.games_played) || 0,
+    goals,
+    assists,
+    contributions: goals + assists,
+    motm: Number(season.motm) || 0
+  };
+}
+
+function formState(recentRating, ratingDelta, outputDelta = 0) {
+  if (recentRating >= 8.8 || (recentRating >= 8.4 && outputDelta >= .65)) return {label: "On fire", className: "hot"};
+  if (ratingDelta >= .35 || outputDelta >= .75) return {label: "Rising", className: "rising"};
+  if (recentRating >= 8) return {label: "Strong", className: "strong"};
+  if (ratingDelta <= -.45 || outputDelta <= -1) return {label: "Cooling", className: "cooling"};
+  if (recentRating < 7) return {label: "Searching", className: "searching"};
+  return {label: "Steady", className: "steady"};
+}
+
+function teamFormState(ppg, delta) {
+  if (ppg >= 2.4) return {label: "On fire", className: "hot"};
+  if (delta >= .6) return {label: "Rising", className: "rising"};
+  if (ppg >= 1.8) return {label: "Strong", className: "strong"};
+  if (delta <= -.6) return {label: "Cooling", className: "cooling"};
+  if (ppg < 1) return {label: "Searching", className: "searching"};
+  return {label: "Steady", className: "steady"};
+}
+
+function pointsPerGame(matches) {
+  if (!matches.length) return 0;
+  return matches.reduce((total, match) => total + (match.result === "W" ? 3 : match.result === "D" ? 1 : 0), 0) / matches.length;
+}
+
+function renderForm(data) {
+  const allMatches = [...(data.matches || [])].sort((a, b) => b.timestamp - a.timestamp);
+  const recentTeam = allMatches.slice(0, 5);
+  const priorTeam = allMatches.slice(5, 10);
+  const ppg = pointsPerGame(recentTeam);
+  const priorPpg = pointsPerGame(priorTeam);
+  const teamState = teamFormState(ppg, priorTeam.length ? ppg - priorPpg : 0);
+  const teamFor = sum(recentTeam, "score_for");
+  const teamAgainst = sum(recentTeam, "score_against");
+  const sequence = [...recentTeam].reverse().map(match => `<span class="form-result ${match.result}">${match.result}</span>`).join("");
+  const teamCard = `
+    <article class="form-card team-form">
+      <div class="form-top"><div><p class="label">BASKET CARRIERS</p><h3>Team form</h3></div><span class="form-status ${teamState.className}">${teamState.label}</span></div>
+      <div class="form-sequence">${sequence}</div>
+      <div class="form-stats">
+        <div><strong>${oneDecimal(ppg)}</strong><span>Points / game</span></div>
+        <div><strong>${teamFor}–${teamAgainst}</strong><span>Goal balance</span></div>
+        <div><strong>${priorTeam.length ? signed(ppg - priorPpg) : "—"}</strong><span>PPG movement</span></div>
+      </div>
+      <p class="form-context">${recentTeam.length} most recent match${recentTeam.length === 1 ? "" : "es"}; the arrow only becomes meaningful once ten are stored.</p>
+    </article>`;
+
+  const playerCards = PLAYER_ORDER.map(name => {
+    const appearances = allMatches.map(match => match.players.find(player => player.display_name === name)).filter(Boolean);
+    const recent = appearances.slice(0, 5);
+    const prior = appearances.slice(5, 10);
+    const recentRating = recent.length ? sum(recent, "rating") / recent.length : 0;
+    const priorRating = prior.length ? sum(prior, "rating") / prior.length : recentRating;
+    const recentOutput = recent.length ? (sum(recent, "goals") + sum(recent, "assists")) / recent.length : 0;
+    const priorOutput = prior.length ? (sum(prior, "goals") + sum(prior, "assists")) / prior.length : recentOutput;
+    const state = formState(recentRating, recentRating - priorRating, recentOutput - priorOutput);
+    const meta = PLAYER_META[name];
+    const passesMade = sum(recent, "passes_made");
+    const passesAttempted = sum(recent, "passes_attempted");
+    const roleMetric = name === "Door"
+      ? `<div><strong>${oneDecimal(sum(recent, "through_passes") / Math.max(recent.length, 1))}</strong><span>Throughs / game</span></div>`
+      : `<div><strong>${pct(sum(recent, "goals"), sum(recent, "shots"))}</strong><span>Conversion</span></div>`;
+    return `
+      <article class="form-card player-form">
+        <div class="form-top"><div><p class="label">#${meta.number}</p><h3>${meta.fullName}</h3></div><span class="form-status ${state.className}">${state.label}</span></div>
+        <div class="form-stats">
+          <div><strong>${oneDecimal(recentRating)}</strong><span>Avg rating</span></div>
+          <div><strong>${oneDecimal(recentOutput)}</strong><span>G+A / game</span></div>
+          <div><strong>${prior.length ? signed(recentRating - priorRating) : "—"}</strong><span>Rating movement</span></div>
+          ${roleMetric}
+          <div><strong>${pct(passesMade, passesAttempted)}</strong><span>Pass accuracy</span></div>
+        </div>
+        <p class="form-context">Last ${recent.length} appearance${recent.length === 1 ? "" : "s"} versus the previous ${prior.length || "pending"}.</p>
+      </article>`;
+  }).join("");
+  document.querySelector("#form").innerHTML = teamCard + playerCards;
+}
+
+function renderMilestones(data) {
+  const profiles = new Map((data.profiles || []).map(profile => [profile.display_name, profile]));
+  document.querySelector("#milestones").innerHTML = PLAYER_ORDER.map(name => {
+    const meta = PLAYER_META[name];
+    const totals = profileTotals(profiles.get(name));
+    const honours = Object.entries(MILESTONE_THRESHOLDS).map(([metric, thresholds]) => {
+      const reached = thresholds.filter(threshold => threshold <= totals[metric]).at(-1);
+      return reached ? {metric, threshold: reached} : null;
+    }).filter(Boolean);
+    const targets = Object.entries(MILESTONE_THRESHOLDS).map(([metric, thresholds]) => {
+      const target = thresholds.find(threshold => threshold > totals[metric]);
+      return target ? {metric, target, away: target - totals[metric]} : null;
+    }).filter(Boolean).sort((a, b) => a.away - b.away);
+    const next = targets[0];
+    return `
+      <article class="milestone-card">
+        <div class="milestone-player"><span class="milestone-number">${meta.number}</span><div><p class="label">HONOURS</p><h3>${meta.fullName}</h3></div></div>
+        <div class="honour-list">${honours.length ? honours.map(item => `<span><strong>${item.threshold}</strong>${MILESTONE_LABELS[item.metric]}</span>`).join("") : `<span class="honour-pending">First landmark loading…</span>`}</div>
+        ${next ? `<div class="next-landmark"><span>Next landmark</span><strong>${next.target} ${MILESTONE_LABELS[next.metric]}</strong><small>${next.away} away</small></div>` : ""}
+      </article>`;
+  }).join("");
+}
+
+function celebrationFor(data, playerName, matches) {
+  const matchIds = new Set(matches.map(match => String(match.match_id)));
+  return (data.milestones || []).filter(item => item.player === playerName && item.celebrate_match_id && matchIds.has(String(item.celebrate_match_id))).at(-1);
+}
+
 function renderMatchPlayer(player, teamGoals) {
   const contribution = contributionInvolvement(player, teamGoals);
   const meta = PLAYER_META[player.display_name] || {fullName: player.display_name, number: "—"};
@@ -117,10 +246,12 @@ function render(data, sessions, selected) {
   document.querySelector("#players").innerHTML = players.map(player => {
     const profile = playerProfile(data, player);
     const meta = PLAYER_META[player.name];
+    const celebration = celebrationFor(data, player.name, matches);
     return `
       <article class="player-card player-${player.name.toLowerCase()} ${player.motm ? "has-motm" : ""}">
         <img class="player-ghost ${meta.imageClass}" src="${meta.image}" alt="" />
         <div class="player-content">
+          ${celebration ? `<div class="milestone-ribbon">★ ${celebration.threshold} ${MILESTONE_LABELS[celebration.metric]}</div>` : ""}
           <header><div><p class="label">${player.appearances} APPEARANCES · THE GAMBIA</p><h3><span class="shirt-number">${meta.number}</span>${meta.fullName}</h3><p class="comparison">PLAYER PROFILE · ${meta.comparison}</p></div><span class="rating">${oneDecimal(player.rating)}</span></header>
           <div class="profile-line"><span>${profile.height}</span><span>${profile.archetype}</span>${profile.overall ? `<span>${profile.overall}</span>` : ""}</div>
           <div class="headline">${player.goals}G · ${player.assists}A</div>
@@ -182,6 +313,8 @@ fetch("data/matches.json", {cache: "no-store"})
     if (!sessions.length) throw new Error("No matches have been collected yet.");
     document.querySelector("#updated").textContent = `Updated ${new Date(data.last_updated).toLocaleString()}`;
     const select = document.querySelector("#session-select");
+    renderForm(data);
+    renderMilestones(data);
     select.innerHTML = sessions.map((session, index) => `<option value="${index}">${sessionLabel(session, index)}</option>`).join("");
     select.addEventListener("change", event => render(data, sessions, Number(event.target.value)));
     render(data, sessions, 0);
