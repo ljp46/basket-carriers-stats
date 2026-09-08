@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="BASKET CARRIERS FC Clubs performance dashboard" />
+    <title>BASKET CARRIERS — Match Room</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <main class="shell">
+      <header class="topbar">
+        <div>
+          <p class="eyebrow">FC 26 CLUBS · CURRENT GEN</p>
+          <h1>BASKET CARRIERS</h1>
+        </div>
+        <div class="live"><span></span><strong id="updated">Loading match feed…</strong></div>
+      </header>
+
+      <section class="scoreboard" aria-label="Latest session summary">
+        <div class="scoreboard-main">
+          <p class="label">LATEST SESSION</p>
+          <div class="record" id="session-record">—</div>
+          <p id="session-window">Waiting for match data</p>
+        </div>
+        <div class="scoreboard-grid" id="session-kpis"></div>
+      </section>
+
+      <section class="section">
+        <div class="section-heading">
+          <div><p class="label">THE THREE</p><h2>Session performance</h2></div>
+          <select id="session-select" aria-label="Choose session"></select>
+        </div>
+        <div class="player-grid" id="players"></div>
+      </section>
+
+      <section class="section split">
+        <div>
+          <div class="section-heading"><div><p class="label">MATCH LOG</p><h2>Results</h2></div></div>
+          <div class="matches" id="matches"></div>
+        </div>
+        <aside class="insight-panel">
+          <p class="label">TACTICAL SIGNALS</p>
+          <h2>What changed?</h2>
+          <div id="signals"></div>
+          <p class="note">Interceptions will appear after their encoded EA event mapping is validated against another session.</p>
+        </aside>
+      </section>
+    </main>
+    <script src="app.js" defer></script>
+  </body>
+</html>
