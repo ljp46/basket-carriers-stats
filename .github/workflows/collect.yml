@@ -1,6 +1,12 @@
 name: Collect FC Clubs matches
 
 on:
+  push:
+    branches: [main]
+    paths:
+      - collect.py
+      - config.json
+      - .github/workflows/collect.yml
   schedule:
     - cron: "17 * * * *"
   workflow_dispatch:
