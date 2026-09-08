@@ -5,14 +5,18 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="description" content="BASKET CARRIERS FC Clubs performance dashboard" />
     <title>BASKET CARRIERS — Match Room</title>
-    <link rel="stylesheet" href="styles.css?v=2" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&amp;family=Inter:wght@400;500;600;700;800;900&amp;display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="styles.css?v=3" />
   </head>
   <body>
     <main class="shell">
       <header class="topbar">
         <div>
-          <p class="eyebrow">FC 26 CLUBS · CURRENT GEN</p>
-          <h1>BASKET CARRIERS</h1>
+          <p class="eyebrow">FC 26 CLUBS · CURRENT GEN · CLUB 8837357</p>
+          <div class="club-lockup"><h1>BASKET CARRIERS</h1><span class="gambia-flag" role="img" aria-label="Flag of The Gambia"></span></div>
+          <p class="nation-line">THE GAMBIA · PERFORMANCE DEPARTMENT</p>
         </div>
         <div class="live"><span></span><strong id="updated">Loading match feed…</strong></div>
       </header>
@@ -21,6 +25,7 @@
         <div class="scoreboard-main">
           <p class="label">LATEST SESSION</p>
           <div class="record" id="session-record">—</div>
+          <p class="record-key">W &nbsp;–&nbsp; D &nbsp;–&nbsp; L</p>
           <p id="session-window">Waiting for match data</p>
         </div>
         <div class="scoreboard-grid" id="session-kpis"></div>
@@ -28,7 +33,7 @@
 
       <section class="section">
         <div class="section-heading">
-          <div><p class="label">THE THREE</p><h2>Session performance</h2></div>
+          <div><p class="label">THE THREE</p><h2>Gambian internationals</h2></div>
           <select id="session-select" aria-label="Choose session"></select>
         </div>
         <div class="player-grid" id="players"></div>
@@ -48,6 +53,6 @@
         </aside>
       </section>
     </main>
-    <script src="app.js?v=2" defer></script>
+    <script src="app.js?v=3" defer></script>
   </body>
 </html>

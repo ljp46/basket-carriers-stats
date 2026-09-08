@@ -1,6 +1,11 @@
 const SESSION_GAP_SECONDS = 60 * 60;
 const PLAYER_ORDER = ["Bobby", "Hole", "Door"];
 const ARCHETYPES = {"8": "Maestro", "11": "Magician"};
+const PLAYER_META = {
+  Bobby: {fullName: "Ricky Bobby", number: "29", comparison: "Bradley Barcola", image: "assets/players/barcola-29-cutout.webp", imageClass: "cutout"},
+  Hole: {fullName: "Closed Hole", number: "51", comparison: "Lionel Messi", image: "assets/players/messi.jpeg", imageClass: "photo messi"},
+  Door: {fullName: "Car Door", number: "47", comparison: "Jorginho", image: "assets/players/jorginho.jpeg", imageClass: "photo jorginho"}
+};
 
 const sum = (items, key) => items.reduce((total, item) => total + (Number(item[key]) || 0), 0);
 const pct = (made, attempted) => attempted ? `${Math.round((made / attempted) * 100)}%` : "—";
@@ -65,10 +70,11 @@ function playerProfile(data, player) {
 
 function renderMatchPlayer(player, teamGoals) {
   const contribution = contributionInvolvement(player, teamGoals);
+  const meta = PLAYER_META[player.display_name] || {fullName: player.display_name, number: "—"};
   return `
     <article class="match-player">
       <header>
-        <div><h4>${player.display_name}</h4><span>${player.position_group || "player"}</span></div>
+        <div><h4><span class="mini-number">${meta.number}</span>${meta.fullName}</h4><span>${player.position_group || "player"}</span></div>
         <div class="match-rating">${oneDecimal(player.rating)}</div>
       </header>
       ${player.motm ? `<div class="motm-badge">★ PLAYER OF THE MATCH</div>` : ""}
@@ -97,7 +103,7 @@ function render(data, sessions, selected) {
   const goalsAgainst = sum(matches, "score_against");
   const players = aggregatePlayers(matches);
 
-  document.querySelector("#session-record").textContent = `${wins}W ${draws}D ${losses}L`;
+  document.querySelector("#session-record").textContent = `${wins}–${draws}–${losses}`;
   document.querySelector("#session-window").textContent = sessionLabel(matches, selected);
   document.querySelector("#session-kpis").innerHTML = [
     [matches.length, "Matches"], [goalsFor, "Goals for"], [goalsAgainst, "Goals against"],
@@ -110,12 +116,15 @@ function render(data, sessions, selected) {
 
   document.querySelector("#players").innerHTML = players.map(player => {
     const profile = playerProfile(data, player);
+    const meta = PLAYER_META[player.name];
     return `
-      <article class="player-card">
-        <header><div><p class="label">${player.appearances} APPEARANCES</p><h3>${player.name}</h3></div><span class="rating">${oneDecimal(player.rating)}</span></header>
-        <div class="profile-line"><span>${profile.height}</span><span>${profile.archetype}</span>${profile.overall ? `<span>${profile.overall}</span>` : ""}</div>
-        <div class="headline">${player.goals}G · ${player.assists}A</div>
-        <div class="stat-list">
+      <article class="player-card player-${player.name.toLowerCase()} ${player.motm ? "has-motm" : ""}">
+        <img class="player-ghost ${meta.imageClass}" src="${meta.image}" alt="" />
+        <div class="player-content">
+          <header><div><p class="label">${player.appearances} APPEARANCES · THE GAMBIA</p><h3><span class="shirt-number">${meta.number}</span>${meta.fullName}</h3><p class="comparison">PLAYER PROFILE · ${meta.comparison}</p></div><span class="rating">${oneDecimal(player.rating)}</span></header>
+          <div class="profile-line"><span>${profile.height}</span><span>${profile.archetype}</span>${profile.overall ? `<span>${profile.overall}</span>` : ""}</div>
+          <div class="headline">${player.goals}G · ${player.assists}A</div>
+          <div class="stat-list">
           <div><span>Contribution involvement</span><strong>${contributionInvolvement(player, goalsFor)}</strong></div>
           <div><span>Player of the match</span><strong>${player.motm}</strong></div>
           <div><span>Conversion</span><strong>${pct(player.goals, player.shots)}</strong></div>
@@ -126,6 +135,7 @@ function render(data, sessions, selected) {
           <div><span>Take-ons</span><strong>${player.take_ons}</strong></div>
           <div><span>Tackles</span><strong>${player.tackles_made}/${player.tackles_attempted}</strong></div>
           <div><span>Second assists</span><strong>${player.second_assists}</strong></div>
+          </div>
         </div>
       </article>`;
   }).join("");
@@ -140,7 +150,7 @@ function render(data, sessions, selected) {
           <div><div class="opponent">${match.opponent.name}</div><div class="meta">${new Date(match.timestamp * 1000).toLocaleString()}</div></div>
           <div class="match-context">
             <span class="humans">${match.human_players}v${match.opponent.human_players} humans</span>
-            ${motm ? `<span class="motm-summary">★ ${motm.display_name} POTM</span>` : ""}
+            ${motm ? `<span class="motm-summary">★ ${(PLAYER_META[motm.display_name] || {fullName: motm.display_name}).fullName} POTM</span>` : ""}
           </div>
           <div class="score">${match.score_for}–${match.score_against}</div>
           <span class="chevron" aria-hidden="true">⌄</span>
