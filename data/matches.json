@@ -15,8 +15,95 @@
       "take_ons"
     ]
   },
-  "last_updated": "2026-09-08T21:51:33.243879+00:00",
+  "last_updated": "2026-09-08T22:00:20.783178+00:00",
   "matches": [
+    {
+      "human_players": 3,
+      "match_id": "1043932280740432",
+      "match_type": "leagueMatch",
+      "opponent": {
+        "club_id": "159665",
+        "human_players": 5,
+        "name": "Reformed AEI"
+      },
+      "played_at": "2026-09-08T21:56:23+00:00",
+      "players": [
+        {
+          "archetype_id": "8",
+          "assists": 1,
+          "display_name": "Door",
+          "dribbles_completed": 15,
+          "gamertag": "Sidney257965",
+          "goals": 0,
+          "interceptions": null,
+          "motm": 0,
+          "passes_attempted": 20,
+          "passes_made": 16,
+          "player_id": "1796485428",
+          "position_group": "midfielder",
+          "rating": 7.9,
+          "red_cards": 0,
+          "second_assists": 0,
+          "seconds_played": 5630,
+          "shots": 0,
+          "tackles_attempted": 0,
+          "tackles_made": 0,
+          "take_ons": 0,
+          "through_passes": 3
+        },
+        {
+          "archetype_id": "11",
+          "assists": 0,
+          "display_name": "Hole",
+          "dribbles_completed": 24,
+          "gamertag": "Xd leechy",
+          "goals": 1,
+          "interceptions": null,
+          "motm": 0,
+          "passes_attempted": 38,
+          "passes_made": 33,
+          "player_id": "1007239554189",
+          "position_group": "forward",
+          "rating": 8.4,
+          "red_cards": 0,
+          "second_assists": 0,
+          "seconds_played": 5630,
+          "shots": 2,
+          "tackles_attempted": 4,
+          "tackles_made": 2,
+          "take_ons": 2,
+          "through_passes": 12
+        },
+        {
+          "archetype_id": "11",
+          "assists": 1,
+          "display_name": "Bobby",
+          "dribbles_completed": 30,
+          "gamertag": "kidljp46",
+          "goals": 3,
+          "interceptions": null,
+          "motm": 1,
+          "passes_attempted": 33,
+          "passes_made": 23,
+          "player_id": "1009209437400",
+          "position_group": "forward",
+          "rating": 10.0,
+          "red_cards": 0,
+          "second_assists": 0,
+          "seconds_played": 5630,
+          "shots": 6,
+          "tackles_attempted": 7,
+          "tackles_made": 2,
+          "take_ons": 6,
+          "through_passes": 8
+        }
+      ],
+      "result": "W",
+      "score_against": 4,
+      "score_for": 5,
+      "timestamp": 1788904583,
+      "winner_by_dnf": false
+    },
     {
       "human_players": 3,
       "match_id": "1041870307960434",
@@ -1054,13 +1141,13 @@
       "preferred_position": "midfielder",
       "pro_name": "door",
       "season": {
-        "assists": 28,
+        "assists": 29,
         "average_rating": 7.4,
-        "games_played": 91,
+        "games_played": 92,
         "goals": 36,
         "motm": 7,
         "red_cards": 2,
-        "win_rate": 62
+        "win_rate": 63
       }
     },
     {
@@ -1075,11 +1162,11 @@
       "season": {
         "assists": 68,
         "average_rating": 8.3,
-        "games_played": 91,
-        "goals": 134,
+        "games_played": 92,
+        "goals": 135,
         "motm": 12,
         "red_cards": 3,
-        "win_rate": 62
+        "win_rate": 63
       }
     },
     {
@@ -1092,13 +1179,13 @@
       "preferred_position": "forward",
       "pro_name": "R. Bobby",
       "season": {
-        "assists": 111,
+        "assists": 112,
         "average_rating": 8.6,
-        "games_played": 91,
-        "goals": 104,
-        "motm": 42,
+        "games_played": 92,
+        "goals": 107,
+        "motm": 43,
         "red_cards": 1,
-        "win_rate": 62
+        "win_rate": 63
       }
     }
   ]
