@@ -3,14 +3,14 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="description" content="BASKET CARRIERS FC Clubs performance dashboard" />
-    <title>BASKET CARRIERS — Match Room</title>
+    <meta name="description" content="BASKET CARRIERS final FC 26 Clubs playoffs dashboard" />
+    <title>BASKET CARRIERS — Playoff Night</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&amp;family=Inter:wght@400;500;600;700;800;900&amp;display=swap" rel="stylesheet" />
-    <link rel="stylesheet" href="styles.css?v=6" />
+    <link rel="stylesheet" href="styles.css?v=7" />
   </head>
-  <body>
+  <body class="playoff-season">
     <main class="shell">
       <header class="topbar">
         <div>
@@ -21,64 +21,130 @@
         <div class="live"><span></span><strong id="updated">Loading match feed…</strong></div>
       </header>
 
-      <section class="scoreboard" aria-label="Latest session summary">
-        <div class="scoreboard-main">
-          <p class="label">LATEST SESSION</p>
-          <div class="record" id="session-record">—</div>
-          <p class="record-key">W &nbsp;–&nbsp; D &nbsp;–&nbsp; L</p>
-          <p id="session-window">Waiting for match data</p>
-        </div>
-        <div class="scoreboard-grid" id="session-kpis"></div>
-      </section>
+      <nav class="view-tabs" aria-label="Dashboard sections">
+        <button class="view-tab active" type="button" data-view="playoffs" aria-selected="true">Playoff Night</button>
+        <button class="view-tab" type="button" data-view="sessions" aria-selected="false">Sessions</button>
+        <button class="view-tab" type="button" data-view="archive" aria-selected="false">Club Archive</button>
+      </nav>
 
-      <section class="section">
-        <div class="section-heading">
-          <div><p class="label">THE THREE</p><h2>Gambian internationals</h2></div>
-          <select id="session-select" aria-label="Choose session"></select>
-        </div>
-        <div class="player-grid" id="players"></div>
-      </section>
-
-      <section class="section">
-        <div class="section-heading">
-          <div><p class="label">FORM ROOM</p><h2>Signal or one-off?</h2></div>
-          <p class="section-note">Last five compared with the previous five</p>
-        </div>
-        <div class="form-grid" id="form"></div>
-      </section>
-
-      <section class="section milestone-section">
-        <div class="section-heading">
-          <div><p class="label">CLUB HONOURS</p><h2>The milestone wall</h2></div>
-          <p class="section-note">Permanent achievements · live EA totals</p>
-        </div>
-        <div class="milestone-grid" id="milestones"></div>
-        <details class="career-ledger">
-          <summary>
-            <div><p class="label">CLUB LEDGER</p><h3>All-time club statistics</h3></div>
-            <div class="career-open"><span>OPEN CAREER RECORDS</span><b aria-hidden="true">⌄</b></div>
-          </summary>
-          <div class="career-body">
-            <p class="career-note">Cumulative totals come directly from EA. Advanced match data is shown separately because that archive begins when this dashboard started collecting.</p>
-            <div class="career-grid" id="career-stats"></div>
+      <div class="view-panel" data-view-panel="playoffs">
+        <section class="playoff-hero" aria-label="FC 26 playoff campaign summary">
+          <div class="playoff-wordmark" aria-hidden="true">THE LAST DANCE</div>
+          <div class="playoff-hero-copy">
+            <p class="playoff-kicker">FC 26 · FINAL PLAYOFFS</p>
+            <h2>Playoff Night</h2>
+            <p class="playoff-deck">Fifteen games. Every session counts toward one final run.</p>
           </div>
-        </details>
-      </section>
+          <div class="points-lockup">
+            <strong id="playoff-points">0</strong>
+            <span>POINTS</span>
+          </div>
+          <div class="playoff-record-block">
+            <strong id="playoff-record">0–0–0</strong>
+            <span>W &nbsp;–&nbsp; D &nbsp;–&nbsp; L</span>
+          </div>
+          <div class="playoff-kpis" id="playoff-kpis"></div>
+        </section>
 
-      <section class="section split">
-        <div>
-          <div class="section-heading"><div><p class="label">MATCH LOG</p><h2>Results & player breakdowns</h2></div></div>
-          <p class="match-help">Open any result to see the complete stats for Bobby, Hole and Door.</p>
-          <div class="matches" id="matches"></div>
-        </div>
-        <aside class="insight-panel">
-          <p class="label">TACTICAL SIGNALS</p>
-          <h2>What changed?</h2>
-          <div id="signals"></div>
-          <p class="note">Interceptions will appear after their encoded EA event mapping is validated against another session.</p>
-        </aside>
-      </section>
+        <section class="section journey-section">
+          <div class="section-heading">
+            <div><p class="label">THE FINAL RUN</p><h2>Fifteen-game journey</h2></div>
+            <p class="section-note" id="playoff-progress">0 of 15 complete</p>
+          </div>
+          <div class="journey-track" id="playoff-journey"></div>
+        </section>
+
+        <section class="section">
+          <div class="section-heading">
+            <div><p class="label">THE THREE · PLAYOFF TOTALS</p><h2>The campaign so far</h2></div>
+            <p class="section-note">Every playoff appearance, across every session</p>
+          </div>
+          <div class="playoff-player-grid" id="playoff-players"></div>
+        </section>
+
+        <section class="section playoff-session-section">
+          <div class="section-heading">
+            <div><p class="label">PLAYOFF CHAPTERS</p><h2>Session by session</h2></div>
+            <p class="section-note">The run stays connected even when the nights do not</p>
+          </div>
+          <div class="playoff-session-grid" id="playoff-sessions"></div>
+        </section>
+
+        <section class="section split playoff-log-section">
+          <div>
+            <div class="section-heading"><div><p class="label">PLAYOFF MATCH LOG</p><h2>Every game, every contribution</h2></div></div>
+            <p class="match-help">Select a completed journey slot or open a result below for the full player breakdown.</p>
+            <div class="matches" id="playoff-matches"></div>
+          </div>
+          <aside class="insight-panel playoff-insights">
+            <p class="label">RUNNING STORY</p>
+            <h2>Playoff signals</h2>
+            <div id="playoff-signals"></div>
+          </aside>
+        </section>
+      </div>
+
+      <div class="view-panel" data-view-panel="sessions" hidden>
+        <section class="scoreboard" aria-label="Latest session summary">
+          <div class="scoreboard-main">
+            <p class="label">SELECTED SESSION</p>
+            <div class="record" id="session-record">—</div>
+            <p class="record-key">W &nbsp;–&nbsp; D &nbsp;–&nbsp; L</p>
+            <p id="session-window">Waiting for match data</p>
+          </div>
+          <div class="scoreboard-grid" id="session-kpis"></div>
+        </section>
+
+        <section class="section">
+          <div class="section-heading">
+            <div><p class="label">THE THREE</p><h2>Session performance</h2></div>
+            <select id="session-select" aria-label="Choose session"></select>
+          </div>
+          <div class="player-grid" id="players"></div>
+        </section>
+
+        <section class="section split">
+          <div>
+            <div class="section-heading"><div><p class="label">MATCH LOG</p><h2>Results & player breakdowns</h2></div></div>
+            <p class="match-help">Open any result to see the complete stats for Bobby, Hole and Door.</p>
+            <div class="matches" id="matches"></div>
+          </div>
+          <aside class="insight-panel">
+            <p class="label">TACTICAL SIGNALS</p>
+            <h2>What changed?</h2>
+            <div id="signals"></div>
+          </aside>
+        </section>
+      </div>
+
+      <div class="view-panel" data-view-panel="archive" hidden>
+        <section class="section archive-opening">
+          <div class="section-heading">
+            <div><p class="label">FORM ROOM</p><h2>Signal or one-off?</h2></div>
+            <p class="section-note">Last five compared with the previous five</p>
+          </div>
+          <div class="form-grid" id="form"></div>
+        </section>
+
+        <section class="section milestone-section">
+          <div class="section-heading">
+            <div><p class="label">CLUB HONOURS</p><h2>The milestone wall</h2></div>
+            <p class="section-note">Permanent achievements · live EA totals</p>
+          </div>
+          <div class="milestone-grid" id="milestones"></div>
+          <details class="career-ledger">
+            <summary>
+              <div><p class="label">CLUB LEDGER</p><h3>All-time club statistics</h3></div>
+              <div class="career-open"><span>OPEN CAREER RECORDS</span><b aria-hidden="true">⌄</b></div>
+            </summary>
+            <div class="career-body">
+              <p class="career-note">Cumulative totals come directly from EA. Advanced match data is shown separately because that archive begins when this dashboard started collecting.</p>
+              <div class="career-grid" id="career-stats"></div>
+            </div>
+          </details>
+        </section>
+      </div>
     </main>
-    <script src="app.js?v=6" defer></script>
+    <script src="app.js?v=7" defer></script>
   </body>
 </html>
