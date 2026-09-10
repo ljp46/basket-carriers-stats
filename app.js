@@ -12,7 +12,7 @@ const PLAYOFF_CONFIG = {
 };
 const PLAYOFF_TARGETS = [
   {rank: "1ST", label: "THE CROWN", club: "Big4snortmore", played: "15 / 15", points: 45, goalDifference: 68},
-  {rank: "TOP 100", label: "THE LINE", club: "Delete Game", points: 27, goalDifference: 40}
+  {rank: "TOP 100", label: "THE LINE", club: "FC Hagen Hagen", points: 30, goalDifference: 32}
 ];
 const MILESTONE_THRESHOLDS = {
   games_played: [50, 100, 150, 200, 250, 300, 400, 500],
