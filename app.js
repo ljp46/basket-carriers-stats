@@ -10,6 +10,10 @@ const PLAYOFF_CONFIG = {
   startAt: "2026-09-10T00:00:00Z",
   totalMatches: 15
 };
+const PLAYOFF_TARGETS = [
+  {rank: "1ST", label: "THE CROWN", club: "Big4snortmore", played: "15 / 15", points: 45, goalDifference: 68},
+  {rank: "TOP 100", label: "THE LINE", club: "Delete Game", points: 27, goalDifference: 40}
+];
 const MILESTONE_THRESHOLDS = {
   games_played: [50, 100, 150, 200, 250, 300, 400, 500],
   goals: [50, 100, 150, 200, 250, 300, 400, 500],
@@ -298,6 +302,49 @@ function playoffMatchesFrom(matches) {
   return (explicitlyPlayoffs.length ? explicitlyPlayoffs : inWindow).slice(0, PLAYOFF_CONFIG.totalMatches);
 }
 
+function renderPlayoffTargets(points, goalDifference, gamesPlayed) {
+  const remaining = Math.max(0, PLAYOFF_CONFIG.totalMatches - gamesPlayed);
+  const maxPoints = points + remaining * 3;
+
+  document.querySelector("#playoff-targets").innerHTML = PLAYOFF_TARGETS.map((target, index) => {
+    const pointsOff = Math.max(0, target.points - points);
+    const goalDifferenceOff = Math.max(0, target.goalDifference - goalDifference);
+    const goalDifferenceToPass = Math.max(0, target.goalDifference + 1 - goalDifference);
+    const pointsPace = remaining ? pointsOff / remaining : null;
+    const marginPace = remaining ? goalDifferenceToPass / remaining : null;
+    const cleared = points > target.points || (points === target.points && goalDifference > target.goalDifference);
+    const reachable = maxPoints >= target.points;
+    const pointsProgress = target.points ? Math.min(100, Math.max(0, (points / target.points) * 100)) : 100;
+    const gdProgress = target.goalDifference ? Math.min(100, Math.max(0, (goalDifference / target.goalDifference) * 100)) : 100;
+    let status = "IN THE CHASE";
+    if (cleared) status = "TARGET CLEARED";
+    else if (!remaining) status = "RUN COMPLETE";
+    else if (!reachable) status = "NO LONGER REACHABLE";
+    else if (maxPoints === target.points) status = "PERFECT POINTS · GD DECIDES";
+
+    return `<article class="target-card target-${index === 0 ? "crown" : "line"}">
+      <div class="target-stamp"><span>${target.rank}</span><strong>${target.label}</strong></div>
+      <div class="target-club"><p>${target.played ? `${target.played} PLAYED · ` : ""}${target.points} PTS · +${target.goalDifference} GD</p><h3>${target.club}</h3></div>
+      <div class="target-live-status ${cleared ? "cleared" : reachable ? "active" : "closed"}">${status}</div>
+      <div class="target-bars">
+        <div><span>POINTS</span><strong>${points}<small> / ${target.points}</small></strong><i style="--target-progress:${pointsProgress}%"></i></div>
+        <div><span>GOAL DIFFERENCE</span><strong>${goalDifference > 0 ? "+" : ""}${goalDifference}<small> / +${target.goalDifference}</small></strong><i style="--target-progress:${gdProgress}%"></i></div>
+      </div>
+      <div class="target-metrics">
+        <div><strong>${pointsOff}</strong><span>POINTS OFF</span></div>
+        <div><strong>${goalDifferenceOff}</strong><span>GD OFF</span></div>
+        <div><strong>${pointsPace === null ? "—" : oneDecimal(pointsPace)}</strong><span>PPG TO MATCH</span></div>
+        <div><strong>${marginPace === null ? "—" : `+${marginPace.toFixed(2)}`}</strong><span>AVG WIN MARGIN TO PASS</span></div>
+      </div>
+      <p class="target-route">${cleared
+        ? `Basket Carriers are ahead of this mark.`
+        : remaining
+          ? `${remaining} game${remaining === 1 ? "" : "s"} left · ${pointsOff} point${pointsOff === 1 ? "" : "s"} to match · +${goalDifferenceToPass} GD needed to pass the tiebreak.`
+          : `${pointsOff} point${pointsOff === 1 ? "" : "s"} and ${goalDifferenceToPass} GD short of passing this mark.`}</p>
+    </article>`;
+  }).join("");
+}
+
 function renderPlayoffs(data) {
   const matches = playoffMatchesFrom(data.matches || []);
   const wins = matches.filter(match => match.result === "W").length;
@@ -321,6 +368,8 @@ function renderPlayoffs(data) {
     [matches.length ? oneDecimal(points / matches.length) : "—", "Points / game"],
     [matches.filter(match => match.score_against === 0).length, "Clean sheets"]
   ].map(([value, label]) => `<div><strong>${value}</strong><span>${label}</span></div>`).join("");
+
+  renderPlayoffTargets(points, goalDifference, matches.length);
 
   document.querySelector("#playoff-journey").innerHTML = Array.from({length: PLAYOFF_CONFIG.totalMatches}, (_, index) => {
     const match = matches[index];
