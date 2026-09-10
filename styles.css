@@ -438,6 +438,37 @@ body.playoff-season::after {
 .playoff-season [data-view-panel="playoffs"] .section-heading h2 { font-family: "Bebas Neue", Impact, sans-serif; font-size: clamp(2.2rem, 4.5vw, 3.8rem); font-weight: 400; letter-spacing: .015em; }
 .playoff-season [data-view-panel="playoffs"] .label { color: #d8b85e; }
 
+.target-chase-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; margin-top: 25px; }
+.target-card { position: relative; min-width: 0; padding: 22px; overflow: hidden; border: 1px solid rgba(223,193,113,.28); background: linear-gradient(145deg, rgba(26,23,17,.98), rgba(7,7,6,.97)); box-shadow: 9px 10px 0 rgba(0,0,0,.28); }
+.target-card::after { position: absolute; right: -24px; bottom: -54px; color: rgba(223,193,113,.045); font-family: "Bebas Neue", Impact, sans-serif; font-size: 15rem; line-height: 1; content: "01"; pointer-events: none; }
+.target-card.target-line::after { content: "100"; }
+.target-crown { border-top: 4px solid #d8b85e; }
+.target-line { border-top: 4px solid #dfe2e5; }
+.target-stamp { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+.target-stamp span { padding: 7px 10px 5px; color: #080706; background: #d8b85e; font-family: "Bebas Neue", Impact, sans-serif; font-size: 1.2rem; letter-spacing: .08em; transform: rotate(-2deg); }
+.target-line .target-stamp span { background: #dfe2e5; }
+.target-stamp strong { color: #867e69; font-size: .68rem; letter-spacing: .2em; }
+.target-club { margin-top: 23px; }
+.target-club p { color: #918a78; font-size: .68rem; font-weight: 800; letter-spacing: .12em; }
+.target-club h3 { margin-top: 6px; overflow-wrap: anywhere; font-family: "Bebas Neue", Impact, sans-serif; font-size: clamp(2.4rem, 5.2vw, 4.6rem); font-weight: 400; letter-spacing: .015em; line-height: .86; }
+.target-live-status { display: inline-flex; margin-top: 19px; padding: 6px 9px; border: 1px solid rgba(223,193,113,.25); color: #d8b85e; background: rgba(216,184,94,.07); font-size: .65rem; font-weight: 900; letter-spacing: .14em; }
+.target-live-status.cleared { color: #72e3a7; border-color: rgba(114,227,167,.35); background: rgba(114,227,167,.08); }
+.target-live-status.closed { color: #ef6975; border-color: rgba(239,105,117,.35); background: rgba(239,105,117,.08); }
+.target-bars { display: grid; gap: 14px; margin-top: 24px; }
+.target-bars > div { position: relative; display: grid; grid-template-columns: 1fr auto; gap: 8px; padding-bottom: 8px; }
+.target-bars span { align-self: end; color: #8f8877; font-size: .67rem; font-weight: 800; letter-spacing: .12em; }
+.target-bars strong { font-family: "Bebas Neue", Impact, sans-serif; font-size: 1.65rem; font-weight: 400; line-height: .8; }
+.target-bars small { color: #777164; font-size: .9rem; }
+.target-bars i { position: absolute; right: 0; bottom: 0; left: 0; height: 3px; overflow: hidden; background: rgba(255,255,255,.07); }
+.target-bars i::after { display: block; width: var(--target-progress); height: 100%; background: linear-gradient(90deg, #a88332, #f0d991); content: ""; }
+.target-line .target-bars i::after { background: linear-gradient(90deg, #7c8286, #e5e8ea); }
+.target-metrics { position: relative; z-index: 1; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 1px; margin-top: 22px; border: 1px solid rgba(223,193,113,.14); background: rgba(223,193,113,.14); }
+.target-metrics div { min-width: 0; padding: 11px 8px; background: rgba(8,8,7,.9); }
+.target-metrics strong, .target-metrics span { display: block; }
+.target-metrics strong { font-family: "Bebas Neue", Impact, sans-serif; font-size: 1.45rem; font-weight: 400; }
+.target-metrics span { margin-top: 4px; color: #817a69; font-size: .58rem; font-weight: 800; letter-spacing: .06em; line-height: 1.25; }
+.target-route { position: relative; z-index: 1; margin-top: 16px; color: #aaa18b; font-size: .75rem; line-height: 1.55; }
+
 .journey-track { display: grid; grid-template-columns: repeat(15, minmax(48px, 1fr)); gap: 7px; }
 .journey-game { position: relative; display: flex; min-width: 0; height: 94px; padding: 11px 7px; align-items: center; justify-content: space-between; flex-direction: column; overflow: hidden; border: 1px solid var(--line); border-radius: 2px; color: var(--ink); background: rgba(15,14,11,.8); font: inherit; }
 button.journey-game { cursor: pointer; }
@@ -498,6 +529,7 @@ button.journey-game { cursor: pointer; }
   .playoff-score-rail { padding: 38px 20px; }
   .playoff-kpis { grid-column: 1 / -1; }
   .playoff-player-grid, .playoff-session-grid { grid-template-columns: 1fr; }
+  .target-chase-grid { grid-template-columns: 1fr; }
   .playoff-player-card { min-height: 420px; }
   .journey-track { grid-template-columns: repeat(5, 1fr); }
 }
@@ -521,6 +553,9 @@ button.journey-game { cursor: pointer; }
   .graffiti-fifteen, .graffiti-club { display: none; }
   .playoff-manifesto { margin-top: 12px; overflow-x: auto; }
   .playoff-manifesto span { padding-inline: 18px; }
+  .target-card { padding: 18px; }
+  .target-metrics { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .target-club h3 { font-size: 3rem; }
   .playoff-kpis { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .playoff-kpis div { padding: 12px; }
   .playoff-kpis strong { font-size: 1.7rem; }
