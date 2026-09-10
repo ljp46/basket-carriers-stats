@@ -2,9 +2,13 @@ const SESSION_GAP_SECONDS = 60 * 60;
 const PLAYER_ORDER = ["Bobby", "Hole", "Door"];
 const ARCHETYPES = {"8": "Maestro", "11": "Magician"};
 const PLAYER_META = {
-  Bobby: {fullName: "Ricky Bobby", number: "29", comparison: "Bradley Barcola", image: "assets/players/barcola-29-cutout.webp", imageClass: "cutout"},
-  Hole: {fullName: "Closed Hole", number: "51", comparison: "Lionel Messi", image: "assets/players/messi.jpeg", imageClass: "photo messi"},
-  Door: {fullName: "Car Door", number: "47", comparison: "Jorginho", image: "assets/players/jorginho.jpeg", imageClass: "photo jorginho"}
+  Bobby: {fullName: "Ricky Bobby", number: "29", comparison: "Bradley Barcola", playoffLabel: "THE OUTLET", image: "assets/players/barcola-29-cutout.webp", imageClass: "cutout"},
+  Hole: {fullName: "Closed Hole", number: "51", comparison: "Lionel Messi", playoffLabel: "THE CONNECTOR", image: "assets/players/messi.jpeg", imageClass: "photo messi"},
+  Door: {fullName: "Car Door", number: "47", comparison: "Jorginho", playoffLabel: "THE CONTROL", image: "assets/players/jorginho.jpeg", imageClass: "photo jorginho"}
+};
+const PLAYOFF_CONFIG = {
+  startAt: "2026-09-10T00:00:00Z",
+  totalMatches: 15
 };
 const MILESTONE_THRESHOLDS = {
   games_played: [50, 100, 150, 200, 250, 300, 400, 500],
@@ -61,7 +65,7 @@ function aggregatePlayers(matches) {
       tackles_made: sum(appearances, "tackles_made"), tackles_attempted: sum(appearances, "tackles_attempted"),
       through_passes: sum(appearances, "through_passes"),
       dribbles_completed: sum(appearances, "dribbles_completed"), take_ons: sum(appearances, "take_ons"),
-      motm: sum(appearances, "motm")
+      interceptions: sum(appearances, "interceptions"), motm: sum(appearances, "motm")
     };
   });
 }
@@ -260,8 +264,132 @@ function renderMatchPlayer(player, teamGoals) {
         <div><span>Take-ons</span><strong>${player.take_ons}</strong></div>
         <div><span>Tackles</span><strong>${player.tackles_made}/${player.tackles_attempted}</strong></div>
         <div><span>Tackle success</span><strong>${pct(player.tackles_made, player.tackles_attempted)}</strong></div>
+        <div><span>Interceptions</span><strong>${player.interceptions ?? 0}</strong></div>
       </div>
     </article>`;
+}
+
+function renderMatchCard(match, index, prefix = "match") {
+  const motm = match.players.find(player => player.motm);
+  const orderedPlayers = PLAYER_ORDER.map(name => match.players.find(player => player.display_name === name)).filter(Boolean);
+  return `
+    <details class="match" id="${prefix}-${match.match_id}" ${index === 0 ? "open" : ""}>
+      <summary>
+        <span class="result ${match.result}">${match.result}</span>
+        <div><div class="opponent">${match.opponent.name}</div><div class="meta">${new Date(match.timestamp * 1000).toLocaleString()}</div></div>
+        <div class="match-context">
+          <span class="humans">${match.human_players}v${match.opponent.human_players} humans</span>
+          ${motm ? `<span class="motm-summary">★ ${(PLAYER_META[motm.display_name] || {fullName: motm.display_name}).fullName} POTM</span>` : ""}
+        </div>
+        <div class="score">${match.score_for}–${match.score_against}</div>
+        <span class="chevron" aria-hidden="true">⌄</span>
+      </summary>
+      <div class="match-details">
+        <div class="match-detail-note">Contribution involvement counts goals plus assists as a share of the club’s goals in this match.</div>
+        <div class="match-player-grid">${orderedPlayers.map(player => renderMatchPlayer(player, match.score_for)).join("")}</div>
+      </div>
+    </details>`;
+}
+
+function playoffMatchesFrom(matches) {
+  const start = Date.parse(PLAYOFF_CONFIG.startAt) / 1000;
+  const inWindow = [...matches].filter(match => Number(match.timestamp) >= start).sort((a, b) => a.timestamp - b.timestamp);
+  const explicitlyPlayoffs = inWindow.filter(match => match.match_type === "playoffMatch");
+  return (explicitlyPlayoffs.length ? explicitlyPlayoffs : inWindow).slice(0, PLAYOFF_CONFIG.totalMatches);
+}
+
+function renderPlayoffs(data) {
+  const matches = playoffMatchesFrom(data.matches || []);
+  const wins = matches.filter(match => match.result === "W").length;
+  const draws = matches.filter(match => match.result === "D").length;
+  const losses = matches.filter(match => match.result === "L").length;
+  const points = wins * 3 + draws;
+  const goalsFor = sum(matches, "score_for");
+  const goalsAgainst = sum(matches, "score_against");
+  const goalDifference = goalsFor - goalsAgainst;
+  const players = aggregatePlayers(matches);
+  const chapters = groupSessions(matches).reverse();
+
+  document.querySelector("#playoff-points").textContent = points;
+  document.querySelector("#playoff-record").textContent = `${wins}–${draws}–${losses}`;
+  document.querySelector("#playoff-progress").textContent = `${matches.length} of ${PLAYOFF_CONFIG.totalMatches} complete`;
+  document.querySelector("#playoff-kpis").innerHTML = [
+    [PLAYOFF_CONFIG.totalMatches - matches.length, "Games remaining"],
+    [goalsFor, "Goals for"],
+    [goalsAgainst, "Goals against"],
+    [goalDifference > 0 ? `+${goalDifference}` : goalDifference, "Goal difference"],
+    [matches.length ? oneDecimal(points / matches.length) : "—", "Points / game"],
+    [matches.filter(match => match.score_against === 0).length, "Clean sheets"]
+  ].map(([value, label]) => `<div><strong>${value}</strong><span>${label}</span></div>`).join("");
+
+  document.querySelector("#playoff-journey").innerHTML = Array.from({length: PLAYOFF_CONFIG.totalMatches}, (_, index) => {
+    const match = matches[index];
+    if (!match) return `<span class="journey-game pending"><b>${String(index + 1).padStart(2, "0")}</b><small>WAITING</small></span>`;
+    return `<button class="journey-game complete ${match.result}" type="button" data-match-target="playoff-${match.match_id}" aria-label="Game ${index + 1}, ${match.result} ${match.score_for} to ${match.score_against} against ${match.opponent.name}"><b>${match.result}</b><strong>${match.score_for}–${match.score_against}</strong><small>${String(index + 1).padStart(2, "0")}</small></button>`;
+  }).join("");
+
+  document.querySelector("#playoff-players").innerHTML = players.map(player => {
+    const meta = PLAYER_META[player.name];
+    return `
+      <article class="playoff-player-card player-${player.name.toLowerCase()}">
+        <img class="player-ghost ${meta.imageClass}" src="${meta.image}" alt="" />
+        <div class="playoff-player-top"><div><p class="label">#${meta.number} · ${meta.playoffLabel}</p><h3>${meta.fullName}</h3></div><span class="playoff-rating">${player.appearances ? oneDecimal(player.rating) : "—"}</span></div>
+        <div class="playoff-output"><strong>${player.goals + player.assists}</strong><span>GOAL<br />CONTRIBUTIONS</span></div>
+        <div class="playoff-player-stats">
+          <div><strong>${player.goals}</strong><span>Goals</span></div>
+          <div><strong>${player.assists}</strong><span>Assists</span></div>
+          <div><strong>${player.motm}</strong><span>POTM</span></div>
+          <div><strong>${player.shots}</strong><span>Shots</span></div>
+          <div><strong>${pct(player.goals, player.shots)}</strong><span>Conversion</span></div>
+          <div><strong>${pct(player.passes_made, player.passes_attempted)}</strong><span>Pass accuracy</span></div>
+          <div><strong>${player.through_passes}</strong><span>Through passes</span></div>
+          <div><strong>${player.interceptions}</strong><span>Interceptions</span></div>
+        </div>
+      </article>`;
+  }).join("");
+
+  document.querySelector("#playoff-sessions").innerHTML = chapters.length ? chapters.map((session, index) => {
+    const sessionWins = session.filter(match => match.result === "W").length;
+    const sessionDraws = session.filter(match => match.result === "D").length;
+    const sessionLosses = session.filter(match => match.result === "L").length;
+    const sessionPoints = sessionWins * 3 + sessionDraws;
+    const date = new Date(session.at(-1).timestamp * 1000).toLocaleDateString(undefined, {day: "numeric", month: "long"});
+    return `<article class="playoff-session-card"><div><p class="label">NIGHT ${String(index + 1).padStart(2, "0")}</p><h3>${date}</h3></div><strong>${sessionPoints}<span>PTS</span></strong><div class="chapter-results">${[...session].reverse().map(match => `<span class="${match.result}">${match.result}</span>`).join("")}</div><p>${sessionWins}–${sessionDraws}–${sessionLosses} · ${session.length} game${session.length === 1 ? "" : "s"}</p></article>`;
+  }).join("") : `<div class="playoff-empty"><strong>The stage is set.</strong><span>The first playoff session will become Night 01.</span></div>`;
+
+  document.querySelector("#playoff-matches").innerHTML = matches.length
+    ? [...matches].reverse().map((match, index) => renderMatchCard(match, index, "playoff")).join("")
+    : `<div class="playoff-empty"><strong>No whistle yet.</strong><span>Completed playoff games will appear here after the match feed updates.</span></div>`;
+
+  const leader = [...players].sort((a, b) => (b.goals + b.assists) - (a.goals + a.assists) || b.rating - a.rating)[0];
+  const signals = matches.length ? [
+    `<strong>Points pace:</strong> ${oneDecimal(points / matches.length)} per game through ${matches.length} fixture${matches.length === 1 ? "" : "s"}.`,
+    `<strong>Leading the run:</strong> ${PLAYER_META[leader.name].fullName} has ${leader.goals + leader.assists} direct contribution${leader.goals + leader.assists === 1 ? "" : "s"}.`,
+    `<strong>Defensive level:</strong> ${oneDecimal(goalsAgainst / matches.length)} conceded per game with ${matches.filter(match => match.score_against === 0).length} clean sheet${matches.filter(match => match.score_against === 0).length === 1 ? "" : "s"}.`,
+    `<strong>Campaign shape:</strong> ${chapters.length} session${chapters.length === 1 ? "" : "s"} completed; ${PLAYOFF_CONFIG.totalMatches - matches.length} games remain.`
+  ] : [
+    `<strong>Opening night:</strong> The playoff tracker is ready for the first result.`,
+    `<strong>Full campaign:</strong> Player totals and sessions will combine automatically across all fifteen games.`
+  ];
+  document.querySelector("#playoff-signals").innerHTML = signals.map(text => `<div class="signal">${text}</div>`).join("");
+}
+
+function setupViewTabs() {
+  const allowed = ["playoffs", "sessions", "archive"];
+  const requested = window.location.hash.replace("#", "");
+  const initial = allowed.includes(requested) ? requested : (document.body.classList.contains("playoff-season") ? "playoffs" : "sessions");
+  const setView = view => {
+    document.querySelectorAll("[data-view-panel]").forEach(panel => { panel.hidden = panel.dataset.viewPanel !== view; });
+    document.querySelectorAll("[data-view]").forEach(button => {
+      const active = button.dataset.view === view;
+      button.classList.toggle("active", active);
+      button.setAttribute("aria-selected", String(active));
+    });
+    history.replaceState(null, "", `#${view}`);
+    window.scrollTo({top: 0, behavior: "smooth"});
+  };
+  document.querySelectorAll("[data-view]").forEach(button => button.addEventListener("click", () => setView(button.dataset.view)));
+  setView(initial);
 }
 
 function render(data, sessions, selected) {
@@ -312,27 +440,7 @@ function render(data, sessions, selected) {
       </article>`;
   }).join("");
 
-  document.querySelector("#matches").innerHTML = matches.map((match, index) => {
-    const motm = match.players.find(player => player.motm);
-    const orderedPlayers = PLAYER_ORDER.map(name => match.players.find(player => player.display_name === name)).filter(Boolean);
-    return `
-      <details class="match" ${index === 0 ? "open" : ""}>
-        <summary>
-          <span class="result ${match.result}">${match.result}</span>
-          <div><div class="opponent">${match.opponent.name}</div><div class="meta">${new Date(match.timestamp * 1000).toLocaleString()}</div></div>
-          <div class="match-context">
-            <span class="humans">${match.human_players}v${match.opponent.human_players} humans</span>
-            ${motm ? `<span class="motm-summary">★ ${(PLAYER_META[motm.display_name] || {fullName: motm.display_name}).fullName} POTM</span>` : ""}
-          </div>
-          <div class="score">${match.score_for}–${match.score_against}</div>
-          <span class="chevron" aria-hidden="true">⌄</span>
-        </summary>
-        <div class="match-details">
-          <div class="match-detail-note">Contribution involvement counts goals plus assists as a share of the club’s goals in this match.</div>
-          <div class="match-player-grid">${orderedPlayers.map(player => renderMatchPlayer(player, match.score_for)).join("")}</div>
-        </div>
-      </details>`;
-  }).join("");
+  document.querySelector("#matches").innerHTML = matches.map((match, index) => renderMatchCard(match, index, "session")).join("");
 
   const bobby = players.find(p => p.name === "Bobby");
   const hole = players.find(p => p.name === "Hole");
@@ -354,12 +462,22 @@ fetch("data/matches.json", {cache: "no-store"})
     if (!sessions.length) throw new Error("No matches have been collected yet.");
     document.querySelector("#updated").textContent = `Updated ${new Date(data.last_updated).toLocaleString()}`;
     const select = document.querySelector("#session-select");
+    renderPlayoffs(data);
     renderForm(data);
     renderMilestones(data);
     renderCareer(data);
     select.innerHTML = sessions.map((session, index) => `<option value="${index}">${sessionLabel(session, index)}</option>`).join("");
     select.addEventListener("change", event => render(data, sessions, Number(event.target.value)));
     render(data, sessions, 0);
+    setupViewTabs();
+    document.querySelector("#playoff-journey").addEventListener("click", event => {
+      const game = event.target.closest("[data-match-target]");
+      if (!game) return;
+      const target = document.getElementById(game.dataset.matchTarget);
+      if (!target) return;
+      target.open = true;
+      target.scrollIntoView({behavior: "smooth", block: "center"});
+    });
   })
   .catch(error => {
     document.querySelector("main").insertAdjacentHTML("beforeend", `<p class="error">${error.message}</p>`);
