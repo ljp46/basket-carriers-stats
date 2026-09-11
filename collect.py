@@ -118,6 +118,43 @@ def display_name(gamertag: str, aliases: dict[str, str]) -> str:
     return next((alias for name, alias in aliases.items() if name.casefold() == lowered), gamertag)
 
 
+def matching_club_ids(payload: Any, club_name: str) -> list[str]:
+    """Return every exact-name club ID from EA's leaderboard search response."""
+    wanted = club_name.casefold().strip()
+    found: set[str] = set()
+
+    def visit(value: Any) -> None:
+        if isinstance(value, list):
+            for item in value:
+                visit(item)
+            return
+        if not isinstance(value, dict):
+            return
+
+        info = value.get("clubInfo") if isinstance(value.get("clubInfo"), dict) else value
+        name = info.get("name") or info.get("clubName")
+        club_id = info.get("clubId") or info.get("club_id") or info.get("id")
+        if name and club_id and str(name).casefold().strip() == wanted:
+            found.add(str(club_id))
+
+        for child in value.values():
+            if child is not info:
+                visit(child)
+
+    visit(payload)
+    return sorted(found)
+
+
+def match_has_configured_player(raw: dict[str, Any], club_id: str, aliases: dict[str, str]) -> bool:
+    """Reject same-name clubs unless one of our configured players appears."""
+    own_players = raw.get("players", {}).get(str(club_id), {})
+    configured = {name.casefold() for name in aliases}
+    return any(
+        str(player.get("playername") or player_id).casefold() in configured
+        for player_id, player in own_players.items()
+    )
+
+
 def normalize_profile(raw: dict[str, Any], aliases: dict[str, str]) -> dict[str, Any]:
     gamertag = raw.get("name", "Unknown")
     return {
@@ -267,29 +304,51 @@ def main() -> None:
     previous = load_json(DATA_PATH, {"matches": [], "profiles": []})
     fetched: list[dict[str, Any]] = []
     failures: list[str] = []
-    for match_type in MATCH_TYPES:
-        try:
-            response = request_json(
-                "clubs/matches",
-                {
-                    "platform": config["platform"],
-                    "clubIds": str(config["club_id"]),
-                    "matchType": match_type,
-                    "maxResultCount": "10",
-                },
-            )
-            for raw_match in response if isinstance(response, list) else []:
-                match = normalize_match(raw_match, match_type, config)
-                if match:
-                    fetched.append(match)
-        except RuntimeError as exc:
-            failures.append(f"{match_type}: {exc}")
+    source_club_ids = {str(config["club_id"])}
+    try:
+        club_search = request_json(
+            "allTimeLeaderboard/search",
+            {"platform": config["platform"], "clubName": config["club_name"]},
+        )
+        source_club_ids.update(matching_club_ids(club_search, config["club_name"]))
+    except RuntimeError as exc:
+        failures.append(f"club search: {exc}")
+
+    match_type_counts: dict[str, int] = {}
+    newest_by_club: dict[str, int] = {}
+    for club_id in sorted(source_club_ids):
+        candidate_config = {**config, "club_id": club_id}
+        for match_type in MATCH_TYPES:
+            source_key = f"{club_id}:{match_type}"
+            try:
+                response = request_json(
+                    "clubs/matches",
+                    {
+                        "platform": config["platform"],
+                        "clubIds": club_id,
+                        "matchType": match_type,
+                        "maxResultCount": "10",
+                    },
+                )
+                raw_matches = response if isinstance(response, list) else []
+                match_type_counts[source_key] = len(raw_matches)
+                for raw_match in raw_matches:
+                    if not match_has_configured_player(raw_match, club_id, config["players"]):
+                        continue
+                    match = normalize_match(raw_match, match_type, candidate_config)
+                    if match:
+                        fetched.append(match)
+                        newest_by_club[club_id] = max(newest_by_club.get(club_id, 0), match["timestamp"])
+            except RuntimeError as exc:
+                failures.append(f"{source_key}: {exc}")
+
+    active_club_id = max(newest_by_club, key=newest_by_club.get, default=str(config["club_id"]))
 
     profiles = previous.get("profiles", [])
     try:
         member_response = request_json(
             "members/stats",
-            {"platform": config["platform"], "clubId": str(config["club_id"])},
+            {"platform": config["platform"], "clubId": active_club_id},
         )
         profiles = [
             normalize_profile(member, config["players"])
@@ -308,7 +367,7 @@ def main() -> None:
     milestones = update_milestones(previous, profiles, matches, updated_at)
     payload = {
         "club": {
-            "club_id": str(config["club_id"]),
+            "club_id": active_club_id,
             "name": config["club_name"],
             "platform": config["platform"],
         },
@@ -329,11 +388,17 @@ def main() -> None:
             "new_or_refreshed_matches": len(fetched),
             "stored_matches": len(matches),
             "profiles_refreshed": len(profiles),
+            "source_club_ids": sorted(source_club_ids),
+            "match_type_counts": match_type_counts,
             "failures": failures,
             "checked_at": payload["last_updated"],
         },
     )
-    print(f"Stored {len(matches)} matches; fetched {len(fetched)} records; refreshed {len(profiles)} profiles.")
+    print(
+        f"Stored {len(matches)} matches; fetched {len(fetched)} records from "
+        f"{len(source_club_ids)} club ID(s); refreshed {len(profiles)} profiles."
+    )
+    print("Match sources:", json.dumps(match_type_counts, sort_keys=True))
     if failures:
         print("Partial failures:", "; ".join(failures))
     if not fetched:
