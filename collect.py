@@ -149,14 +149,38 @@ def exact_club_records(payload: Any, club_name: str) -> list[dict[str, Any]]:
     """Return exact-name leaderboard rows while preserving their aggregate stats."""
     wanted = club_name.casefold().strip()
     records: list[dict[str, Any]] = []
-    for value in payload if isinstance(payload, list) else []:
+
+    def visit(value: Any) -> None:
+        if isinstance(value, list):
+            for item in value:
+                visit(item)
+            return
         if not isinstance(value, dict):
-            continue
+            return
         info = value.get("clubInfo") if isinstance(value.get("clubInfo"), dict) else {}
         name = value.get("clubName") or value.get("name") or info.get("name")
         if name and str(name).casefold().strip() == wanted:
             records.append(value)
+            # A leaderboard row can contain clubInfo; do not record it twice.
+            return
+        for child in value.values():
+            if child is not info:
+                visit(child)
+
+    visit(payload)
     return records
+
+
+def matching_overall_stats(payload: Any, club_id: str) -> dict[str, Any] | None:
+    """Unwrap EA's aggregate club stats response for the requested club."""
+    wanted = str(club_id)
+    candidates = payload if isinstance(payload, list) else [payload]
+    for value in candidates:
+        if not isinstance(value, dict):
+            continue
+        if str(value.get("clubId")) == wanted:
+            return value
+    return None
 
 
 def playoff_summary(record: dict[str, Any]) -> dict[str, int]:
@@ -343,6 +367,7 @@ def main() -> None:
     failures: list[str] = []
     source_club_ids = {str(config["club_id"])}
     current_playoff_summary: dict[str, int] | None = None
+    overall_stats_by_club: dict[str, dict[str, Any]] = {}
     try:
         current_season = request_json(
             "currentSeasonLeaderboard/search",
@@ -367,6 +392,23 @@ def main() -> None:
     newest_by_club: dict[str, int] = {}
     for club_id in sorted(source_club_ids):
         candidate_config = {**config, "club_id": club_id}
+        try:
+            overall_response = request_json(
+                "clubs/overallStats",
+                {"platform": config["platform"], "clubIds": club_id},
+            )
+            overall = matching_overall_stats(overall_response, club_id)
+            if overall:
+                diagnostic_fields = (
+                    "gamesPlayed", "gamesPlayedPlayoff", "wins", "ties", "losses",
+                    "goals", "goalsAgainst", "lastMatch0", "lastMatch1", "lastMatch2",
+                    "lastOpponent0", "lastOpponent1", "lastOpponent2",
+                )
+                overall_stats_by_club[club_id] = {
+                    field: overall.get(field) for field in diagnostic_fields
+                }
+        except RuntimeError as exc:
+            failures.append(f"{club_id}:overallStats: {exc}")
         for match_type in MATCH_TYPES:
             source_key = f"{club_id}:{match_type}"
             try:
@@ -440,6 +482,7 @@ def main() -> None:
             "profiles_refreshed": len(profiles),
             "source_club_ids": sorted(source_club_ids),
             "match_type_counts": match_type_counts,
+            "overall_stats": overall_stats_by_club,
             "failures": failures,
             "checked_at": payload["last_updated"],
         },
@@ -449,6 +492,7 @@ def main() -> None:
         f"{len(source_club_ids)} club ID(s); refreshed {len(profiles)} profiles."
     )
     print("Match sources:", json.dumps(match_type_counts, sort_keys=True))
+    print("Overall stats:", json.dumps(overall_stats_by_club, sort_keys=True))
     if failures:
         print("Partial failures:", "; ".join(failures))
     if not fetched and not current_playoff_summary:
