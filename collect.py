@@ -174,13 +174,49 @@ def exact_club_records(payload: Any, club_name: str) -> list[dict[str, Any]]:
 def matching_overall_stats(payload: Any, club_id: str) -> dict[str, Any] | None:
     """Unwrap EA's aggregate club stats response for the requested club."""
     wanted = str(club_id)
-    candidates = payload if isinstance(payload, list) else [payload]
-    for value in candidates:
+    found: dict[str, Any] | None = None
+
+    def visit(value: Any) -> None:
+        nonlocal found
+        if found is not None:
+            return
+        if isinstance(value, list):
+            for item in value:
+                visit(item)
+            return
         if not isinstance(value, dict):
-            continue
-        if str(value.get("clubId")) == wanted:
-            return value
-    return None
+            return
+        if str(value.get("clubId")) == wanted and (
+            "gamesPlayed" in value or "gamesPlayedPlayoff" in value
+        ):
+            found = value
+            return
+        for child in value.values():
+            visit(child)
+
+    visit(payload)
+    return found
+
+
+def match_records(payload: Any) -> list[dict[str, Any]]:
+    """Return match rows from either EA's legacy list or a new response envelope."""
+    records: list[dict[str, Any]] = []
+
+    def visit(value: Any) -> None:
+        if isinstance(value, list):
+            for item in value:
+                visit(item)
+            return
+        if not isinstance(value, dict):
+            return
+        if value.get("matchId") is not None and isinstance(value.get("clubs"), dict):
+            records.append(value)
+            return
+        for child in value.values():
+            visit(child)
+
+    visit(payload)
+    return records
 
 
 def playoff_summary(record: dict[str, Any]) -> dict[str, int]:
@@ -389,6 +425,7 @@ def main() -> None:
         failures.append(f"club search: {exc}")
 
     match_type_counts: dict[str, int] = {}
+    match_response_shapes: dict[str, Any] = {}
     newest_by_club: dict[str, int] = {}
     for club_id in sorted(source_club_ids):
         candidate_config = {**config, "club_id": club_id}
@@ -421,8 +458,12 @@ def main() -> None:
                         "maxResultCount": "10",
                     },
                 )
-                raw_matches = response if isinstance(response, list) else []
+                raw_matches = match_records(response)
                 match_type_counts[source_key] = len(raw_matches)
+                match_response_shapes[source_key] = {
+                    "type": type(response).__name__,
+                    "keys": sorted(response.keys()) if isinstance(response, dict) else [],
+                }
                 for raw_match in raw_matches:
                     if not match_has_configured_player(raw_match, club_id, config["players"]):
                         continue
@@ -482,6 +523,7 @@ def main() -> None:
             "profiles_refreshed": len(profiles),
             "source_club_ids": sorted(source_club_ids),
             "match_type_counts": match_type_counts,
+            "match_response_shapes": match_response_shapes,
             "overall_stats": overall_stats_by_club,
             "failures": failures,
             "checked_at": payload["last_updated"],
