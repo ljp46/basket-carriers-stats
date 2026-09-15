@@ -303,6 +303,43 @@ a { color: inherit; }
 }
 .locker-intro p { margin: 0 0 7px; color: #b28b55; font: .61rem var(--mono); letter-spacing: .14em; }
 .locker-intro h3 { margin: 0; font-family: var(--display); font-size: clamp(1.45rem,2.6vw,2.4rem); letter-spacing: -.04em; }
+
+
+/* Locker nameplates — FC26 museum */
+.hanging-shirt {
+  display: grid;
+  width: min(210px,88%);
+  min-height: 86px;
+  margin: 76px auto 48px;
+  padding: 13px 15px;
+  border: 1px solid rgba(197,166,116,.5);
+  background: linear-gradient(145deg,#24211c,#0c0b09 58%,#1d1913);
+  box-shadow: inset 0 0 0 3px rgba(0,0,0,.3),0 12px 28px rgba(0,0,0,.55);
+  opacity: .55;
+  filter: none;
+  transform: none;
+}
+.hanging-shirt img { display: none; }
+.shirt-print {
+  position: static;
+  display: grid;
+  width: 100%;
+  grid-template-columns: 1fr auto;
+  align-items: center;
+  gap: 12px;
+  color: #c8b99f;
+  transform: none;
+  filter: none;
+}
+.shirt-print em { font: normal 700 .66rem/1.25 var(--mono); letter-spacing: .1em; text-align: left; }
+.shirt-print b { margin: 0; color: #d3ae70; font: 2.25rem/.8 var(--display); }
+.is-lit .hanging-shirt { width: 150px; margin: 76px auto 48px; padding: 12px; opacity: 1; filter: none; transform: none; border-color: rgba(239,196,125,.82); box-shadow: inset 0 0 0 3px rgba(0,0,0,.28),0 0 24px rgba(255,190,89,.15),0 14px 32px rgba(0,0,0,.55); }
+.is-lit .shirt-print { gap: 8px; }
+.is-lit .shirt-print em { font-size: .55rem; }
+.is-lit .shirt-print b { font-size: 1.9rem; }
+@media (max-width:720px) {
+  .hanging-shirt,.is-lit .hanging-shirt { width:min(230px,82%); min-height:72px; margin:36px auto 24px; }
+}
 .locker-intro > span { max-width: 250px; color: var(--muted); font: .66rem/1.5 var(--mono); text-align: right; }
 
 .locker-room {
