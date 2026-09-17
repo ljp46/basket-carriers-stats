@@ -17,7 +17,7 @@ function showRoute(name) {
     if (link.closest("nav")) link.setAttribute("aria-current", active ? "page" : "false");
   });
 
-  document.title = target === "museum" ? "THE MUSEUM — Club History" : "THE NEXT ERA";
+  document.title = target === "museum" ? "THE MUSEUM — Basket Carriers" : "BASKET CARRIERS — SEASON TWO";
   document.body.dataset.route = target;
 }
 
