@@ -770,3 +770,21 @@ a { color: inherit; }
 /* Closed Hole departure — second outgoing FC26 legend. */
 .transfer-wire-hole { background: var(--s2-blue); }
 .transfer-wire-hole::after { content: "51"; }
+
+
+/* First confirmed FC27 registration — returning club identity. */
+.registration-list article.confirmed {
+  background: linear-gradient(90deg,rgba(38,113,58,.32),rgba(38,113,58,.08));
+  box-shadow: inset 4px 0 0 var(--s2-green);
+}
+.registration-list article.confirmed > span { color: #72b981; }
+.registration-list article.confirmed strong { color: #fff7e9; }
+.registration-list article.confirmed i {
+  border-color: rgba(114,185,129,.72);
+  color: #9cdaa9;
+  background: rgba(38,113,58,.18);
+}
+.returning-tag {
+  border-color: rgba(91,190,112,.52) !important;
+  color: #8bd49a !important;
+}
