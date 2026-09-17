@@ -534,3 +534,220 @@ a { color: inherit; }
   font-size: clamp(2.65rem,4.6vw,3.8rem);
 }
 .is-lit .hanging-shirt { width: 165px; }
+
+
+/* FC27 — Basket Carriers, season two */
+.season-two {
+  --s2-ink: #090b0a;
+  --s2-paper: #e9e2d3;
+  --s2-red: #c91531;
+  --s2-blue: #142b8f;
+  --s2-green: #26713a;
+  position: relative;
+  display: grid;
+  grid-template-columns: 138px minmax(440px,1.15fr) minmax(390px,.85fr);
+  grid-template-rows: minmax(650px,1fr) auto;
+  min-height: 100vh;
+  overflow: hidden;
+  isolation: isolate;
+  color: var(--s2-ink);
+  background:
+    linear-gradient(90deg,rgba(9,11,10,.035) 1px,transparent 1px) 0 0/54px 54px,
+    linear-gradient(rgba(9,11,10,.035) 1px,transparent 1px) 0 0/54px 54px,
+    var(--s2-paper);
+}
+.season-two::before {
+  position: absolute;
+  right: 31%;
+  bottom: -8%;
+  z-index: -1;
+  color: rgba(9,11,10,.035);
+  content: "02";
+  font: 30vw/.7 var(--display);
+  letter-spacing: -.11em;
+}
+.season-two::after {
+  position: absolute;
+  inset: 82px 0 auto;
+  z-index: 0;
+  height: 9px;
+  background: linear-gradient(90deg,var(--s2-red) 0 33.33%,var(--s2-blue) 33.33% 66.66%,var(--s2-green) 66.66%);
+  content: "";
+}
+.season-stripes {
+  position: absolute;
+  inset: 82px -9vw 0 auto;
+  z-index: -1;
+  width: 47vw;
+  overflow: hidden;
+  opacity: .94;
+  transform: skewX(-15deg);
+}
+.season-stripes i { position: absolute; top: 0; bottom: 0; width: 33.5%; }
+.season-stripes i:nth-child(1) { left: 0; background: var(--s2-red); }
+.season-stripes i:nth-child(2) { left: 33.3%; background: var(--s2-blue); }
+.season-stripes i:nth-child(3) { left: 66.6%; background: var(--s2-green); }
+.season-stripes::after {
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(105deg,transparent 0 31px,rgba(255,255,255,.07) 32px);
+  content: "";
+}
+
+.season-mast {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  padding: 48px 20px 38px;
+  border-right: 1px solid rgba(9,11,10,.22);
+  flex-direction: column;
+  justify-content: space-between;
+}
+.season-mast > span { font: 700 .7rem var(--mono); letter-spacing: .16em; }
+.season-mast p {
+  margin: 0;
+  font: 700 .64rem/1.7 var(--mono);
+  letter-spacing: .17em;
+  writing-mode: vertical-rl;
+  transform: rotate(180deg);
+}
+.season-mast strong { font: 1.2rem var(--display); letter-spacing: -.04em; writing-mode: vertical-rl; transform: rotate(180deg); }
+
+.return-hero {
+  position: relative;
+  z-index: 2;
+  align-self: center;
+  padding: 52px clamp(30px,5vw,82px) 48px;
+}
+.season-kicker { margin: 0 0 30px; color: var(--s2-red); font: 700 .68rem var(--mono); letter-spacing: .18em; }
+.return-hero h1 {
+  margin: 0;
+  font-family: var(--display);
+  font-size: clamp(5rem,9.4vw,10.4rem);
+  letter-spacing: -.09em;
+  line-height: .69;
+  text-transform: uppercase;
+}
+.return-hero h1 span,.return-hero h1 strong,.return-hero h1 em { display: block; }
+.return-hero h1 strong { color: var(--s2-ink); font-weight: inherit; }
+.return-hero h1 span { color: transparent; -webkit-text-stroke: 2px var(--s2-ink); }
+.return-hero h1 em {
+  width: fit-content;
+  margin-top: .12em;
+  padding: .07em .13em .1em;
+  color: var(--s2-paper);
+  background: var(--s2-ink);
+  font-style: normal;
+  font-size: .72em;
+  letter-spacing: -.055em;
+  transform: rotate(-2deg);
+}
+.return-copy { max-width: 520px; margin: 33px 0 0; font: 600 clamp(.85rem,1.2vw,1.03rem)/1.65 Inter,sans-serif; }
+.return-stamp {
+  position: absolute;
+  right: clamp(18px,3vw,48px);
+  bottom: 28px;
+  display: grid;
+  width: 112px;
+  height: 112px;
+  padding: 14px;
+  border: 3px solid var(--s2-ink);
+  border-radius: 50%;
+  place-content: center;
+  text-align: center;
+  transform: rotate(8deg);
+}
+.return-stamp b { font: 2rem/.8 var(--display); }
+.return-stamp span { margin-top: 6px; font: 800 .48rem/1.05 var(--mono); letter-spacing: .14em; }
+.return-stamp small { margin-top: 5px; color: var(--s2-red); font: 700 .4rem var(--mono); letter-spacing: .1em; }
+
+.fc27-board {
+  position: relative;
+  z-index: 3;
+  align-self: center;
+  margin: 54px clamp(25px,4vw,66px) 54px 0;
+  border: 1px solid rgba(233,226,211,.22);
+  color: #f2eadc;
+  background: rgba(8,10,9,.95);
+  box-shadow: 18px 22px 0 rgba(9,11,10,.14);
+}
+.fc27-board > header { display: flex; padding: 27px 26px 23px; border-bottom: 1px solid rgba(233,226,211,.17); align-items: flex-end; justify-content: space-between; gap: 18px; }
+.fc27-board header small,.season-footer small { color: #898d86; font: 500 .52rem var(--mono); letter-spacing: .14em; }
+.fc27-board h2 { margin: 8px 0 0; font: 2.25rem/.9 var(--display); letter-spacing: -.055em; }
+.fc27-board header > span { color: #d3ad69; font: 600 .55rem var(--mono); letter-spacing: .11em; }
+.registration-list article {
+  display: grid;
+  grid-template-columns: 44px 1fr auto;
+  min-height: 92px;
+  padding: 18px 23px;
+  border-bottom: 1px solid rgba(233,226,211,.13);
+  align-items: center;
+  gap: 15px;
+}
+.registration-list article > span { color: rgba(242,234,220,.24); font: 1.65rem var(--display); }
+.registration-list div { display: flex; min-width: 0; flex-direction: column; gap: 7px; }
+.registration-list small { color: #777d76; font: .49rem var(--mono); letter-spacing: .13em; }
+.registration-list strong { overflow: hidden; font-size: .72rem; letter-spacing: .09em; text-overflow: ellipsis; white-space: nowrap; }
+.registration-list i { padding: 6px 8px; border: 1px solid #665f50; color: #a89b82; font: normal .48rem var(--mono); letter-spacing: .1em; }
+.transfer-wire {
+  position: relative;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  padding: 23px 25px;
+  overflow: hidden;
+  color: #fff2e2;
+  background: var(--s2-red);
+}
+.transfer-wire::after { position: absolute; right: -18px; bottom: -44px; color: rgba(255,255,255,.1); content: "29"; font: 7.8rem/.8 var(--display); }
+.transfer-wire span,.transfer-wire small { position: relative; z-index: 1; font: 700 .49rem var(--mono); letter-spacing: .13em; }
+.transfer-wire strong { position: relative; z-index: 1; grid-column: 1; margin-top: 8px; font: 1.25rem var(--display); letter-spacing: -.025em; }
+.transfer-wire b { position: relative; z-index: 1; grid-row: 1/3; grid-column: 2; align-self: center; font: 2.35rem var(--display); }
+.transfer-wire small { grid-column: 1/-1; margin-top: 12px; opacity: .78; }
+
+.season-footer {
+  position: relative;
+  z-index: 4;
+  grid-column: 1/-1;
+  display: grid;
+  grid-template-columns: repeat(4,1fr);
+  min-height: 104px;
+  border-top: 1px solid rgba(233,226,211,.16);
+  color: #eee5d4;
+  background: var(--s2-ink);
+}
+.season-footer > div { display: flex; padding: 22px clamp(18px,2.6vw,40px); border-right: 1px solid rgba(233,226,211,.14); flex-direction: column; justify-content: center; }
+.season-footer strong { margin-top: 9px; font-size: .68rem; letter-spacing: .08em; }
+.season-live { position: relative; padding-left: 57px !important; }
+.season-live > span { position: absolute; left: 29px; width: 11px; height: 11px; border-radius: 50%; background: var(--s2-red); box-shadow: 0 0 18px rgba(201,21,49,.72); }
+
+/* Museum status accents */
+.transfer-tag { border-color: rgba(215,255,47,.45) !important; color: var(--acid) !important; }
+.locker-intro h3 { text-transform: uppercase; }
+
+@media (max-width:1100px) {
+  .season-two { grid-template-columns: 82px 1fr; grid-template-rows: auto auto auto; }
+  .season-mast { grid-row: 1/3; }
+  .return-hero { min-height: 560px; }
+  .fc27-board { grid-column: 2; margin: 0 7vw 60px; }
+  .return-stamp { right: 5vw; }
+}
+@media (max-width:720px) {
+  .season-two { display: block; padding-bottom: 0; }
+  .season-two::after { inset: 72px 0 auto; }
+  .season-two::before { right: 2%; bottom: 18%; font-size: 58vw; }
+  .season-stripes { inset: 72px -20vw auto auto; width: 67vw; height: 480px; opacity: .26; }
+  .season-mast { display: none; }
+  .return-hero { min-height: 610px; padding: 92px 20px 48px; }
+  .return-hero h1 { font-size: clamp(4.7rem,24vw,7.7rem); }
+  .return-copy { max-width: 74%; }
+  .return-stamp { right: 18px; bottom: 34px; width: 88px; height: 88px; }
+  .return-stamp b { font-size: 1.4rem; }
+  .fc27-board { margin: 0 14px 38px; }
+  .fc27-board > header { padding: 22px 18px; }
+  .fc27-board h2 { font-size: 1.8rem; }
+  .registration-list article { padding: 16px; }
+  .transfer-wire { grid-template-columns: 1fr; }
+  .transfer-wire b { grid-row: auto; grid-column: 1; margin-top: 10px; }
+  .season-footer { grid-template-columns: 1fr 1fr; }
+  .season-footer > div { min-height: 82px; padding: 15px 16px; border-bottom: 1px solid rgba(233,226,211,.12); }
+}
