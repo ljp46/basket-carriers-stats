@@ -765,3 +765,8 @@ a { color: inherit; }
   .return-hero h1 strong,
   .return-hero h1 em { white-space: nowrap; }
 }
+
+
+/* Closed Hole departure — second outgoing FC26 legend. */
+.transfer-wire-hole { background: var(--s2-blue); }
+.transfer-wire-hole::after { content: "51"; }
