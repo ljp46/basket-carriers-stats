@@ -1035,7 +1035,7 @@ a { color: inherit; }
 }
 .squad-card-art {
   position: relative;
-  z-index: 2;
+  z-index: 5;
   grid-column: 2;
   grid-row: 1;
   min-height: 260px;
@@ -1046,7 +1046,7 @@ a { color: inherit; }
   bottom: -17%;
   width: min(268px,145%);
   height: auto;
-  opacity: .82;
+  opacity: .88;
   filter: saturate(.82) contrast(1.06);
   -webkit-mask-image: linear-gradient(to bottom,#000 0 73%,transparent 99%);
   mask-image: linear-gradient(to bottom,#000 0 73%,transparent 99%);
