@@ -938,3 +938,188 @@ a { color: inherit; }
     opacity: .82;
   }
 }
+
+
+/* Permanent FC27 roster architecture: player identity, image and stats share one card. */
+.roster-board { overflow: hidden; }
+.squad-grid { display: grid; background: #080a09; }
+.squad-card {
+  position: relative;
+  display: grid;
+  min-height: 260px;
+  grid-template-columns: minmax(0,1fr) minmax(155px,.62fr);
+  overflow: hidden;
+  border-bottom: 1px solid rgba(233,226,211,.16);
+  isolation: isolate;
+  background: linear-gradient(112deg,#111411 0 56%,#192019 100%);
+}
+.squad-card::before {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  opacity: .12;
+  background-image: repeating-linear-gradient(125deg,transparent 0 14px,rgba(255,255,255,.15) 15px 16px);
+  content: "";
+}
+.squad-card-body {
+  position: relative;
+  z-index: 3;
+  grid-column: 1;
+  grid-row: 1;
+  display: flex;
+  min-width: 0;
+  padding: 23px 0 19px 24px;
+  flex-direction: column;
+}
+.player-status { display: flex; min-height: 25px; align-items: center; gap: 9px; }
+.player-status span {
+  color: #a4aba4;
+  font: 600 .46rem var(--mono);
+  letter-spacing: .13em;
+}
+.player-status i {
+  padding: 5px 7px;
+  border: 1px solid rgba(139,212,154,.5);
+  color: #9cdaa9;
+  font: normal 600 .43rem var(--mono);
+  letter-spacing: .1em;
+}
+.player-number {
+  position: absolute;
+  top: 45px;
+  right: -18px;
+  z-index: -1;
+  color: rgba(255,255,255,.055);
+  font: 8.7rem/.8 var(--display);
+  letter-spacing: -.12em;
+}
+.squad-card-body > p {
+  margin: 23px 0 0;
+  color: #aab0aa;
+  font: 700 .56rem var(--mono);
+  letter-spacing: .27em;
+}
+.squad-card-body > h3 {
+  max-width: 270px;
+  margin: 2px 0 0;
+  color: #fff7e9;
+  font: clamp(1.75rem,3vw,2.75rem)/.84 var(--display);
+  letter-spacing: -.065em;
+  overflow-wrap: anywhere;
+}
+.player-role {
+  margin-top: 12px;
+  color: rgba(255,247,233,.64);
+  font: 600 .47rem/1.5 var(--mono);
+  letter-spacing: .1em;
+}
+.player-stat-slots {
+  display: grid;
+  width: min(285px,100%);
+  margin-top: 18px;
+  grid-template-columns: repeat(4,1fr);
+  border-top: 1px solid rgba(255,255,255,.13);
+  border-bottom: 1px solid rgba(255,255,255,.13);
+}
+.player-stat-slots > div { display: flex; min-height: 51px; border-right: 1px solid rgba(255,255,255,.1); align-items: center; justify-content: center; flex-direction: column; }
+.player-stat-slots > div:last-child { border-right: 0; }
+.player-stat-slots b { color: #fff7e9; font: 1.05rem var(--display); }
+.player-stat-slots small { margin-top: 4px; color: #767e78; font: .41rem var(--mono); letter-spacing: .1em; }
+.stat-destinations { display: flex; margin-top: 11px; flex-wrap: wrap; gap: 6px; }
+.stat-destinations span {
+  padding: 4px 6px;
+  border: 1px solid rgba(255,255,255,.14);
+  color: #8d948e;
+  font: .39rem var(--mono);
+  letter-spacing: .1em;
+}
+.squad-card-art {
+  position: relative;
+  z-index: 2;
+  grid-column: 2;
+  grid-row: 1;
+  min-height: 260px;
+}
+.squad-card-art img {
+  position: absolute;
+  right: -12%;
+  bottom: -17%;
+  width: min(268px,145%);
+  height: auto;
+  opacity: .82;
+  filter: saturate(.82) contrast(1.06);
+  -webkit-mask-image: linear-gradient(to bottom,#000 0 73%,transparent 99%);
+  mask-image: linear-gradient(to bottom,#000 0 73%,transparent 99%);
+}
+.trey-player {
+  background: linear-gradient(112deg,rgba(16,40,145,.76) 0 42%,rgba(201,21,49,.48) 42% 72%,rgba(38,113,58,.42) 100%);
+}
+.trey-player::after,.returning-player::after {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  z-index: 4;
+  width: 43%;
+  height: 5px;
+  background: linear-gradient(90deg,var(--s2-red) 0 33%,var(--s2-blue) 33% 66%,var(--s2-green) 66%);
+  content: "";
+}
+.returning-player { background: linear-gradient(112deg,#0d1a11 0 58%,rgba(38,113,58,.47)); }
+.door-art {
+  display: grid;
+  place-items: center;
+}
+.door-art::before {
+  position: absolute;
+  width: 118px;
+  height: 170px;
+  border: 1px solid rgba(139,212,154,.25);
+  border-radius: 58% 58% 24% 24%;
+  background: linear-gradient(160deg,rgba(139,212,154,.12),rgba(139,212,154,.015));
+  content: "";
+}
+.door-art span {
+  position: relative;
+  z-index: 2;
+  color: rgba(139,212,154,.52);
+  font: 4.8rem/.8 var(--display);
+  letter-spacing: -.1em;
+}
+.pending-player {
+  min-height: 178px;
+  grid-template-columns: 1fr;
+  background: linear-gradient(112deg,#0b0d0c,#111411);
+}
+.pending-player .squad-card-body { padding-right: 24px; }
+.pending-player .player-status i { border-color: #665f50; color: #a89b82; }
+.pending-player .squad-card-body > h3 { color: rgba(255,247,233,.45); }
+.pending-mark {
+  position: absolute;
+  right: 21px;
+  bottom: -10px;
+  color: rgba(255,255,255,.045);
+  font: 9.4rem/.8 var(--display);
+}
+.pending-line { width: 55%; height: 1px; margin-top: 24px; background: linear-gradient(90deg,#665f50,transparent); }
+
+.departures-section { background: #050706; }
+.departures-section > header { padding: 20px 24px 17px; border-bottom: 1px solid rgba(233,226,211,.13); }
+.departures-section > header small { color: #777d76; font: .46rem var(--mono); letter-spacing: .14em; }
+.departures-section > header h3 { margin: 5px 0 0; font: 1.28rem var(--display); letter-spacing: -.035em; }
+.departure-grid { display: grid; grid-template-columns: 1fr; }
+.departure-grid .transfer-wire { min-height: 126px; }
+
+@media (max-width:720px) {
+  .squad-card { min-height: 285px; grid-template-columns: minmax(0,1fr) 132px; }
+  .squad-card-body { padding: 21px 0 18px 17px; }
+  .squad-card-body > h3 { max-width: 205px; font-size: clamp(1.65rem,8.7vw,2.35rem); }
+  .player-status { align-items: flex-start; flex-direction: column; gap: 5px; }
+  .player-number { top: 58px; right: -11px; font-size: 7rem; }
+  .player-stat-slots { width: min(242px,calc(100vw - 102px)); }
+  .squad-card-art { min-height: 285px; }
+  .squad-card-art img { right: -39%; bottom: -3%; width: 246px; max-width: none; opacity: .72; }
+  .door-art::before { right: -8px; width: 105px; height: 155px; }
+  .door-art span { margin-left: 22px; font-size: 3.8rem; }
+  .pending-player { min-height: 178px; display: block; }
+  .pending-player .squad-card-body { position: relative; }
+}
