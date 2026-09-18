@@ -788,3 +788,153 @@ a { color: inherit; }
   border-color: rgba(91,190,112,.52) !important;
   color: #8bd49a !important;
 }
+
+
+/* FC27 signing reveal — Trey Oshiwambo, #88. */
+.registration-list article.new-arrival {
+  background: linear-gradient(90deg,rgba(16,40,145,.42),rgba(201,21,49,.13));
+  box-shadow: inset 4px 0 0 var(--s2-blue);
+}
+.registration-list article.new-arrival > span { color: #8d9ff5; }
+.registration-list article.new-arrival i {
+  border-color: rgba(115,137,242,.72);
+  color: #b4c0ff;
+  background: rgba(16,40,145,.22);
+}
+
+.signing-feature {
+  position: relative;
+  display: grid;
+  min-height: 370px;
+  grid-template-columns: minmax(0,1.02fr) minmax(210px,.98fr);
+  overflow: hidden;
+  border-bottom: 1px solid rgba(233,226,211,.18);
+  isolation: isolate;
+  background:
+    linear-gradient(112deg,rgba(201,21,49,.93) 0 42%,rgba(16,40,145,.88) 42% 72%,rgba(38,113,58,.82) 72% 100%);
+}
+.signing-feature::before {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  opacity: .22;
+  background-image: repeating-linear-gradient(125deg,transparent 0 14px,rgba(255,255,255,.13) 15px 16px);
+  content: "";
+}
+.signing-copy {
+  position: relative;
+  z-index: 3;
+  display: flex;
+  min-width: 0;
+  padding: 28px 0 27px 28px;
+  flex-direction: column;
+  justify-content: center;
+}
+.signing-eyebrow {
+  width: fit-content;
+  padding: 6px 8px;
+  color: #0a0d0c;
+  background: #f4ead7;
+  font: 700 .48rem var(--mono);
+  letter-spacing: .13em;
+}
+.signing-number {
+  position: absolute;
+  top: 16px;
+  right: -40px;
+  z-index: -1;
+  color: rgba(255,255,255,.12);
+  font: 12rem/.8 var(--display);
+  letter-spacing: -.12em;
+}
+.signing-first {
+  margin: 34px 0 0;
+  color: #f4ead7;
+  font: 800 .72rem var(--mono);
+  letter-spacing: .34em;
+}
+.signing-copy h3 {
+  max-width: 350px;
+  margin: 3px 0 0;
+  color: #fff7e9;
+  font: clamp(2.45rem,4.1vw,4.35rem)/.78 var(--display);
+  letter-spacing: -.08em;
+  overflow-wrap: anywhere;
+}
+.signing-role {
+  margin: 21px 0 0;
+  color: rgba(255,247,233,.78);
+  font: 600 .56rem/1.6 var(--mono);
+  letter-spacing: .13em;
+}
+.signing-fee {
+  display: grid;
+  width: fit-content;
+  margin-top: 21px;
+  grid-template-columns: auto auto;
+  align-items: end;
+  column-gap: 11px;
+}
+.signing-fee small {
+  grid-column: 1/-1;
+  color: rgba(255,247,233,.68);
+  font: 600 .46rem var(--mono);
+  letter-spacing: .15em;
+}
+.signing-fee b {
+  margin-top: 3px;
+  color: #fff7e9;
+  font: 2.25rem/.9 var(--display);
+}
+.signing-fee em {
+  margin-bottom: 2px;
+  padding: 5px 7px;
+  color: #142017;
+  background: #8bd49a;
+  font: normal 700 .43rem var(--mono);
+  letter-spacing: .11em;
+}
+.signing-portrait {
+  position: relative;
+  z-index: 2;
+  min-height: 370px;
+}
+.signing-portrait img {
+  position: absolute;
+  right: -7%;
+  bottom: -11%;
+  width: min(360px,123%);
+  height: auto;
+  opacity: .9;
+  filter: saturate(.88) contrast(1.05);
+  -webkit-mask-image: linear-gradient(to bottom,#000 0 76%,transparent 99%);
+  mask-image: linear-gradient(to bottom,#000 0 76%,transparent 99%);
+}
+.signing-stripe {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  z-index: 4;
+  width: 44%;
+  height: 7px;
+  background: linear-gradient(90deg,var(--s2-red) 0 33%,var(--s2-blue) 33% 66%,var(--s2-green) 66%);
+}
+
+@media (max-width:720px) {
+  .signing-feature {
+    min-height: 430px;
+    grid-template-columns: minmax(0,1fr) minmax(145px,.72fr);
+  }
+  .signing-copy { padding: 26px 0 28px 18px; justify-content: flex-end; }
+  .signing-number { top: 22px; right: -28px; font-size: 9rem; }
+  .signing-copy h3 { max-width: 220px; font-size: clamp(2.05rem,12vw,3.2rem); }
+  .signing-role { margin-top: 17px; }
+  .signing-portrait { min-height: 430px; }
+  .signing-portrait img {
+    right: -38%;
+    bottom: -2%;
+    width: 285px;
+    max-width: none;
+    opacity: .82;
+  }
+}
