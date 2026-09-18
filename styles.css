@@ -1042,14 +1042,13 @@ a { color: inherit; }
 }
 .squad-card-art img {
   position: absolute;
-  right: -12%;
-  bottom: -17%;
-  width: min(268px,145%);
-  height: auto;
+  right: 8px;
+  bottom: 0;
+  width: auto;
+  height: 252px;
+  max-width: none;
   opacity: .88;
   filter: saturate(.82) contrast(1.06);
-  -webkit-mask-image: linear-gradient(to bottom,#000 0 73%,transparent 99%);
-  mask-image: linear-gradient(to bottom,#000 0 73%,transparent 99%);
 }
 .trey-player {
   background: linear-gradient(112deg,rgba(16,40,145,.76) 0 42%,rgba(201,21,49,.48) 42% 72%,rgba(38,113,58,.42) 100%);
@@ -1117,7 +1116,7 @@ a { color: inherit; }
   .player-number { top: 58px; right: -11px; font-size: 7rem; }
   .player-stat-slots { width: min(242px,calc(100vw - 102px)); }
   .squad-card-art { min-height: 285px; }
-  .squad-card-art img { right: -39%; bottom: -3%; width: 246px; max-width: none; opacity: .72; }
+  .squad-card-art img { right: -5px; bottom: 0; width: auto; height: 275px; max-width: none; opacity: .82; }
   .door-art::before { right: -8px; width: 105px; height: 155px; }
   .door-art span { margin-left: 22px; font-size: 3.8rem; }
   .pending-player { min-height: 178px; display: block; }
