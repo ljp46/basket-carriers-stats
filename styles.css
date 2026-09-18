@@ -1122,3 +1122,12 @@ a { color: inherit; }
   .pending-player { min-height: 178px; display: block; }
   .pending-player .squad-card-body { position: relative; }
 }
+
+
+/* Keep Trey's full surname balanced beside the fitted portrait. */
+.trey-player .squad-card-body > h3 {
+  font-size: clamp(1.7rem,2.55vw,2.25rem);
+  letter-spacing: -.075em;
+  overflow-wrap: normal;
+  white-space: nowrap;
+}
