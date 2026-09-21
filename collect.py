@@ -29,9 +29,8 @@ MILESTONE_THRESHOLDS = {
     "motm": (10, 25, 50, 75, 100, 150, 200),
 }
 
-# Decoded from EA's match event counters and verified against independent
-# three-match BASKET CARRIERS sessions. Interceptions can spill into a later
-# aggregate field for players with a larger event payload.
+# Decoded from EA's match event counters and re-verified against the first six
+# FC27 BASKET CARRIERS matches.
 EVENT_CODES = {
     "second_assists": "218",
     "through_passes": "152",
@@ -399,6 +398,8 @@ def main() -> None:
         raise SystemExit("Missing or invalid config.json")
 
     previous = load_json(DATA_PATH, {"matches": [], "profiles": []})
+    if str(previous.get("club", {}).get("club_id")) != str(config["club_id"]):
+        previous = {"matches": [], "profiles": [], "milestones": []}
     fetched: list[dict[str, Any]] = []
     failures: list[str] = []
     source_club_ids = {str(config["club_id"])}
@@ -505,8 +506,8 @@ def main() -> None:
             "playoff_summary": current_playoff_summary,
         },
         "event_code_status": {
-            "verified": ["second_assists", "through_passes", "dribbles_completed", "take_ons"],
-            "pending_validation": ["interceptions"],
+            "verified": ["second_assists", "through_passes", "dribbles_completed", "take_ons", "interceptions"],
+            "pending_validation": [],
         },
         "last_updated": updated_at,
         "profiles": profiles,
