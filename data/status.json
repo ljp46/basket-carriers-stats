@@ -1,5 +1,5 @@
 {
-  "checked_at": "2026-09-21T21:57:13.471389+00:00",
+  "checked_at": "2026-09-21T23:14:06.756037+00:00",
   "failures": [],
   "match_response_shapes": {
     "27257:friendlyMatch": {
@@ -17,31 +17,31 @@
   },
   "match_type_counts": {
     "27257:friendlyMatch": 0,
-    "27257:leagueMatch": 6,
+    "27257:leagueMatch": 10,
     "27257:playoffMatch": 0
   },
-  "new_or_refreshed_matches": 6,
+  "new_or_refreshed_matches": 10,
   "ok": true,
   "overall_stats": {
     "27257": {
-      "gamesPlayed": "6",
+      "gamesPlayed": "11",
       "gamesPlayedPlayoff": "0",
-      "goals": "18",
-      "goalsAgainst": "10",
+      "goals": "40",
+      "goalsAgainst": "16",
       "lastMatch0": "1",
       "lastMatch1": "1",
-      "lastMatch2": "2",
-      "lastOpponent0": "134616",
-      "lastOpponent1": "26496",
-      "lastOpponent2": "143005",
+      "lastMatch2": "1",
+      "lastOpponent0": "10696",
+      "lastOpponent1": "182736",
+      "lastOpponent2": "369215",
       "losses": "1",
-      "ties": "1",
-      "wins": "4"
+      "ties": "2",
+      "wins": "8"
     }
   },
   "profiles_refreshed": 3,
   "source_club_ids": [
     "27257"
   ],
-  "stored_matches": 6
+  "stored_matches": 10
 }
