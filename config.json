@@ -6,6 +6,14 @@
   "players": {
     "kidljp46": "Trey",
     "Leechy1234335": "Wormax",
-    "Joe97618": "Door"
+    "Joe97618": "Lamin"
+  },
+  "player_identity_history": {
+    "Joe97618": [
+      {
+        "display_name": "Door",
+        "through_timestamp": 1789862799
+      }
+    ]
   }
 }
