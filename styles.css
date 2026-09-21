@@ -770,6 +770,8 @@ a { color: inherit; }
 /* Closed Hole departure — second outgoing FC26 legend. */
 .transfer-wire-hole { background: var(--s2-blue); }
 .transfer-wire-hole::after { content: "51"; }
+.transfer-wire-door { background: var(--s2-green); }
+.transfer-wire-door::after { content: "47"; }
 
 
 /* First confirmed FC27 registration — returning club identity. */
