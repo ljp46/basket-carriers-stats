@@ -5,7 +5,7 @@ const squadCards = [...document.querySelectorAll("[data-player]")];
 const dossier = document.querySelector("#player-dossier");
 
 const PLAYER_META = {
-  Door: { name: "CAR DOOR", number: "47", image: "assets/car-door-signing.webp", position: "CM / CDM", careerBase: { apps: 94, goals: 36, assists: 29, motm: 7, redCards: 2, averageRating: 7.4, secondAssists: 1, shots: 4, trackedGoals: 1, passesMade: 184, passesAttempted: 201, throughPasses: 30, dribbles: 181, takeOns: 11, tacklesMade: 7, tacklesAttempted: 24, interceptions: 33 } },
+  Lamin: { name: "LAMIN JAWARA", number: "47", image: "assets/car-door-signing.webp", position: "CM / CDM" },
   Trey: { name: "TREY OSHIWAMBO", number: "88", image: "assets/trey-oshiwambo-signing.webp", position: "CM" },
   Wormax: { name: "WORMAX HIPPYHAIR", number: "10", image: "assets/wormax-hippyhair-signing.webp", position: "ST / CAM" },
 };
