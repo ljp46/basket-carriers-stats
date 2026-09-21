@@ -5,7 +5,7 @@ const squadCards = [...document.querySelectorAll("[data-player]")];
 const dossier = document.querySelector("#player-dossier");
 
 const PLAYER_META = {
-  Door: { name: "CAR DOOR", number: "47", image: "assets/car-door-signing.webp", position: "CM / CDM", careerBase: { apps: 94, goals: 36, assists: 29, motm: 7, redCards: 2, averageRating: 7.4, secondAssists: 1, shots: 4, passesMade: 184, passesAttempted: 201, throughPasses: 30, dribbles: 181, takeOns: 11, tacklesMade: 7, tacklesAttempted: 24, interceptions: 33 } },
+  Door: { name: "CAR DOOR", number: "47", image: "assets/car-door-signing.webp", position: "CM / CDM", careerBase: { apps: 94, goals: 36, assists: 29, motm: 7, redCards: 2, averageRating: 7.4, secondAssists: 1, shots: 4, trackedGoals: 1, passesMade: 184, passesAttempted: 201, throughPasses: 30, dribbles: 181, takeOns: 11, tacklesMade: 7, tacklesAttempted: 24, interceptions: 33 } },
   Trey: { name: "TREY OSHIWAMBO", number: "88", image: "assets/trey-oshiwambo-signing.webp", position: "CM" },
   Wormax: { name: "WORMAX HIPPYHAIR", number: "10", image: "assets/wormax-hippyhair-signing.webp", position: "ST / CAM" },
 };
@@ -62,6 +62,7 @@ function careerStats(player, fc27) {
   if (!base) return { ...fc27 };
   const combined = { ...fc27 };
   Object.entries(base).forEach(([key, value]) => { if (key !== "averageRating") combined[key] = Number(combined[key] || 0) + Number(value || 0); });
+  combined.trackedGoals = Number(base.trackedGoals || 0) + fc27.goals;
   combined.averageRating = combined.apps ? ((base.apps * base.averageRating) + (fc27.apps * fc27.averageRating)) / combined.apps : 0;
   combined.seconds = null;
   return combined;
@@ -97,7 +98,7 @@ function renderDossier() {
   dossier.querySelector("#dossier-name").textContent = meta.name;
   dossier.querySelector("#dossier-position").textContent = meta.position;
   dossier.querySelector("#dossier-height").textContent = profile.height_cm ? `${profile.height_cm} CM` : "—";
-  dossier.querySelector("#dossier-minutes").textContent = stats.seconds === null ? "FC27 ONLY" : formatNumber(stats.seconds / 60);
+  dossier.querySelector("#dossier-minutes").textContent = stats.seconds === null ? `${formatNumber(aggregate(currentPlayer, archive.matches || []).seconds / 60)} FC27` : formatNumber(stats.seconds / 60);
   dossier.querySelector("#dossier-scope-label").textContent = currentScope === "session" ? "LATEST SESSION" : currentScope === "career" ? "BASKET CARRIERS CAREER" : "FC27 RECORD";
   dossier.querySelector("#dossier-updated").textContent = archive.last_updated ? `UPDATED ${new Date(archive.last_updated).toLocaleString("en-GB", { day: "2-digit", month: "short", hour: "2-digit", minute: "2-digit" }).toUpperCase()}` : "AWAITING LIVE ARCHIVE";
   dossier.querySelectorAll("[data-scope]").forEach((button) => button.classList.toggle("active", button.dataset.scope === currentScope));
@@ -105,8 +106,8 @@ function renderDossier() {
     const key = element.dataset.dossierStat;
     element.textContent = key === "averageRating" ? (stats.apps ? formatNumber(stats[key], 1) : "—") : formatNumber(stats[key]);
   });
-  setGroup("output", [["GOAL CONTRIBUTIONS", contribution], ["PLAYER OF THE MATCH", stats.motm], ["SECOND ASSISTS", stats.secondAssists], ["MATCH RECORD", `${stats.wins}W · ${stats.draws}D · ${stats.losses}L`], ["GOALS / 90", per90(stats.goals, stats)], ["ASSISTS / 90", per90(stats.assists, stats)], ["G+A / 90", per90(contribution, stats)], ["SECOND ASSISTS / 90", per90(stats.secondAssists, stats)]]);
-  setGroup("shooting", [["SHOTS", stats.shots], ["CONVERSION", percent(stats.goals, stats.shots)], ["SHOTS / 90", per90(stats.shots, stats)], ["RED CARDS", stats.redCards]]);
+  setGroup("output", [["GOAL CONTRIBUTIONS", contribution], ["PLAYER OF THE MATCH", stats.motm], ["SECOND ASSISTS", stats.secondAssists], [historicCareer ? "FC27 MATCH RECORD" : "MATCH RECORD", `${stats.wins}W · ${stats.draws}D · ${stats.losses}L`], ["GOALS / 90", per90(stats.goals, stats)], ["ASSISTS / 90", per90(stats.assists, stats)], ["G+A / 90", per90(contribution, stats)], ["SECOND ASSISTS / 90", per90(stats.secondAssists, stats)]]);
+  setGroup("shooting", [[historicCareer ? "TRACKED SHOTS" : "SHOTS", stats.shots], [historicCareer ? "TRACKED CONVERSION" : "CONVERSION", percent(historicCareer ? stats.trackedGoals : stats.goals, stats.shots)], ["SHOTS / 90", per90(stats.shots, stats)], ["RED CARDS", stats.redCards]]);
   setGroup("passing", [["PASSES COMPLETED", stats.passesMade], ["PASSES ATTEMPTED", stats.passesAttempted], ["PASS ACCURACY", percent(stats.passesMade, stats.passesAttempted)], ["THROUGH PASSES", stats.throughPasses], ["PASSES / 90", per90(stats.passesMade, stats)], ["THROUGH PASSES / 90", per90(stats.throughPasses, stats)]]);
   setGroup("possession", [["DRIBBLES", stats.dribbles], ["TAKE-ONS", stats.takeOns], ["DRIBBLES / 90", per90(stats.dribbles, stats)], ["TAKE-ONS / 90", per90(stats.takeOns, stats)]]);
   setGroup("defending", [["TACKLES WON", stats.tacklesMade], ["TACKLES ATTEMPTED", stats.tacklesAttempted], ["TACKLE SUCCESS", percent(stats.tacklesMade, stats.tacklesAttempted)], ["INTERCEPTIONS", stats.interceptions], ["TACKLES WON / 90", per90(stats.tacklesMade, stats)], ["INTERCEPTIONS / 90", per90(stats.interceptions, stats)]]);
