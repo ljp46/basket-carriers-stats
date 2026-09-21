@@ -1,9 +1,14 @@
 name: Collect FC Clubs matches
 
 on:
-  # FC26's public data feed is offline ahead of FC27. Keep the collector
-  # available for deliberate FC27 testing without running it automatically.
+  schedule:
+    - cron: "17 * * * *"
   workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - collect.py
+      - config.json
 
 permissions:
   contents: write
