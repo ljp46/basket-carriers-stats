@@ -117,6 +117,20 @@ def display_name(gamertag: str, aliases: dict[str, str]) -> str:
     return next((alias for name, alias in aliases.items() if name.casefold() == lowered), gamertag)
 
 
+def match_display_name(gamertag: str, timestamp: int, config: dict[str, Any]) -> str:
+    """Keep retired identities attached to the matches they actually played."""
+    history = config.get("player_identity_history", {})
+    entries = history.get(gamertag)
+    if entries is None:
+        lowered = gamertag.casefold()
+        entries = next((value for name, value in history.items() if name.casefold() == lowered), [])
+    for entry in entries or []:
+        through = as_int(entry.get("through_timestamp"), -1)
+        if through >= 0 and timestamp <= through:
+            return str(entry.get("display_name") or gamertag)
+    return display_name(gamertag, config["players"])
+
+
 def matching_club_ids(payload: Any, club_name: str) -> list[str]:
     """Return every exact-name club ID from EA's leaderboard search response."""
     wanted = club_name.casefold().strip()
@@ -274,7 +288,7 @@ def normalize_profile(raw: dict[str, Any], aliases: dict[str, str]) -> dict[str,
     }
 
 
-def normalize_player(player_id: str, raw: dict[str, Any], aliases: dict[str, str]) -> dict[str, Any]:
+def normalize_player(player_id: str, raw: dict[str, Any], timestamp: int, config: dict[str, Any]) -> dict[str, Any]:
     events = parse_events(raw.get("match_event_aggregate_0"))
     interception_events: dict[str, int] = {}
     for index in range(4):
@@ -284,7 +298,7 @@ def normalize_player(player_id: str, raw: dict[str, Any], aliases: dict[str, str
     return {
         "player_id": player_id,
         "gamertag": name,
-        "display_name": display_name(name, aliases),
+        "display_name": match_display_name(name, timestamp, config),
         "position_group": raw.get("pos", "unknown"),
         "archetype_id": raw.get("archetypeid"),
         "rating": as_float(raw.get("rating")),
@@ -386,7 +400,7 @@ def normalize_match(raw: dict[str, Any], match_type: str, config: dict[str, Any]
         },
         "human_players": len(own_players),
         "players": [
-            normalize_player(player_id, player, config["players"])
+            normalize_player(player_id, player, timestamp, config)
             for player_id, player in own_players.items()
         ],
     }
