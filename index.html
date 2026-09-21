@@ -9,7 +9,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&amp;family=DM+Mono:wght@400;500&amp;family=Inter:wght@400;500;600;700;800;900&amp;display=swap" rel="stylesheet" />
     <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='8' fill='%23050808'/%3E%3Cpath d='M13 14h38v8H35v28h-8V22H13z' fill='%23d7ff2f'/%3E%3C/svg%3E" />
-    <link rel="stylesheet" href="styles.css?v=22" />
+    <link rel="stylesheet" href="styles.css?v=23" />
   </head>
   <body>
     <div class="noise" aria-hidden="true"></div>
@@ -52,7 +52,7 @@
           </header>
 
           <div class="squad-grid">
-            <article class="squad-card returning-player" aria-label="Car Door, returning player">
+            <article class="squad-card returning-player" data-player="Door" role="button" tabindex="0" aria-haspopup="dialog" aria-label="Open Car Door's player dossier">
               <div class="squad-card-art">
                 <img src="assets/car-door-signing.webp" alt="Car Door standing confidently in the Basket Carriers kit" />
               </div>
@@ -61,15 +61,16 @@
                 <strong class="player-number">47</strong>
                 <p>CAR</p><h3>DOOR</h3>
                 <div class="player-role">MIDFIELD CONTROL · FC26 CAREER CONTINUES</div>
-                <div class="player-stat-slots" aria-label="Future FC27 statistics">
-                  <div><b>—</b><small>APP</small></div><div><b>—</b><small>G</small></div>
-                  <div><b>—</b><small>A</small></div><div><b>—</b><small>AVG</small></div>
+                <div class="player-stat-slots" aria-label="FC27 statistics">
+                  <div><b data-card-stat="apps">—</b><small>APP</small></div><div><b data-card-stat="goals">—</b><small>G</small></div>
+                  <div><b data-card-stat="assists">—</b><small>A</small></div><div><b data-card-stat="averageRating">—</b><small>AVG</small></div>
                 </div>
                 <div class="stat-destinations"><span>FC27</span><span>SESSION</span><span>ALL-TIME BC</span></div>
+                <span class="open-dossier">OPEN PLAYER DOSSIER →</span>
               </div>
             </article>
 
-            <article class="squad-card trey-player" aria-label="Trey Oshiwambo, new signing">
+            <article class="squad-card trey-player" data-player="Trey" role="button" tabindex="0" aria-haspopup="dialog" aria-label="Open Trey Oshiwambo's player dossier">
               <div class="squad-card-art">
                 <img src="assets/trey-oshiwambo-signing.webp" alt="Trey Oshiwambo standing with his arms crossed in the Basket Carriers kit" />
               </div>
@@ -78,15 +79,16 @@
                 <strong class="player-number">88</strong>
                 <p>TREY</p><h3>OSHIWAMBO</h3>
                 <div class="player-role">MIDFIELD CONTROLLER · BOX-TO-BOX</div>
-                <div class="player-stat-slots" aria-label="Future FC27 statistics">
-                  <div><b>—</b><small>APP</small></div><div><b>—</b><small>G</small></div>
-                  <div><b>—</b><small>A</small></div><div><b>—</b><small>AVG</small></div>
+                <div class="player-stat-slots" aria-label="FC27 statistics">
+                  <div><b data-card-stat="apps">—</b><small>APP</small></div><div><b data-card-stat="goals">—</b><small>G</small></div>
+                  <div><b data-card-stat="assists">—</b><small>A</small></div><div><b data-card-stat="averageRating">—</b><small>AVG</small></div>
                 </div>
                 <div class="stat-destinations"><span>FC27</span><span>SESSION</span><span>CAREER</span></div>
+                <span class="open-dossier">OPEN PLAYER DOSSIER →</span>
               </div>
             </article>
 
-            <article class="squad-card wormax-player" aria-label="Wormax Hippyhair, new signing">
+            <article class="squad-card wormax-player" data-player="Wormax" role="button" tabindex="0" aria-haspopup="dialog" aria-label="Open Wormax Hippyhair's player dossier">
               <div class="squad-card-art">
                 <img src="assets/wormax-hippyhair-signing.webp" alt="Wormax Hippyhair adjusting his sleeve in the Basket Carriers kit" />
               </div>
@@ -95,11 +97,12 @@
                 <strong class="player-number">10</strong>
                 <p>WORMAX</p><h3>HIPPYHAIR</h3>
                 <div class="player-role">DIRECT FINISHER · NUMBER 10</div>
-                <div class="player-stat-slots" aria-label="Future FC27 statistics">
-                  <div><b>—</b><small>APP</small></div><div><b>—</b><small>G</small></div>
-                  <div><b>—</b><small>A</small></div><div><b>—</b><small>AVG</small></div>
+                <div class="player-stat-slots" aria-label="FC27 statistics">
+                  <div><b data-card-stat="apps">—</b><small>APP</small></div><div><b data-card-stat="goals">—</b><small>G</small></div>
+                  <div><b data-card-stat="assists">—</b><small>A</small></div><div><b data-card-stat="averageRating">—</b><small>AVG</small></div>
                 </div>
                 <div class="stat-destinations"><span>FC27</span><span>SESSION</span><span>CAREER</span></div>
+                <span class="open-dossier">OPEN PLAYER DOSSIER →</span>
               </div>
             </article>
           </div>
@@ -126,8 +129,8 @@
         <div class="season-footer">
           <div><small>CLUB</small><strong>BASKET CARRIERS</strong></div>
           <div><small>SEASON</small><strong>02 · FC27</strong></div>
-          <div><small>DATA</small><strong>AWAITING FIRST MATCH</strong></div>
-          <div class="season-live"><span></span><small>STATUS</small><strong>SQUAD COMPLETE</strong></div>
+          <div><small>DATA</small><strong id="data-summary">LOADING FC27 RECORD</strong></div>
+          <div class="season-live"><span></span><small>STATUS</small><strong id="data-status">CONNECTING</strong></div>
         </div>
       </section>
 
@@ -274,6 +277,52 @@
       </section>
     </main>
 
-    <script src="app.js?v=10" defer></script>
+    <dialog class="player-dossier" id="player-dossier" aria-labelledby="dossier-name">
+      <button class="dossier-close" type="button" aria-label="Close player dossier">CLOSE ×</button>
+      <div class="dossier-shell">
+        <header class="dossier-identity">
+          <div class="dossier-image"><img id="dossier-image" src="" alt="" /></div>
+          <div class="dossier-title">
+            <p>BASKET CARRIERS · PLAYER DOSSIER</p>
+            <span id="dossier-number">—</span>
+            <h2 id="dossier-name">PLAYER</h2>
+            <div class="dossier-meta">
+              <span><small>POSITION</small><b id="dossier-position">—</b></span>
+              <span><small>HEIGHT</small><b id="dossier-height">—</b></span>
+              <span><small>MINUTES</small><b id="dossier-minutes">—</b></span>
+            </div>
+          </div>
+        </header>
+
+        <nav class="dossier-scopes" aria-label="Statistics scope">
+          <button type="button" data-scope="session">SESSION</button>
+          <button type="button" data-scope="fc27" class="active">FC27</button>
+          <button type="button" data-scope="career">CAREER</button>
+        </nav>
+
+        <div class="dossier-context">
+          <span id="dossier-scope-label">FC27 RECORD</span>
+          <small id="dossier-updated">LIVE ARCHIVE</small>
+        </div>
+
+        <section class="dossier-headline" aria-label="Headline statistics">
+          <div><strong data-dossier-stat="apps">—</strong><span>APPEARANCES</span></div>
+          <div><strong data-dossier-stat="goals">—</strong><span>GOALS</span></div>
+          <div><strong data-dossier-stat="assists">—</strong><span>ASSISTS</span></div>
+          <div><strong data-dossier-stat="averageRating">—</strong><span>AVG RATING</span></div>
+        </section>
+
+        <div class="dossier-grid">
+          <section class="dossier-panel"><header><span>01</span><h3>OUTPUT</h3></header><div class="dossier-stat-grid" data-stat-group="output"></div></section>
+          <section class="dossier-panel"><header><span>02</span><h3>SHOOTING</h3></header><div class="dossier-stat-grid" data-stat-group="shooting"></div></section>
+          <section class="dossier-panel"><header><span>03</span><h3>PASSING + CREATION</h3></header><div class="dossier-stat-grid" data-stat-group="passing"></div></section>
+          <section class="dossier-panel"><header><span>04</span><h3>POSSESSION</h3></header><div class="dossier-stat-grid" data-stat-group="possession"></div></section>
+          <section class="dossier-panel"><header><span>05</span><h3>DEFENDING</h3></header><div class="dossier-stat-grid" data-stat-group="defending"></div></section>
+        </div>
+        <p class="dossier-note" id="dossier-note"></p>
+      </div>
+    </dialog>
+
+    <script src="app.js?v=11" defer></script>
   </body>
 </html>
