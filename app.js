@@ -5,10 +5,27 @@ const squadCards = [...document.querySelectorAll("[data-player]")];
 const dossier = document.querySelector("#player-dossier");
 
 const PLAYER_META = {
-  Lamin: { name: "LAMIN JAWARA", number: "47", image: "assets/car-door-signing.webp", position: "CM / CDM" },
-  Trey: { name: "TREY OSHIWAMBO", number: "88", image: "assets/trey-oshiwambo-signing.webp", position: "CM" },
+  Lamin: { name: "LAMIN JAWARA", number: "47", image: "assets/car-door-signing.webp", position: "CM / CDM", seasonOffset: { apps: 5, goals: 2, assists: 2, motm: 1 } },
+  Trey: { name: "TREY OSHIWAMBO", number: "88", image: "assets/trey-oshiwambo-signing.webp", position: "CAM / CM" },
   Wormax: { name: "WORMAX HIPPYHAIR", number: "10", image: "assets/wormax-hippyhair-signing.webp", position: "ST / CAM" },
 };
+
+const PLAYER_ORDER = ["Lamin", "Trey", "Wormax"];
+const MILESTONE_THRESHOLDS = {
+  apps: [10, 25, 50, 75, 100, 150, 200, 250, 300, 400, 500],
+  goals: [10, 25, 50, 75, 100, 150, 200, 250, 300, 400, 500],
+  assists: [10, 25, 50, 75, 100, 150, 200, 250, 300, 400, 500],
+  contributions: [10, 25, 50, 75, 100, 200, 300, 400, 500, 750, 1000],
+  motm: [5, 10, 25, 50, 75, 100, 150, 200],
+};
+const MILESTONE_LABELS = { apps: "APPEARANCES", goals: "GOALS", assists: "ASSISTS", contributions: "GOAL CONTRIBUTIONS", motm: "POTM AWARDS" };
+const CLUB_RECORDS = [
+  { key: "apps", label: "APPEARANCES", value: 99, holder: "CAR DOOR" },
+  { key: "goals", label: "GOALS", value: 137, holder: "CLOSED HOLE" },
+  { key: "assists", label: "ASSISTS", value: 114, holder: "RICKY BOBBY" },
+  { key: "contributions", label: "GOAL CONTRIBUTIONS", value: 224, holder: "RICKY BOBBY" },
+  { key: "motm", label: "POTM AWARDS", value: 43, holder: "RICKY BOBBY" },
+];
 
 const emptyStats = () => ({ apps: 0, goals: 0, assists: 0, motm: 0, redCards: 0, ratingTotal: 0, averageRating: 0, seconds: 0, secondAssists: 0, shots: 0, passesMade: 0, passesAttempted: 0, throughPasses: 0, dribbles: 0, takeOns: 0, tacklesMade: 0, tacklesAttempted: 0, interceptions: 0, wins: 0, draws: 0, losses: 0 });
 
@@ -73,16 +90,92 @@ function formatNumber(value, decimals = 0) { return value === null || value === 
 function percent(made, attempted) { return attempted ? `${Math.round((made / attempted) * 100)}%` : "—"; }
 function per90(value, stats) { return stats.seconds ? ((Number(value || 0) * 5400) / stats.seconds).toFixed(2) : "—"; }
 
+function officialSeasonStats(player) {
+  const detailed = aggregate(player, archive.matches || []);
+  const season = profileFor(player).season || {};
+  if (!Object.keys(season).length) return detailed;
+  const offset = PLAYER_META[player]?.seasonOffset || {};
+  const official = {
+    ...detailed,
+    apps: Math.max(detailed.apps, Number(season.games_played || 0) - Number(offset.apps || 0)),
+    goals: Math.max(detailed.goals, Number(season.goals || 0) - Number(offset.goals || 0)),
+    assists: Math.max(detailed.assists, Number(season.assists || 0) - Number(offset.assists || 0)),
+    motm: Math.max(detailed.motm, Number(season.motm || 0) - Number(offset.motm || 0)),
+    redCards: Math.max(detailed.redCards, Number(season.red_cards || 0) - Number(offset.redCards || 0)),
+  };
+  if (!PLAYER_META[player]?.seasonOffset && official.apps) official.averageRating = Number(season.average_rating || detailed.averageRating || 0);
+  return official;
+}
+
 function setGroup(name, entries) {
   const group = dossier.querySelector(`[data-stat-group="${name}"]`);
   group.innerHTML = entries.map(([label, value]) => `<div><span>${label}</span><strong>${value}</strong></div>`).join("");
 }
 
 function scopeStats(player, scope) {
-  const all = aggregate(player, archive.matches || []);
+  const all = officialSeasonStats(player);
   if (scope === "session") return aggregate(player, recentSession(archive.matches || []));
   if (scope === "career") return careerStats(player, all);
   return all;
+}
+
+function achievedMilestones(stats) {
+  const values = { ...stats, contributions: stats.goals + stats.assists };
+  return Object.entries(MILESTONE_THRESHOLDS).flatMap(([metric, thresholds]) =>
+    thresholds.filter((threshold) => values[metric] >= threshold).map((threshold) => ({ metric, threshold }))
+  );
+}
+
+function nextMilestone(stats) {
+  const values = { ...stats, contributions: stats.goals + stats.assists };
+  return Object.entries(MILESTONE_THRESHOLDS).flatMap(([metric, thresholds]) => {
+    const target = thresholds.find((threshold) => threshold > values[metric]);
+    return target ? [{ metric, target, away: target - values[metric] }] : [];
+  }).sort((a, b) => a.away - b.away)[0];
+}
+
+function renderLegacyTracking() {
+  const totals = new Map(PLAYER_ORDER.map((player) => [player, officialSeasonStats(player)]));
+  const recordHost = document.querySelector("#record-banners");
+  const milestoneHost = document.querySelector("#milestone-banners");
+  if (!recordHost || !milestoneHost) return;
+
+  recordHost.innerHTML = CLUB_RECORDS.map((record) => {
+    const leader = PLAYER_ORDER.map((player) => {
+      const stats = totals.get(player);
+      return { player, value: record.key === "contributions" ? stats.goals + stats.assists : Number(stats[record.key] || 0) };
+    }).sort((a, b) => b.value - a.value)[0];
+    const broken = leader.value > record.value;
+    const gap = Math.max(0, record.value + 1 - leader.value);
+    return `<article class="record-banner ${broken ? "record-broken" : ""}">
+      <div class="record-crown">${broken ? "NEW RECORD" : "CLUB RECORD"}</div>
+      <span>${record.label}</span><strong>${broken ? leader.value : record.value}</strong>
+      <small>${broken ? PLAYER_META[leader.player].name : record.holder}</small>
+      <div><b>${PLAYER_META[leader.player].name}</b><em>${leader.value} CURRENT · ${broken ? "RECORD BROKEN" : `${gap} TO BREAK`}</em></div>
+    </article>`;
+  }).join("");
+
+  milestoneHost.innerHTML = PLAYER_ORDER.map((player) => {
+    const stats = totals.get(player);
+    const achieved = achievedMilestones(stats);
+    const next = nextMilestone(stats);
+    return `<article class="milestone-banner ${achieved.length ? "has-honours" : ""}">
+      <header><span>${PLAYER_META[player].number}</span><div><small>PLAYER HONOURS</small><strong>${PLAYER_META[player].name}</strong></div></header>
+      <div class="milestone-ribbons">${achieved.length ? achieved.map((item) => `<span><b>${item.threshold}</b>${MILESTONE_LABELS[item.metric]}</span>`).join("") : `<p>THE FIRST BANNER AWAITS.</p>`}</div>
+      ${next ? `<footer><span>NEXT LANDMARK</span><b>${next.target} ${MILESTONE_LABELS[next.metric]}</b><small>${next.away} AWAY</small></footer>` : ""}
+    </article>`;
+  }).join("");
+
+  squadCards.forEach((card) => {
+    card.querySelector(".achievement-ribbon")?.remove();
+    const achieved = achievedMilestones(totals.get(card.dataset.player));
+    const latest = achieved.at(-1);
+    if (!latest) return;
+    const ribbon = document.createElement("span");
+    ribbon.className = "achievement-ribbon";
+    ribbon.textContent = `★ ${latest.threshold} ${MILESTONE_LABELS[latest.metric]}`;
+    card.querySelector(".squad-card-body").prepend(ribbon);
+  });
 }
 
 function renderDossier() {
@@ -124,21 +217,25 @@ function openDossier(player) {
 
 function updateMainCards() {
   squadCards.forEach((card) => {
-    const stats = aggregate(card.dataset.player, archive.matches || []);
+    const stats = officialSeasonStats(card.dataset.player);
     card.querySelectorAll("[data-card-stat]").forEach((element) => {
       const key = element.dataset.cardStat;
       element.textContent = key === "averageRating" ? (stats.apps ? formatNumber(stats[key], 1) : "—") : formatNumber(stats[key]);
     });
   });
-  const games = (archive.matches || []).length;
-  const wins = (archive.matches || []).filter((match) => match.result === "W").length;
-  const draws = (archive.matches || []).filter((match) => match.result === "D").length;
-  const losses = (archive.matches || []).filter((match) => match.result === "L").length;
-  const goalsFor = (archive.matches || []).reduce((sum, match) => sum + Number(match.score_for || 0), 0);
-  const goalsAgainst = (archive.matches || []).reduce((sum, match) => sum + Number(match.score_against || 0), 0);
-  const gd = goalsFor - goalsAgainst;
+  const detailedGames = (archive.matches || []).length;
+  const summary = archive.club?.playoff_summary;
+  const useSummary = Number(summary?.games_played || 0) > detailedGames;
+  const games = useSummary ? Number(summary.games_played) : detailedGames;
+  const wins = useSummary ? Number(summary.wins) : (archive.matches || []).filter((match) => match.result === "W").length;
+  const draws = useSummary ? Number(summary.draws) : (archive.matches || []).filter((match) => match.result === "D").length;
+  const losses = useSummary ? Number(summary.losses) : (archive.matches || []).filter((match) => match.result === "L").length;
+  const goalsFor = useSummary ? Number(summary.goals_for) : (archive.matches || []).reduce((sum, match) => sum + Number(match.score_for || 0), 0);
+  const goalsAgainst = useSummary ? Number(summary.goals_against) : (archive.matches || []).reduce((sum, match) => sum + Number(match.score_against || 0), 0);
+  const gd = useSummary ? Number(summary.goal_difference) : goalsFor - goalsAgainst;
   document.querySelector("#data-summary").textContent = games ? `${games} MATCHES · ${wins}W ${draws}D ${losses}L · GD ${gd >= 0 ? "+" : ""}${gd}` : "AWAITING FIRST MATCH";
   document.querySelector("#data-status").textContent = games ? "LIVE ARCHIVE" : "SQUAD COMPLETE";
+  renderLegacyTracking();
 }
 
 async function loadArchive() {

@@ -15,5 +15,13 @@
         "through_timestamp": 1789862799
       }
     ]
+  },
+  "season_stat_offsets": {
+    "Lamin": {
+      "games_played": 5,
+      "goals": 2,
+      "assists": 2,
+      "motm": 1
+    }
   }
 }

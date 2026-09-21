@@ -1118,6 +1118,45 @@ a { color: inherit; }
 .departure-grid { display: grid; grid-template-columns: 1fr; }
 .departure-grid .transfer-wire { min-height: 126px; }
 
+/* FC27 legacy chase — permanent records and automatic milestone banners. */
+.legacy-tracking { border-top: 1px solid rgba(233,226,211,.16); background: #0a0c0b; }
+.legacy-tracking-head { display: flex; padding: 22px 24px 18px; border-bottom: 1px solid rgba(233,226,211,.13); align-items: flex-end; justify-content: space-between; gap: 18px; }
+.legacy-tracking-head small { color: #d3ad69; font: 600 .45rem var(--mono); letter-spacing: .14em; }
+.legacy-tracking-head h3 { margin: 6px 0 0; color: #fff7e9; font: 1.35rem var(--display); letter-spacing: -.04em; }
+.legacy-tracking-head > span { color: #6f766f; font: .42rem var(--mono); letter-spacing: .11em; text-align: right; }
+.record-banner-grid { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); border-bottom: 1px solid rgba(233,226,211,.13); }
+.record-banner { position: relative; min-width: 0; min-height: 180px; padding: 24px 14px 17px; overflow: hidden; border-right: 1px solid rgba(233,226,211,.12); background: linear-gradient(160deg,rgba(211,173,105,.08),transparent 58%); }
+.record-banner:last-child { border-right: 0; }
+.record-banner::after { position: absolute; right: -10px; top: 24px; color: rgba(211,173,105,.055); content: "BC"; font: 5rem/.8 var(--display); }
+.record-crown { position: relative; z-index: 1; color: #d3ad69; font: 600 .39rem var(--mono); letter-spacing: .13em; }
+.record-banner > span { position: relative; z-index: 1; display: block; margin-top: 19px; color: #777e77; font: .39rem var(--mono); letter-spacing: .11em; }
+.record-banner > strong { position: relative; z-index: 1; display: block; margin-top: 2px; color: #fff7e9; font: 2.65rem/.9 var(--display); letter-spacing: -.06em; }
+.record-banner > small { position: relative; z-index: 1; display: block; margin-top: 5px; color: #b4a17f; font: .39rem var(--mono); letter-spacing: .09em; }
+.record-banner > div:last-child { position: relative; z-index: 1; display: flex; margin-top: 18px; padding-top: 11px; border-top: 1px solid rgba(233,226,211,.11); flex-direction: column; gap: 4px; }
+.record-banner > div:last-child b { overflow: hidden; color: #d7ff2f; font: .42rem var(--mono); letter-spacing: .08em; text-overflow: ellipsis; white-space: nowrap; }
+.record-banner > div:last-child em { color: #686f68; font: normal .35rem var(--mono); letter-spacing: .07em; }
+.record-banner.record-broken { background: linear-gradient(160deg,rgba(215,255,47,.18),rgba(38,113,58,.12)); box-shadow: inset 0 3px 0 #d7ff2f; }
+.record-banner.record-broken .record-crown,.record-banner.record-broken > div:last-child b { color: #d7ff2f; }
+.milestone-head { border-top: 1px solid rgba(233,226,211,.13); }
+.milestone-banner-grid { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); }
+.milestone-banner { min-width: 0; padding: 19px 18px 18px; border-right: 1px solid rgba(233,226,211,.12); background: #080a09; }
+.milestone-banner:last-child { border-right: 0; }
+.milestone-banner.has-honours { background: radial-gradient(circle at 100% 0,rgba(211,173,105,.13),transparent 45%),#080a09; }
+.milestone-banner header { display: flex; align-items: center; gap: 11px; }
+.milestone-banner header > span { display: grid; width: 38px; height: 38px; flex: 0 0 auto; border: 1px solid rgba(211,173,105,.45); border-radius: 50%; place-items: center; color: #d3ad69; font: .76rem var(--display); }
+.milestone-banner header div { min-width: 0; }
+.milestone-banner header small { display: block; color: #666e67; font: .35rem var(--mono); letter-spacing: .12em; }
+.milestone-banner header strong { display: block; margin-top: 4px; overflow: hidden; color: #fff7e9; font: .66rem var(--display); text-overflow: ellipsis; white-space: nowrap; }
+.milestone-ribbons { display: flex; min-height: 64px; margin-top: 15px; align-content: flex-start; flex-wrap: wrap; gap: 6px; }
+.milestone-ribbons span { padding: 6px 7px; border: 1px solid rgba(211,173,105,.34); color: #d7bd8d; background: rgba(211,173,105,.06); font: .34rem var(--mono); letter-spacing: .07em; }
+.milestone-ribbons span b { margin-right: 4px; color: #fff7e9; font-size: .46rem; }
+.milestone-ribbons p { margin: 8px 0 0; color: #5f675f; font: .39rem var(--mono); letter-spacing: .12em; }
+.milestone-banner footer { display: grid; margin-top: 13px; padding-top: 12px; border-top: 1px solid rgba(233,226,211,.1); grid-template-columns: 1fr auto; gap: 4px 8px; }
+.milestone-banner footer span { grid-column: 1/-1; color: #6d746d; font: .34rem var(--mono); letter-spacing: .11em; }
+.milestone-banner footer b { color: #e7dfd0; font: .45rem var(--mono); }
+.milestone-banner footer small { color: #d7ff2f; font: .38rem var(--mono); }
+.achievement-ribbon { width: fit-content; margin: -4px 0 4px; padding: 5px 7px; border: 1px solid rgba(211,173,105,.45); color: #ffe2a8; background: rgba(86,59,15,.36); font: 600 .38rem var(--mono); letter-spacing: .09em; }
+
 @media (max-width:720px) {
   .squad-card { min-height: 285px; grid-template-columns: minmax(0,1fr) 132px; }
   .squad-card-body { padding: 21px 0 18px 17px; }
@@ -1133,6 +1172,15 @@ a { color: inherit; }
   .door-art span { margin-left: 22px; font-size: 3.8rem; }
   .pending-player { min-height: 178px; display: block; }
   .pending-player .squad-card-body { position: relative; }
+  .legacy-tracking-head { align-items: flex-start; flex-direction: column; gap: 8px; }
+  .legacy-tracking-head > span { text-align: left; }
+  .record-banner-grid { grid-template-columns: repeat(2,minmax(0,1fr)); }
+  .record-banner { min-height: 164px; border-bottom: 1px solid rgba(233,226,211,.12); }
+  .record-banner:nth-child(2n) { border-right: 0; }
+  .record-banner:last-child { grid-column: 1/-1; }
+  .milestone-banner-grid { grid-template-columns: 1fr; }
+  .milestone-banner { border-right: 0; border-bottom: 1px solid rgba(233,226,211,.12); }
+  .milestone-banner:last-child { border-bottom: 0; }
 }
 
 

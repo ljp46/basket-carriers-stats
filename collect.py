@@ -22,11 +22,11 @@ STATUS_PATH = ROOT / "data" / "status.json"
 BASE_URL = "https://proclubs.ea.com/api/fc"
 MATCH_TYPES = ("leagueMatch", "friendlyMatch", "playoffMatch")
 MILESTONE_THRESHOLDS = {
-    "games_played": (50, 100, 150, 200, 250, 300, 400, 500),
-    "goals": (50, 100, 150, 200, 250, 300, 400, 500),
-    "assists": (50, 100, 150, 200, 250, 300, 400, 500),
-    "contributions": (100, 200, 300, 400, 500, 750, 1000),
-    "motm": (10, 25, 50, 75, 100, 150, 200),
+    "games_played": (10, 25, 50, 75, 100, 150, 200, 250, 300, 400, 500),
+    "goals": (10, 25, 50, 75, 100, 150, 200, 250, 300, 400, 500),
+    "assists": (10, 25, 50, 75, 100, 150, 200, 250, 300, 400, 500),
+    "contributions": (10, 25, 50, 75, 100, 200, 300, 400, 500, 750, 1000),
+    "motm": (5, 10, 25, 50, 75, 100, 150, 200),
 }
 
 # Decoded from EA's match event counters and re-verified against the first six
@@ -320,21 +320,23 @@ def normalize_player(player_id: str, raw: dict[str, Any], timestamp: int, config
     }
 
 
-def profile_totals(profile: dict[str, Any]) -> dict[str, int]:
+def profile_totals(profile: dict[str, Any], offsets: dict[str, Any] | None = None) -> dict[str, int]:
     season = profile.get("season", {})
-    goals = as_int(season.get("goals"))
-    assists = as_int(season.get("assists"))
+    offsets = offsets or {}
+    goals = max(0, as_int(season.get("goals")) - as_int(offsets.get("goals")))
+    assists = max(0, as_int(season.get("assists")) - as_int(offsets.get("assists")))
     return {
-        "games_played": as_int(season.get("games_played")),
+        "games_played": max(0, as_int(season.get("games_played")) - as_int(offsets.get("games_played"))),
         "goals": goals,
         "assists": assists,
         "contributions": goals + assists,
-        "motm": as_int(season.get("motm")),
+        "motm": max(0, as_int(season.get("motm")) - as_int(offsets.get("motm"))),
     }
 
 
 def update_milestones(
-    previous: dict[str, Any], profiles: list[dict[str, Any]], matches: list[dict[str, Any]], detected_at: str
+    previous: dict[str, Any], profiles: list[dict[str, Any]], matches: list[dict[str, Any]], detected_at: str,
+    config: dict[str, Any],
 ) -> list[dict[str, Any]]:
     milestones = list(previous.get("milestones", []))
     known = {
@@ -346,9 +348,10 @@ def update_milestones(
 
     for profile in profiles:
         player = profile.get("display_name")
-        current = profile_totals(profile)
+        offsets = config.get("season_stat_offsets", {}).get(player, {})
+        current = profile_totals(profile, offsets)
         old_profile = old_profiles.get(player)
-        old = profile_totals(old_profile) if old_profile else {}
+        old = profile_totals(old_profile, offsets) if old_profile else {}
         for metric, thresholds in MILESTONE_THRESHOLDS.items():
             for threshold in thresholds:
                 if current[metric] < threshold or (player, metric, threshold) in known:
@@ -511,7 +514,7 @@ def main() -> None:
     matches = sorted(by_id.values(), key=lambda match: match["timestamp"], reverse=True)
 
     updated_at = datetime.now(timezone.utc).isoformat()
-    milestones = update_milestones(previous, profiles, matches, updated_at)
+    milestones = update_milestones(previous, profiles, matches, updated_at, config)
     payload = {
         "club": {
             "club_id": active_club_id,
