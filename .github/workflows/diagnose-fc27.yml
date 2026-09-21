@@ -1,0 +1,31 @@
+name: Diagnose FC27 API
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - diagnose_fc27.py
+      - .github/workflows/diagnose-fc27.yml
+
+permissions:
+  contents: read
+
+jobs:
+  diagnose:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Inspect FC27 endpoints
+        run: python diagnose_fc27.py
+      - name: Preserve diagnostic report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: fc27-diagnostic
+          path: fc27-diagnostic.json
+          if-no-files-found: ignore
+          retention-days: 7
