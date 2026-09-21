@@ -1124,8 +1124,10 @@ a { color: inherit; }
 .legacy-tracking-head small { color: #d3ad69; font: 600 .45rem var(--mono); letter-spacing: .14em; }
 .legacy-tracking-head h3 { margin: 6px 0 0; color: #fff7e9; font: 1.35rem var(--display); letter-spacing: -.04em; }
 .legacy-tracking-head > span { color: #6f766f; font: .42rem var(--mono); letter-spacing: .11em; text-align: right; }
-.record-banner-grid { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); border-bottom: 1px solid rgba(233,226,211,.13); }
+.record-banner-grid { display: grid; grid-template-columns: repeat(6,minmax(0,1fr)); border-bottom: 1px solid rgba(233,226,211,.13); }
 .record-banner { position: relative; min-width: 0; min-height: 180px; padding: 24px 14px 17px; overflow: hidden; border-right: 1px solid rgba(233,226,211,.12); background: linear-gradient(160deg,rgba(211,173,105,.08),transparent 58%); }
+.record-banner { grid-column: span 2; }
+.record-banner:nth-child(n+4) { grid-column: span 3; }
 .record-banner:last-child { border-right: 0; }
 .record-banner::after { position: absolute; right: -10px; top: 24px; color: rgba(211,173,105,.055); content: "BC"; font: 5rem/.8 var(--display); }
 .record-crown { position: relative; z-index: 1; color: #d3ad69; font: 600 .39rem var(--mono); letter-spacing: .13em; }
@@ -1146,7 +1148,7 @@ a { color: inherit; }
 .milestone-banner header > span { display: grid; width: 38px; height: 38px; flex: 0 0 auto; border: 1px solid rgba(211,173,105,.45); border-radius: 50%; place-items: center; color: #d3ad69; font: .76rem var(--display); }
 .milestone-banner header div { min-width: 0; }
 .milestone-banner header small { display: block; color: #666e67; font: .35rem var(--mono); letter-spacing: .12em; }
-.milestone-banner header strong { display: block; margin-top: 4px; overflow: hidden; color: #fff7e9; font: .66rem var(--display); text-overflow: ellipsis; white-space: nowrap; }
+.milestone-banner header strong { display: block; margin-top: 4px; color: #fff7e9; font: .56rem/1.18 var(--display); overflow-wrap: anywhere; }
 .milestone-ribbons { display: flex; min-height: 64px; margin-top: 15px; align-content: flex-start; flex-wrap: wrap; gap: 6px; }
 .milestone-ribbons span { padding: 6px 7px; border: 1px solid rgba(211,173,105,.34); color: #d7bd8d; background: rgba(211,173,105,.06); font: .34rem var(--mono); letter-spacing: .07em; }
 .milestone-ribbons span b { margin-right: 4px; color: #fff7e9; font-size: .46rem; }
@@ -1175,7 +1177,7 @@ a { color: inherit; }
   .legacy-tracking-head { align-items: flex-start; flex-direction: column; gap: 8px; }
   .legacy-tracking-head > span { text-align: left; }
   .record-banner-grid { grid-template-columns: repeat(2,minmax(0,1fr)); }
-  .record-banner { min-height: 164px; border-bottom: 1px solid rgba(233,226,211,.12); }
+  .record-banner,.record-banner:nth-child(n+4) { min-height: 164px; grid-column: auto; border-bottom: 1px solid rgba(233,226,211,.12); }
   .record-banner:nth-child(2n) { border-right: 0; }
   .record-banner:last-child { grid-column: 1/-1; }
   .milestone-banner-grid { grid-template-columns: 1fr; }
