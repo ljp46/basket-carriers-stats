@@ -1,5 +1,5 @@
 {
-  "checked_at": "2026-09-21T23:17:35.203236+00:00",
+  "checked_at": "2026-09-21T23:38:47.464776+00:00",
   "failures": [],
   "match_response_shapes": {
     "27257:friendlyMatch": {
@@ -43,5 +43,5 @@
   "source_club_ids": [
     "27257"
   ],
-  "stored_matches": 10
+  "stored_matches": 11
 }
