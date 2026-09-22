@@ -161,13 +161,7 @@ function renderLegacyTracking() {
     const leader = challengers[0];
     const broken = leader.value > record.value;
     const gap = Math.max(0, record.value + 1 - leader.value);
-    challengers
-      .filter((challenger) => challenger.value > record.value)
-      .forEach((challenger) => recordsByPlayer.get(challenger.player).push({
-        ...record,
-        current: challenger.value,
-        isCurrentHolder: challenger.player === leader.player,
-      }));
+    if (broken) recordsByPlayer.get(leader.player).push({ ...record, current: leader.value });
     return `<article class="record-banner ${broken ? "record-broken" : ""}">
       <div class="record-crown">${broken ? "NEW RECORD" : "CLUB RECORD"}</div>
       <span>${record.label}</span><strong>${broken ? leader.value : record.value}</strong>
@@ -198,8 +192,7 @@ function renderLegacyTracking() {
       banner.className = "club-record-ribbon";
       const recordSummary = playerRecords.map((record) => `${record.label} ${record.current}`).join(" · ");
       const formerSummary = playerRecords.map((record) => `${record.holder} ${record.value}`).join(" · ");
-      const currentHolder = playerRecords.some((record) => record.isCurrentHolder);
-      banner.innerHTML = `<span>BC · ${currentHolder ? "CLUB RECORD HOLDER" : "CLUB RECORD BREAKER"}</span><strong>${recordSummary}</strong><small>FC26 MARKS SURPASSED · ${formerSummary}</small>`;
+      banner.innerHTML = `<span>BC · CLUB RECORD HOLDER</span><strong>${recordSummary}</strong><small>FC26 MARKS SURPASSED · ${formerSummary}</small>`;
       card.classList.add("has-club-record");
       card.prepend(banner);
     }
