@@ -1158,6 +1158,43 @@ a { color: inherit; }
 .milestone-banner footer b { color: #e7dfd0; font: .45rem var(--mono); }
 .milestone-banner footer small { color: #d7ff2f; font: .38rem var(--mono); }
 .achievement-ribbon { width: fit-content; margin: -4px 0 4px; padding: 5px 7px; border: 1px solid rgba(211,173,105,.45); color: #ffe2a8; background: rgba(86,59,15,.36); font: 600 .38rem var(--mono); letter-spacing: .09em; }
+.club-record-ribbon {
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: 0;
+  z-index: 8;
+  display: grid;
+  min-height: 63px;
+  padding: 10px 24px 9px;
+  overflow: hidden;
+  grid-template-columns: minmax(0,1fr) auto;
+  align-content: center;
+  gap: 2px 18px;
+  border-bottom: 1px solid rgba(255,238,180,.72);
+  color: #171209;
+  background:
+    linear-gradient(105deg,rgba(255,255,255,.48),transparent 24% 70%,rgba(255,255,255,.28)),
+    linear-gradient(100deg,#8c651f 0%,#f7dd83 24%,#b7872b 46%,#ffe9a0 68%,#8e651e 100%);
+  box-shadow: 0 8px 28px rgba(0,0,0,.34), inset 0 1px 0 rgba(255,255,255,.64);
+}
+.club-record-ribbon::after {
+  position: absolute;
+  top: -44px;
+  right: 8%;
+  width: 66px;
+  height: 150px;
+  transform: rotate(23deg);
+  background: linear-gradient(90deg,transparent,rgba(255,255,255,.34),transparent);
+  content: "";
+}
+.club-record-ribbon span { position: relative; z-index: 1; font: 700 .43rem var(--mono); letter-spacing: .16em; }
+.club-record-ribbon strong { position: relative; z-index: 1; grid-row: 1/3; grid-column: 2; align-self: center; max-width: 255px; font: .72rem/1.16 var(--display); letter-spacing: -.025em; text-align: right; }
+.club-record-ribbon small { position: relative; z-index: 1; color: rgba(23,18,9,.68); font: 600 .34rem/1.35 var(--mono); letter-spacing: .08em; }
+.squad-card.has-club-record { min-height: 323px; }
+.squad-card.has-club-record .squad-card-body { padding-top: 86px; }
+.squad-card.has-club-record .squad-card-art { min-height: 323px; }
+.squad-card.has-club-record .squad-card-art img { height: 252px; }
 
 @media (max-width:720px) {
   .squad-card { min-height: 285px; grid-template-columns: minmax(0,1fr) 132px; }
@@ -1183,6 +1220,12 @@ a { color: inherit; }
   .milestone-banner-grid { grid-template-columns: 1fr; }
   .milestone-banner { border-right: 0; border-bottom: 1px solid rgba(233,226,211,.12); }
   .milestone-banner:last-child { border-bottom: 0; }
+  .club-record-ribbon { min-height: 72px; padding: 10px 16px; grid-template-columns: minmax(0,1fr); gap: 4px; }
+  .club-record-ribbon strong { grid-row: auto; grid-column: auto; max-width: calc(100% - 96px); font-size: .64rem; text-align: left; }
+  .club-record-ribbon small { max-width: calc(100% - 82px); }
+  .squad-card.has-club-record { min-height: 357px; }
+  .squad-card.has-club-record .squad-card-body { padding-top: 94px; }
+  .squad-card.has-club-record .squad-card-art { min-height: 357px; }
 }
 
 

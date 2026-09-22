@@ -126,6 +126,18 @@ function achievedMilestones(stats) {
   );
 }
 
+function milestonesReachedInLatestSession(player, currentStats) {
+  const sessionStats = aggregate(player, recentSession(archive.matches || []));
+  const current = { ...currentStats, contributions: currentStats.goals + currentStats.assists };
+  const session = { ...sessionStats, contributions: sessionStats.goals + sessionStats.assists };
+  return Object.entries(MILESTONE_THRESHOLDS).flatMap(([metric, thresholds]) => {
+    const beforeSession = Math.max(0, Number(current[metric] || 0) - Number(session[metric] || 0));
+    return thresholds
+      .filter((threshold) => threshold > beforeSession && threshold <= Number(current[metric] || 0))
+      .map((threshold) => ({ metric, threshold }));
+  });
+}
+
 function nextMilestone(stats) {
   const values = { ...stats, contributions: stats.goals + stats.assists };
   return Object.entries(MILESTONE_THRESHOLDS).flatMap(([metric, thresholds]) => {
@@ -136,17 +148,26 @@ function nextMilestone(stats) {
 
 function renderLegacyTracking() {
   const totals = new Map(PLAYER_ORDER.map((player) => [player, officialSeasonStats(player)]));
+  const recordsByPlayer = new Map(PLAYER_ORDER.map((player) => [player, []]));
   const recordHost = document.querySelector("#record-banners");
   const milestoneHost = document.querySelector("#milestone-banners");
   if (!recordHost || !milestoneHost) return;
 
   recordHost.innerHTML = CLUB_RECORDS.map((record) => {
-    const leader = PLAYER_ORDER.map((player) => {
+    const challengers = PLAYER_ORDER.map((player) => {
       const stats = totals.get(player);
       return { player, value: record.key === "contributions" ? stats.goals + stats.assists : Number(stats[record.key] || 0) };
-    }).sort((a, b) => b.value - a.value)[0];
+    }).sort((a, b) => b.value - a.value);
+    const leader = challengers[0];
     const broken = leader.value > record.value;
     const gap = Math.max(0, record.value + 1 - leader.value);
+    challengers
+      .filter((challenger) => challenger.value > record.value)
+      .forEach((challenger) => recordsByPlayer.get(challenger.player).push({
+        ...record,
+        current: challenger.value,
+        isCurrentHolder: challenger.player === leader.player,
+      }));
     return `<article class="record-banner ${broken ? "record-broken" : ""}">
       <div class="record-crown">${broken ? "NEW RECORD" : "CLUB RECORD"}</div>
       <span>${record.label}</span><strong>${broken ? leader.value : record.value}</strong>
@@ -168,12 +189,28 @@ function renderLegacyTracking() {
 
   squadCards.forEach((card) => {
     card.querySelector(".achievement-ribbon")?.remove();
-    const achieved = achievedMilestones(totals.get(card.dataset.player));
-    const latest = achieved.at(-1);
+    card.querySelector(".club-record-ribbon")?.remove();
+    card.classList.remove("has-club-record");
+
+    const playerRecords = recordsByPlayer.get(card.dataset.player) || [];
+    if (playerRecords.length) {
+      const banner = document.createElement("div");
+      banner.className = "club-record-ribbon";
+      const recordSummary = playerRecords.map((record) => `${record.label} ${record.current}`).join(" · ");
+      const formerSummary = playerRecords.map((record) => `${record.holder} ${record.value}`).join(" · ");
+      const currentHolder = playerRecords.some((record) => record.isCurrentHolder);
+      banner.innerHTML = `<span>BC · ${currentHolder ? "CLUB RECORD HOLDER" : "CLUB RECORD BREAKER"}</span><strong>${recordSummary}</strong><small>FC26 MARKS SURPASSED · ${formerSummary}</small>`;
+      card.classList.add("has-club-record");
+      card.prepend(banner);
+    }
+
+    const achievedThisSession = milestonesReachedInLatestSession(card.dataset.player, totals.get(card.dataset.player));
+    const latest = achievedThisSession.at(-1);
     if (!latest) return;
     const ribbon = document.createElement("span");
     ribbon.className = "achievement-ribbon";
-    ribbon.textContent = `★ ${latest.threshold} ${MILESTONE_LABELS[latest.metric]}`;
+    const extra = achievedThisSession.length > 1 ? ` · +${achievedThisSession.length - 1} MORE` : "";
+    ribbon.textContent = `★ ${latest.threshold} ${MILESTONE_LABELS[latest.metric]}${extra}`;
     card.querySelector(".squad-card-body").prepend(ribbon);
   });
 }
