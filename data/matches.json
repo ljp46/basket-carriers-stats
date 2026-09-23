@@ -6,13 +6,13 @@
     "playoff_summary": {
       "clean_sheets": 4,
       "draws": 3,
-      "games_played": 19,
-      "goal_difference": 33,
-      "goals_against": 27,
-      "goals_for": 60,
+      "games_played": 20,
+      "goal_difference": 36,
+      "goals_against": 30,
+      "goals_for": 66,
       "losses": 2,
-      "points": 45,
-      "wins": 14
+      "points": 48,
+      "wins": 15
     }
   },
   "event_code_status": {
@@ -25,8 +25,95 @@
       "interceptions"
     ]
   },
-  "last_updated": "2026-09-22T22:16:01.623309+00:00",
+  "last_updated": "2026-09-23T00:43:20.562535+00:00",
   "matches": [
+    {
+      "human_players": 3,
+      "match_id": "18538771040183",
+      "match_type": "leagueMatch",
+      "opponent": {
+        "club_id": "123921",
+        "human_players": 2,
+        "name": "WORZELBIRD"
+      },
+      "played_at": "2026-09-22T22:20:05+00:00",
+      "players": [
+        {
+          "archetype_id": "8",
+          "assists": 5,
+          "display_name": "Trey",
+          "dribbles_completed": 36,
+          "gamertag": "kidljp46",
+          "goals": 1,
+          "interceptions": 1,
+          "motm": 1,
+          "passes_attempted": 37,
+          "passes_made": 29,
+          "player_id": "1009209437400",
+          "position_group": "midfielder",
+          "rating": 10.0,
+          "red_cards": 0,
+          "second_assists": 0,
+          "seconds_played": 5541,
+          "shots": 4,
+          "tackles_attempted": 7,
+          "tackles_made": 4,
+          "take_ons": 16,
+          "through_passes": 9
+        },
+        {
+          "archetype_id": "12",
+          "assists": 0,
+          "display_name": "Wormax",
+          "dribbles_completed": 18,
+          "gamertag": "Leechy1234335",
+          "goals": 5,
+          "interceptions": 0,
+          "motm": 0,
+          "passes_attempted": 20,
+          "passes_made": 19,
+          "player_id": "1009792730063",
+          "position_group": "forward",
+          "rating": 10.0,
+          "red_cards": 0,
+          "second_assists": 0,
+          "seconds_played": 5541,
+          "shots": 8,
+          "tackles_attempted": 3,
+          "tackles_made": 0,
+          "take_ons": 4,
+          "through_passes": 4
+        },
+        {
+          "archetype_id": "8",
+          "assists": 0,
+          "display_name": "Lamin",
+          "dribbles_completed": 4,
+          "gamertag": "Joe97618",
+          "goals": 0,
+          "interceptions": 0,
+          "motm": 0,
+          "passes_attempted": 5,
+          "passes_made": 5,
+          "player_id": "1011723661689",
+          "position_group": "midfielder",
+          "rating": 6.9,
+          "red_cards": 0,
+          "second_assists": 0,
+          "seconds_played": 5541,
+          "shots": 0,
+          "tackles_attempted": 2,
+          "tackles_made": 2,
+          "take_ons": 0,
+          "through_passes": 0
+        }
+      ],
+      "result": "W",
+      "score_against": 3,
+      "score_for": 6,
+      "timestamp": 1790115605,
+      "winner_by_dnf": false
+    },
     {
       "human_players": 3,
       "match_id": "18588482150148",
@@ -1784,6 +1871,24 @@
       "player": "Lamin",
       "threshold": 10,
       "value_when_detected": 13
+    },
+    {
+      "baseline": false,
+      "celebrate_match_id": "18538771040183",
+      "detected_at": "2026-09-23T00:43:20.562535+00:00",
+      "metric": "goals",
+      "player": "Trey",
+      "threshold": 10,
+      "value_when_detected": 10
+    },
+    {
+      "baseline": false,
+      "celebrate_match_id": "18538771040183",
+      "detected_at": "2026-09-23T00:43:20.562535+00:00",
+      "metric": "goals",
+      "player": "Wormax",
+      "threshold": 50,
+      "value_when_detected": 51
     }
   ],
   "profiles": [
@@ -1797,13 +1902,13 @@
       "preferred_position": "midfielder",
       "pro_name": "T. Oshiwambo",
       "season": {
-        "assists": 31,
+        "assists": 36,
         "average_rating": 8.9,
-        "games_played": 19,
-        "goals": 9,
-        "motm": 8,
+        "games_played": 20,
+        "goals": 10,
+        "motm": 9,
         "red_cards": 0,
-        "win_rate": 73
+        "win_rate": 75
       }
     },
     {
@@ -1818,11 +1923,11 @@
       "season": {
         "assists": 7,
         "average_rating": 8.7,
-        "games_played": 19,
-        "goals": 46,
+        "games_played": 20,
+        "goals": 51,
         "motm": 6,
         "red_cards": 0,
-        "win_rate": 73
+        "win_rate": 75
       }
     },
     {
@@ -1837,11 +1942,11 @@
       "season": {
         "assists": 3,
         "average_rating": 7.4,
-        "games_played": 18,
+        "games_played": 19,
         "goals": 2,
         "motm": 2,
         "red_cards": 0,
-        "win_rate": 72
+        "win_rate": 73
       }
     }
   ]
