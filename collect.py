@@ -288,6 +288,51 @@ def normalize_profile(raw: dict[str, Any], aliases: dict[str, str]) -> dict[str,
     }
 
 
+def merge_profiles(profiles: list[dict[str, Any]]) -> list[dict[str, Any]]:
+    """Combine multiple EA accounts that belong to one dashboard player.
+
+    EA reports season totals per account. A player changing accounts should not
+    create a duplicate dossier or discard the totals already earned on the old
+    account, so profiles sharing a display name are folded into one row.
+    Metadata comes from the first (current) account returned by EA while season
+    counters are added together.
+    """
+    merged: dict[str, dict[str, Any]] = {}
+    rating_weights: dict[str, tuple[float, int]] = {}
+    season_keys = ("games_played", "goals", "assists", "motm", "red_cards")
+
+    for profile in profiles:
+        player = str(profile.get("display_name") or profile.get("gamertag") or "Unknown")
+        season = profile.get("season", {})
+        games = as_int(season.get("games_played"))
+        rating = as_float(season.get("average_rating"))
+
+        if player not in merged:
+            merged[player] = {**profile, "season": dict(season)}
+            rating_weights[player] = (rating * games, games)
+            continue
+
+        target_season = merged[player]["season"]
+        for key in season_keys:
+            target_season[key] = as_int(target_season.get(key)) + as_int(season.get(key))
+
+        weighted_total, weighted_games = rating_weights[player]
+        weighted_total += rating * games
+        weighted_games += games
+        rating_weights[player] = (weighted_total, weighted_games)
+        target_season["average_rating"] = weighted_total / weighted_games if weighted_games else 0.0
+
+        # Account-level win rates cannot be added. Keep a weighted season rate.
+        previous_games = max(0, weighted_games - games)
+        previous_rate = as_float(target_season.get("win_rate"))
+        current_rate = as_float(season.get("win_rate"))
+        target_season["win_rate"] = round(
+            ((previous_rate * previous_games) + (current_rate * games)) / weighted_games
+        ) if weighted_games else 0
+
+    return list(merged.values())
+
+
 def normalize_player(player_id: str, raw: dict[str, Any], timestamp: int, config: dict[str, Any]) -> dict[str, Any]:
     events = parse_events(raw.get("match_event_aggregate_0"))
     interception_events: dict[str, int] = {}
@@ -500,11 +545,12 @@ def main() -> None:
             "members/stats",
             {"platform": config["platform"], "clubId": active_club_id},
         )
-        profiles = [
+        account_profiles = [
             normalize_profile(member, config["players"])
             for member in member_response.get("members", [])
             if display_name(member.get("name", ""), config["players"]) in config["players"].values()
         ]
+        profiles = merge_profiles(account_profiles)
     except RuntimeError as exc:
         failures.append(f"members/stats: {exc}")
 

@@ -25,7 +25,7 @@
       "interceptions"
     ]
   },
-  "last_updated": "2026-09-27T14:43:39.671924+00:00",
+  "last_updated": "2026-09-27T18:49:07.857946+00:00",
   "matches": [
     {
       "human_players": 3,
@@ -41,7 +41,7 @@
         {
           "archetype_id": "8",
           "assists": 0,
-          "display_name": "Sidney257965",
+          "display_name": "Lamin",
           "dribbles_completed": 17,
           "gamertag": "Sidney257965",
           "goals": 0,
@@ -128,7 +128,7 @@
         {
           "archetype_id": "8",
           "assists": 0,
-          "display_name": "Sidney257965",
+          "display_name": "Lamin",
           "dribbles_completed": 20,
           "gamertag": "Sidney257965",
           "goals": 0,
@@ -215,7 +215,7 @@
         {
           "archetype_id": "8",
           "assists": 0,
-          "display_name": "Sidney257965",
+          "display_name": "Lamin",
           "dribbles_completed": 6,
           "gamertag": "Sidney257965",
           "goals": 0,
@@ -302,7 +302,7 @@
         {
           "archetype_id": "8",
           "assists": 0,
-          "display_name": "Sidney257965",
+          "display_name": "Lamin",
           "dribbles_completed": 2,
           "gamertag": "Sidney257965",
           "goals": 0,
@@ -389,7 +389,7 @@
         {
           "archetype_id": "8",
           "assists": 0,
-          "display_name": "Sidney257965",
+          "display_name": "Lamin",
           "dribbles_completed": 8,
           "gamertag": "Sidney257965",
           "goals": 0,
@@ -476,7 +476,7 @@
         {
           "archetype_id": "8",
           "assists": 0,
-          "display_name": "Sidney257965",
+          "display_name": "Lamin",
           "dribbles_completed": 3,
           "gamertag": "Sidney257965",
           "goals": 0,
@@ -563,7 +563,7 @@
         {
           "archetype_id": "8",
           "assists": 0,
-          "display_name": "Sidney257965",
+          "display_name": "Lamin",
           "dribbles_completed": 7,
           "gamertag": "Sidney257965",
           "goals": 0,
@@ -2538,6 +2538,25 @@
   ],
   "profiles": [
     {
+      "display_name": "Lamin",
+      "gamertag": "Sidney257965",
+      "height_cm": 179,
+      "nationality_id": "14",
+      "overall": 78,
+      "position_id": "14",
+      "preferred_position": "midfielder",
+      "pro_name": "Sid",
+      "season": {
+        "assists": 3,
+        "average_rating": 7.265384615384615,
+        "games_played": 26,
+        "goals": 2,
+        "motm": 2,
+        "red_cards": 0,
+        "win_rate": 53
+      }
+    },
+    {
       "display_name": "Trey",
       "gamertag": "kidljp46",
       "height_cm": 169,
@@ -2573,25 +2592,6 @@
         "motm": 7,
         "red_cards": 0,
         "win_rate": 55
-      }
-    },
-    {
-      "display_name": "Lamin",
-      "gamertag": "Joe97618",
-      "height_cm": 178,
-      "nationality_id": "14",
-      "overall": 80,
-      "position_id": "14",
-      "preferred_position": "midfielder",
-      "pro_name": "LAMIN",
-      "season": {
-        "assists": 3,
-        "average_rating": 7.4,
-        "games_played": 19,
-        "goals": 2,
-        "motm": 2,
-        "red_cards": 0,
-        "win_rate": 73
       }
     }
   ]
