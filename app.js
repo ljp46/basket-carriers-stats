@@ -6,7 +6,7 @@ const dossier = document.querySelector("#player-dossier");
 
 const PLAYER_META = {
   Lamin: { name: "LAMIN JAWARA", number: "47", image: "assets/car-door-signing.webp", position: "CM / CDM", seasonOffset: { apps: 5, goals: 2, assists: 2, motm: 1 } },
-  Trey: { name: "TREY OSHIWAMBO", number: "88", image: "assets/trey-oshiwambo-signing.webp", position: "CAM / CM" },
+  Trey: { name: "TREY OSHIWAMBO", number: "88", image: "assets/trey-oshiwambo-signing.webp", position: "LW / RW" },
   Wormax: { name: "WORMAX HIPPYHAIR", number: "10", image: "assets/wormax-hippyhair-signing.webp", position: "ST / CAM" },
 };
 
