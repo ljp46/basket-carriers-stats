@@ -6,11 +6,11 @@
     "playoff_summary": {
       "clean_sheets": 8,
       "draws": 5,
-      "games_played": 34,
-      "goal_difference": 48,
-      "goals_against": 51,
+      "games_played": 35,
+      "goal_difference": 45,
+      "goals_against": 54,
       "goals_for": 99,
-      "losses": 7,
+      "losses": 8,
       "points": 71,
       "wins": 22
     }
@@ -25,8 +25,95 @@
       "interceptions"
     ]
   },
-  "last_updated": "2026-09-30T15:57:35.505778+00:00",
+  "last_updated": "2026-09-30T20:50:50.844241+00:00",
   "matches": [
+    {
+      "human_players": 3,
+      "match_id": "50476230000442",
+      "match_type": "leagueMatch",
+      "opponent": {
+        "club_id": "410909",
+        "human_players": 4,
+        "name": "AsadRunItAsdaV5"
+      },
+      "played_at": "2026-09-30T20:34:37+00:00",
+      "players": [
+        {
+          "archetype_id": "8",
+          "assists": 0,
+          "display_name": "Lamin",
+          "dribbles_completed": 4,
+          "gamertag": "Sidney257965",
+          "goals": 0,
+          "interceptions": 0,
+          "motm": 0,
+          "passes_attempted": 4,
+          "passes_made": 3,
+          "player_id": "1796485428",
+          "position_group": "midfielder",
+          "rating": 6.7,
+          "red_cards": 0,
+          "second_assists": 0,
+          "seconds_played": 4802,
+          "shots": 0,
+          "tackles_attempted": 3,
+          "tackles_made": 2,
+          "take_ons": 0,
+          "through_passes": 1
+        },
+        {
+          "archetype_id": "10",
+          "assists": 0,
+          "display_name": "Trey",
+          "dribbles_completed": 25,
+          "gamertag": "kidljp46",
+          "goals": 0,
+          "interceptions": 3,
+          "motm": 0,
+          "passes_attempted": 0,
+          "passes_made": 0,
+          "player_id": "1009209437400",
+          "position_group": "forward",
+          "rating": 8.3,
+          "red_cards": 0,
+          "second_assists": 1,
+          "seconds_played": 4802,
+          "shots": 0,
+          "tackles_attempted": 0,
+          "tackles_made": 0,
+          "take_ons": 11,
+          "through_passes": 4
+        },
+        {
+          "archetype_id": "12",
+          "assists": 0,
+          "display_name": "Wormax",
+          "dribbles_completed": 20,
+          "gamertag": "Leechy1234335",
+          "goals": 0,
+          "interceptions": 0,
+          "motm": 0,
+          "passes_attempted": 0,
+          "passes_made": 0,
+          "player_id": "1009792730063",
+          "position_group": "forward",
+          "rating": 7.6,
+          "red_cards": 0,
+          "second_assists": 2,
+          "seconds_played": 4784,
+          "shots": 0,
+          "tackles_attempted": 0,
+          "tackles_made": 0,
+          "take_ons": 4,
+          "through_passes": 6
+        }
+      ],
+      "result": "L",
+      "score_against": 3,
+      "score_for": 0,
+      "timestamp": 1790800477,
+      "winner_by_dnf": false
+    },
     {
       "human_players": 3,
       "match_id": "38216507870351",
@@ -3211,12 +3298,12 @@
       "pro_name": "Sid",
       "season": {
         "assists": 3,
-        "average_rating": 7.1878787878787875,
-        "games_played": 33,
+        "average_rating": 7.179411764705883,
+        "games_played": 34,
         "goals": 2,
         "motm": 2,
         "red_cards": 0,
-        "win_rate": 63
+        "win_rate": 61
       }
     },
     {
@@ -3224,18 +3311,18 @@
       "gamertag": "kidljp46",
       "height_cm": 188,
       "nationality_id": "146",
-      "overall": 75,
+      "overall": 76,
       "position_id": "25",
       "preferred_position": "forward",
       "pro_name": "T. Oshiwambo",
       "season": {
         "assists": 57,
         "average_rating": 8.7,
-        "games_played": 34,
+        "games_played": 35,
         "goals": 19,
         "motm": 14,
         "red_cards": 0,
-        "win_rate": 64
+        "win_rate": 62
       }
     },
     {
@@ -3250,11 +3337,11 @@
       "season": {
         "assists": 14,
         "average_rating": 8.3,
-        "games_played": 34,
+        "games_played": 35,
         "goals": 71,
         "motm": 11,
         "red_cards": 0,
-        "win_rate": 64
+        "win_rate": 62
       }
     }
   ]
