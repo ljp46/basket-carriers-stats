@@ -1,5 +1,5 @@
 {
-  "checked_at": "2026-10-10T20:08:05.477487+00:00",
+  "checked_at": "2026-10-10T23:37:27.323072+00:00",
   "failures": [],
   "match_response_shapes": {
     "27257:friendlyMatch": {
@@ -24,24 +24,24 @@
   "ok": true,
   "overall_stats": {
     "27257": {
-      "gamesPlayed": "48",
+      "gamesPlayed": "51",
       "gamesPlayedPlayoff": "0",
-      "goals": "139",
-      "goalsAgainst": "77",
+      "goals": "146",
+      "goalsAgainst": "82",
       "lastMatch0": "1",
-      "lastMatch1": "1",
+      "lastMatch1": "3",
       "lastMatch2": "1",
-      "lastOpponent0": "282436",
-      "lastOpponent1": "358503",
-      "lastOpponent2": "36756",
+      "lastOpponent0": "89967",
+      "lastOpponent1": "25309",
+      "lastOpponent2": "369524",
       "losses": "12",
-      "ties": "6",
-      "wins": "30"
+      "ties": "7",
+      "wins": "32"
     }
   },
   "profiles_refreshed": 3,
   "source_club_ids": [
     "27257"
   ],
-  "stored_matches": 48
+  "stored_matches": 51
 }
