@@ -6,11 +6,11 @@
     "playoff_summary": {
       "clean_sheets": 13,
       "draws": 7,
-      "games_played": 51,
-      "goal_difference": 64,
-      "goals_against": 82,
-      "goals_for": 146,
-      "losses": 12,
+      "games_played": 52,
+      "goal_difference": 63,
+      "goals_against": 85,
+      "goals_for": 148,
+      "losses": 13,
       "points": 103,
       "wins": 32
     }
@@ -25,8 +25,95 @@
       "interceptions"
     ]
   },
-  "last_updated": "2026-10-10T23:37:27.323072+00:00",
+  "last_updated": "2026-10-11T05:56:04.225984+00:00",
   "matches": [
+    {
+      "human_players": 3,
+      "match_id": "88966787430379",
+      "match_type": "leagueMatch",
+      "opponent": {
+        "club_id": "413501",
+        "human_players": 5,
+        "name": "UziBoyz"
+      },
+      "played_at": "2026-10-10T23:41:08+00:00",
+      "players": [
+        {
+          "archetype_id": "8",
+          "assists": 0,
+          "display_name": "Lamin",
+          "dribbles_completed": 11,
+          "gamertag": "Sidney257965",
+          "goals": 0,
+          "interceptions": 3,
+          "motm": 0,
+          "passes_attempted": 12,
+          "passes_made": 10,
+          "player_id": "1796485428",
+          "position_group": "midfielder",
+          "rating": 7.1,
+          "red_cards": 0,
+          "second_assists": 0,
+          "seconds_played": 5489,
+          "shots": 0,
+          "tackles_attempted": 5,
+          "tackles_made": 2,
+          "take_ons": 2,
+          "through_passes": 1
+        },
+        {
+          "archetype_id": "10",
+          "assists": 0,
+          "display_name": "Trey",
+          "dribbles_completed": 22,
+          "gamertag": "kidljp46",
+          "goals": 0,
+          "interceptions": 4,
+          "motm": 0,
+          "passes_attempted": 24,
+          "passes_made": 15,
+          "player_id": "1009209437400",
+          "position_group": "midfielder",
+          "rating": 7.1,
+          "red_cards": 0,
+          "second_assists": 0,
+          "seconds_played": 5489,
+          "shots": 0,
+          "tackles_attempted": 9,
+          "tackles_made": 4,
+          "take_ons": 6,
+          "through_passes": 2
+        },
+        {
+          "archetype_id": "12",
+          "assists": 0,
+          "display_name": "Wormax",
+          "dribbles_completed": 11,
+          "gamertag": "Leechy1234335",
+          "goals": 2,
+          "interceptions": 1,
+          "motm": 0,
+          "passes_attempted": 15,
+          "passes_made": 13,
+          "player_id": "1009792730063",
+          "position_group": "forward",
+          "rating": 7.8,
+          "red_cards": 0,
+          "second_assists": 2,
+          "seconds_played": 5489,
+          "shots": 4,
+          "tackles_attempted": 3,
+          "tackles_made": 2,
+          "take_ons": 6,
+          "through_passes": 1
+        }
+      ],
+      "result": "L",
+      "score_against": 3,
+      "score_for": 2,
+      "timestamp": 1791675668,
+      "winner_by_dnf": false
+    },
     {
       "human_players": 3,
       "match_id": "89174189070003",
@@ -4762,12 +4849,12 @@
       "pro_name": "Sid",
       "season": {
         "assists": 4,
-        "average_rating": 6.966,
-        "games_played": 50,
+        "average_rating": 6.96078431372549,
+        "games_played": 51,
         "goals": 2,
         "motm": 2,
         "red_cards": 1,
-        "win_rate": 61
+        "win_rate": 60
       }
     },
     {
@@ -4782,11 +4869,11 @@
       "season": {
         "assists": 90,
         "average_rating": 8.7,
-        "games_played": 51,
+        "games_played": 52,
         "goals": 27,
         "motm": 18,
         "red_cards": 0,
-        "win_rate": 62
+        "win_rate": 61
       }
     },
     {
@@ -4800,12 +4887,12 @@
       "pro_name": "W. HIPPYHAIR",
       "season": {
         "assists": 21,
-        "average_rating": 8.5,
-        "games_played": 51,
-        "goals": 108,
+        "average_rating": 8.4,
+        "games_played": 52,
+        "goals": 110,
         "motm": 20,
         "red_cards": 0,
-        "win_rate": 62
+        "win_rate": 61
       }
     }
   ]
