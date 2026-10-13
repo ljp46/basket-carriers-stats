@@ -6,11 +6,11 @@
     "playoff_summary": {
       "clean_sheets": 14,
       "draws": 7,
-      "games_played": 57,
-      "goal_difference": 60,
-      "goals_against": 98,
+      "games_played": 58,
+      "goal_difference": 57,
+      "goals_against": 101,
       "goals_for": 158,
-      "losses": 16,
+      "losses": 17,
       "points": 109,
       "wins": 34
     }
@@ -25,8 +25,95 @@
       "interceptions"
     ]
   },
-  "last_updated": "2026-10-13T17:38:27.694479+00:00",
+  "last_updated": "2026-10-13T22:51:10.070074+00:00",
   "matches": [
+    {
+      "human_players": 3,
+      "match_id": "98522088380025",
+      "match_type": "leagueMatch",
+      "opponent": {
+        "club_id": "68198",
+        "human_players": 5,
+        "name": "No Fishes"
+      },
+      "played_at": "2026-10-13T19:39:23+00:00",
+      "players": [
+        {
+          "archetype_id": "8",
+          "assists": 0,
+          "display_name": "Lamin",
+          "dribbles_completed": 12,
+          "gamertag": "Sidney257965",
+          "goals": 0,
+          "interceptions": 1,
+          "motm": 1,
+          "passes_attempted": 15,
+          "passes_made": 13,
+          "player_id": "1796485428",
+          "position_group": "midfielder",
+          "rating": 7.2,
+          "red_cards": 0,
+          "second_assists": 0,
+          "seconds_played": 2803,
+          "shots": 0,
+          "tackles_attempted": 2,
+          "tackles_made": 1,
+          "take_ons": 1,
+          "through_passes": 0
+        },
+        {
+          "archetype_id": "8",
+          "assists": 0,
+          "display_name": "Trey",
+          "dribbles_completed": 0,
+          "gamertag": "kidljp46",
+          "goals": 0,
+          "interceptions": 0,
+          "motm": 0,
+          "passes_attempted": 0,
+          "passes_made": 0,
+          "player_id": "1009209437400",
+          "position_group": "midfielder",
+          "rating": 3.0,
+          "red_cards": 0,
+          "second_assists": 0,
+          "seconds_played": 0,
+          "shots": 0,
+          "tackles_attempted": 0,
+          "tackles_made": 0,
+          "take_ons": 0,
+          "through_passes": 0
+        },
+        {
+          "archetype_id": "12",
+          "assists": 0,
+          "display_name": "Wormax",
+          "dribbles_completed": 6,
+          "gamertag": "Leechy1234335",
+          "goals": 0,
+          "interceptions": 0,
+          "motm": 0,
+          "passes_attempted": 0,
+          "passes_made": 0,
+          "player_id": "1009792730063",
+          "position_group": "forward",
+          "rating": 6.5,
+          "red_cards": 0,
+          "second_assists": 0,
+          "seconds_played": 1148,
+          "shots": 0,
+          "tackles_attempted": 0,
+          "tackles_made": 0,
+          "take_ons": 1,
+          "through_passes": 0
+        }
+      ],
+      "result": "L",
+      "score_against": 3,
+      "score_for": 0,
+      "timestamp": 1791920363,
+      "winner_by_dnf": false
+    },
     {
       "human_players": 2,
       "match_id": "92586328960390",
@@ -5169,12 +5256,12 @@
       "pro_name": "Sid",
       "season": {
         "assists": 4,
-        "average_rating": 6.96078431372549,
-        "games_played": 51,
+        "average_rating": 6.9557692307692305,
+        "games_played": 52,
         "goals": 2,
-        "motm": 2,
+        "motm": 3,
         "red_cards": 1,
-        "win_rate": 60
+        "win_rate": 59
       }
     },
     {
@@ -5188,31 +5275,31 @@
       "pro_name": "T. Oshiwambo",
       "season": {
         "assists": 95,
-        "average_rating": 8.6,
-        "games_played": 57,
+        "average_rating": 8.5,
+        "games_played": 58,
         "goals": 28,
         "motm": 19,
         "red_cards": 0,
-        "win_rate": 59
+        "win_rate": 58
       }
     },
     {
       "display_name": "Wormax",
       "gamertag": "Leechy1234335",
-      "height_cm": 176,
+      "height_cm": 173,
       "nationality_id": "14",
-      "overall": 86,
+      "overall": 85,
       "position_id": "25",
       "preferred_position": "forward",
       "pro_name": "W. HIPPYHAIR",
       "season": {
         "assists": 23,
         "average_rating": 8.4,
-        "games_played": 57,
+        "games_played": 58,
         "goals": 118,
         "motm": 21,
         "red_cards": 0,
-        "win_rate": 59
+        "win_rate": 58
       }
     }
   ]
