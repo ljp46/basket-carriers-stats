@@ -1,5 +1,7 @@
 const routeLinks = [...document.querySelectorAll("[data-route]")];
 const pages = [...document.querySelectorAll("[data-page]")];
+const exhibitionButtons = [...document.querySelectorAll("[data-exhibition-target]")];
+const exhibitions = [...document.querySelectorAll("[data-exhibition]")];
 const lockers = [...document.querySelectorAll("[data-locker]")];
 const squadCards = [...document.querySelectorAll("[data-player]")];
 const dossier = document.querySelector("#player-dossier");
@@ -7,10 +9,9 @@ const dossier = document.querySelector("#player-dossier");
 const PLAYER_META = {
   Lamin: { name: "LAMIN JAWARA", number: "47", image: "assets/car-door-signing.webp", position: "CM / CDM", seasonOffset: { apps: 5, goals: 2, assists: 2, motm: 1 } },
   Trey: { name: "TREY OSHIWAMBO", number: "88", image: "assets/trey-oshiwambo-signing.webp?v=2", position: "CAM / LW" },
-  Wormax: { name: "WORMAX HIPPYHAIR", number: "10", image: "assets/wormax-hippyhair-signing.webp", position: "ST / CAM" },
 };
 
-const PLAYER_ORDER = ["Lamin", "Trey", "Wormax"];
+const PLAYER_ORDER = ["Lamin", "Trey"];
 const MILESTONE_THRESHOLDS = {
   apps: [10, 25, 50, 75, 100, 150, 200, 250, 300, 400, 500],
   goals: [10, 25, 50, 75, 100, 150, 200, 250, 300, 400, 500],
@@ -39,6 +40,15 @@ function showRoute(name) {
   routeLinks.forEach((link) => { const active = link.dataset.route === target; link.classList.toggle("active", active); if (link.closest("nav")) link.setAttribute("aria-current", active ? "page" : "false"); });
   document.title = target === "museum" ? "THE MUSEUM — Basket Carriers" : "BASKET CARRIERS — SEASON TWO";
   document.body.dataset.route = target;
+}
+
+function showExhibition(name) {
+  exhibitions.forEach((item) => { item.hidden = item.dataset.exhibition !== name; });
+  exhibitionButtons.forEach((button) => {
+    const active = button.dataset.exhibitionTarget === name;
+    button.classList.toggle("active", active);
+    button.setAttribute("aria-pressed", String(active));
+  });
 }
 
 function recentSession(matches) {
@@ -149,33 +159,49 @@ function nextMilestone(stats) {
 function renderLegacyTracking() {
   const totals = new Map(PLAYER_ORDER.map((player) => [player, officialSeasonStats(player)]));
   const recordsByPlayer = new Map(PLAYER_ORDER.map((player) => [player, []]));
+  const formerPlayers = (archive.former_players || []).filter((player) => !PLAYER_ORDER.includes(player.display_name));
+  const formerStats = formerPlayers.map((player) => ({
+    player: player.display_name,
+    name: player.name,
+    number: player.number,
+    archived: true,
+    stats: {
+      apps: Number(player.season?.games_played || 0),
+      goals: Number(player.season?.goals || 0),
+      assists: Number(player.season?.assists || 0),
+      motm: Number(player.season?.motm || 0),
+    },
+  }));
+  const activeStats = PLAYER_ORDER.map((player) => ({ player, name: PLAYER_META[player].name, number: PLAYER_META[player].number, archived: false, stats: totals.get(player) }));
+  const candidates = [...activeStats, ...formerStats];
   const recordHost = document.querySelector("#record-banners");
   const milestoneHost = document.querySelector("#milestone-banners");
   if (!recordHost || !milestoneHost) return;
 
   recordHost.innerHTML = CLUB_RECORDS.map((record) => {
-    const challengers = PLAYER_ORDER.map((player) => {
-      const stats = totals.get(player);
-      return { player, value: record.key === "contributions" ? stats.goals + stats.assists : Number(stats[record.key] || 0) };
-    }).sort((a, b) => b.value - a.value);
+    const challengers = candidates.map((candidate) => {
+      const { stats } = candidate;
+      return { ...candidate, value: record.key === "contributions" ? stats.goals + stats.assists : Number(stats[record.key] || 0) };
+    }).sort((a, b) => b.value - a.value || Number(b.archived) - Number(a.archived));
     const leader = challengers[0];
     const broken = leader.value > record.value;
-    const gap = Math.max(0, record.value + 1 - leader.value);
-    if (broken) recordsByPlayer.get(leader.player).push({ ...record, current: leader.value });
+    const activeLeader = challengers.find((candidate) => !candidate.archived);
+    const target = broken ? leader.value : record.value;
+    const gap = Math.max(0, target + 1 - activeLeader.value);
+    if (broken && !leader.archived) recordsByPlayer.get(leader.player).push({ ...record, current: leader.value });
     return `<article class="record-banner ${broken ? "record-broken" : ""}">
-      <div class="record-crown">${broken ? "NEW RECORD" : "CLUB RECORD"}</div>
-      <span>${record.label}</span><strong>${broken ? leader.value : record.value}</strong>
-      <small>${broken ? PLAYER_META[leader.player].name : record.holder}</small>
-      <div><b>${PLAYER_META[leader.player].name}</b><em>${leader.value} CURRENT · ${broken ? "RECORD BROKEN" : `${gap} TO BREAK`}</em></div>
+      <div class="record-crown">${broken && !leader.archived ? "NEW RECORD" : "CLUB RECORD"}</div>
+      <span>${record.label}</span><strong>${target}</strong>
+      <small>${broken ? leader.name : record.holder}</small>
+      <div><b>${activeLeader.name}</b><em>${activeLeader.value} CURRENT · ${broken && !leader.archived ? "RECORD BROKEN" : `${gap} TO BREAK`}</em></div>
     </article>`;
   }).join("");
 
-  milestoneHost.innerHTML = PLAYER_ORDER.map((player) => {
-    const stats = totals.get(player);
+  milestoneHost.innerHTML = candidates.map(({ name, number, archived, stats }) => {
     const achieved = achievedMilestones(stats);
-    const next = nextMilestone(stats);
+    const next = archived ? null : nextMilestone(stats);
     return `<article class="milestone-banner ${achieved.length ? "has-honours" : ""}">
-      <header><span>${PLAYER_META[player].number}</span><div><small>PLAYER HONOURS</small><strong>${PLAYER_META[player].name}</strong></div></header>
+      <header><span>${number}</span><div><small>${archived ? "ARCHIVED HONOURS" : "PLAYER HONOURS"}</small><strong>${name}</strong></div></header>
       <div class="milestone-ribbons">${achieved.length ? achieved.map((item) => `<span><b>${item.threshold}</b>${MILESTONE_LABELS[item.metric]}</span>`).join("") : `<p>THE FIRST BANNER AWAITS.</p>`}</div>
       ${next ? `<footer><span>NEXT LANDMARK</span><b>${next.target} ${MILESTONE_LABELS[next.metric]}</b><small>${next.away} AWAY</small></footer>` : ""}
     </article>`;
@@ -282,6 +308,7 @@ async function loadArchive() {
 
 window.addEventListener("hashchange", () => showRoute(location.hash.slice(1)));
 showRoute(location.hash.slice(1));
+exhibitionButtons.forEach((button) => button.addEventListener("click", () => showExhibition(button.dataset.exhibitionTarget)));
 
 lockers.forEach((locker) => {
   const trigger = locker.querySelector(".locker-trigger");

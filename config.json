@@ -5,7 +5,6 @@
   "session_gap_minutes": 60,
   "players": {
     "kidljp46": "Trey",
-    "Leechy1234335": "Wormax",
     "Joe97618": "Lamin",
     "Sidney257965": "Lamin"
   },
@@ -14,6 +13,12 @@
       {
         "display_name": "Door",
         "through_timestamp": 1789862799
+      }
+    ],
+    "Leechy1234335": [
+      {
+        "display_name": "Wormax",
+        "through_timestamp": 1791920363
       }
     ]
   },

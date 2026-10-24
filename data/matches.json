@@ -25,6 +25,50 @@
       "interceptions"
     ]
   },
+  "former_players": [
+    {
+      "display_name": "Wormax",
+      "gamertag": "Leechy1234335",
+      "last_match_id": "98522088380025",
+      "name": "WORMAX HIPPYHAIR",
+      "number": "10",
+      "position": "ST / CAM",
+      "season": {
+        "assists": 23,
+        "average_rating": 8.4,
+        "games_played": 58,
+        "goals": 118,
+        "motm": 21,
+        "red_cards": 0,
+        "win_rate": 58
+      },
+      "status": "transferred",
+      "through_timestamp": 1791920363,
+      "tracked": {
+        "assists": 23,
+        "average_rating": 8.38,
+        "draws": 7,
+        "dribbles_completed": 903,
+        "games_played": 58,
+        "goals": 118,
+        "interceptions": 36,
+        "losses": 17,
+        "motm": 21,
+        "passes_attempted": 1230,
+        "passes_made": 1010,
+        "red_cards": 0,
+        "second_assists": 40,
+        "seconds_played": 261280,
+        "shots": 226,
+        "tackles_attempted": 187,
+        "tackles_made": 37,
+        "take_ons": 195,
+        "through_passes": 121,
+        "wins": 34
+      },
+      "transfer_fee_gbp": 175000000
+    }
+  ],
   "last_updated": "2026-10-21T01:39:53.354106+00:00",
   "matches": [
     {

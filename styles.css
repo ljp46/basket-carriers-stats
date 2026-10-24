@@ -235,6 +235,7 @@ a { color: inherit; }
 .museum-intro h1 strong { color: transparent; font-weight: inherit; -webkit-text-stroke: 1px rgba(237,240,233,.62); }
 .museum-intro > p { max-width: 330px; padding-bottom: 4px; color: var(--muted); font: .76rem/1.65 var(--mono); }
 .museum-layout { display: grid; grid-template-columns: 205px minmax(0,1fr); gap: clamp(24px,4vw,68px); align-items: start; }
+.exhibition-stack { min-width: 0; }
 .era-index { position: sticky; top: 115px; border-top: 1px solid var(--line); }
 .era-index > p { margin: 17px 0 24px; color: var(--muted); font: .58rem var(--mono); letter-spacing: .14em; }
 .era-button, .future-era {
@@ -449,6 +450,11 @@ a { color: inherit; }
 .exhibition-footer p { margin: 0; }
 .exhibition-footer p span { margin-right: 11px; color: var(--paper); font-weight: 800; letter-spacing: .08em; }
 .exhibition-footer > strong { color: var(--acid); font: .65rem var(--mono); letter-spacing: .15em; }
+.fc27-locker-room { min-height: 650px; }
+.fc27-locker { flex: 1 0 100%; }
+.fc27-locker.is-lit { flex: 1 0 100%; }
+.fc27-locker .archived-portrait { width: min(190px,92%); margin-top: 18px; }
+.fc27-locker.is-lit .archived-portrait { width: 145px; }
 
 @media (max-width: 980px) {
   .site-header { grid-template-columns: 1fr auto; }
@@ -772,6 +778,8 @@ a { color: inherit; }
 .transfer-wire-hole::after { content: "51"; }
 .transfer-wire-door { background: var(--s2-green); }
 .transfer-wire-door::after { content: "47"; }
+.transfer-wire-wormax { background: linear-gradient(110deg,#ad1b45,#354ea4 72%,#26713a); }
+.transfer-wire-wormax::after { content: "10"; }
 
 
 /* First confirmed FC27 registration — returning club identity. */

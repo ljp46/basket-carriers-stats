@@ -9,7 +9,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&amp;family=DM+Mono:wght@400;500&amp;family=Inter:wght@400;500;600;700;800;900&amp;display=swap" rel="stylesheet" />
     <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='8' fill='%23050808'/%3E%3Cpath d='M13 14h38v8H35v28h-8V22H13z' fill='%23d7ff2f'/%3E%3C/svg%3E" />
-    <link rel="stylesheet" href="styles.css?v=27" />
+    <link rel="stylesheet" href="styles.css?v=28" />
   </head>
   <body>
     <div class="noise" aria-hidden="true"></div>
@@ -48,7 +48,7 @@
         <section class="fc27-board roster-board" aria-label="FC27 active squad and transfers">
           <header>
             <div><small>ACTIVE REGISTRATION</small><h2>FC27 SQUAD</h2></div>
-            <span>3 / 3 CONFIRMED</span>
+            <span>2 / 3 CONFIRMED · 1 OPEN</span>
           </header>
 
           <div class="squad-grid">
@@ -88,22 +88,14 @@
               </div>
             </article>
 
-            <article class="squad-card wormax-player" data-player="Wormax" role="button" tabindex="0" aria-haspopup="dialog" aria-label="Open Wormax Hippyhair's player dossier">
-              <div class="squad-card-art">
-                <img src="assets/wormax-hippyhair-signing.webp" alt="Wormax Hippyhair adjusting his sleeve in the Basket Carriers kit" />
-              </div>
+            <article class="squad-card pending-player" aria-label="Squad place awaiting Leech's new player">
               <div class="squad-card-body">
-                <div class="player-status"><span>NEW SIGNING · £24M</span><i>CONFIRMED</i></div>
-                <strong class="player-number">10</strong>
-                <p>WORMAX</p><h3>HIPPYHAIR</h3>
-                <div class="player-role">DIRECT FINISHER · NUMBER 10</div>
-                <div class="player-stat-slots" aria-label="FC27 statistics">
-                  <div><b data-card-stat="apps">—</b><small>APP</small></div><div><b data-card-stat="goals">—</b><small>G</small></div>
-                  <div><b data-card-stat="assists">—</b><small>A</small></div><div><b data-card-stat="averageRating">—</b><small>AVG</small></div>
-                </div>
-                <div class="stat-destinations"><span>FC27</span><span>SESSION</span><span>CAREER</span></div>
-                <span class="open-dossier">OPEN PLAYER DOSSIER →</span>
+                <div class="player-status"><span>LEECH · NEW ACCOUNT</span><i>AWAITING DETAILS</i></div>
+                <p>SQUAD PLACE</p><h3>OPEN</h3>
+                <div class="player-role">NEW IDENTITY · NEW CAREER FROM ZERO</div>
+                <div class="pending-line" aria-hidden="true"></div>
               </div>
+              <span class="pending-mark" aria-hidden="true">?</span>
             </article>
           </div>
 
@@ -124,17 +116,23 @@
           <section class="departures-section" aria-labelledby="departures-title">
             <header><small>CLUB TRANSACTIONS</small><h3 id="departures-title">DEPARTURES</h3></header>
             <div class="departure-grid">
+              <div class="transfer-wire transfer-wire-wormax">
+                <span>OUTGOING TRANSFER · FC27</span>
+                <strong>WORMAX HIPPYHAIR</strong>
+                <b>£175M</b>
+                <small>CLUB-RECORD SALE · 118 GOALS IN 58 MATCHES</small>
+              </div>
               <div class="transfer-wire">
                 <span>OUTGOING TRANSFER</span>
                 <strong>RICKY BOBBY</strong>
                 <b>£150M</b>
-                <small>CLUB-RECORD SALE · FC26 LEGEND</small>
+                <small>FC26 LEGEND · PREVIOUS CLUB-RECORD SALE</small>
               </div>
               <div class="transfer-wire transfer-wire-hole">
                 <span>OUTGOING TRANSFER</span>
                 <strong>CLOSED HOLE</strong>
                 <b>£135M</b>
-                <small>SECOND-HIGHEST SALE · FC26 LEGEND</small>
+                <small>FC26 LEGEND · OUTGOING TRANSFER</small>
               </div>
               <div class="transfer-wire transfer-wire-door">
                 <span>CLUB RETIREMENT</span>
@@ -166,13 +164,16 @@
         <div class="museum-layout">
           <aside class="era-index" aria-label="Club eras">
             <p>EXHIBITIONS</p>
-            <button class="era-button active" type="button">
+            <button class="era-button active" type="button" data-exhibition-target="fc26" aria-pressed="true">
               <span>001</span><b>FC26</b><small>Basket Carriers</small>
             </button>
-            <div class="future-era"><span>002</span><b>FC27</b><small>Exhibition unopened</small></div>
+            <button class="era-button" type="button" data-exhibition-target="fc27" aria-pressed="false">
+              <span>002</span><b>FC27</b><small>Season two</small>
+            </button>
           </aside>
 
-          <article class="exhibition">
+          <div class="exhibition-stack">
+          <article class="exhibition" data-exhibition="fc26">
             <header class="exhibition-header">
               <div>
                 <p>EXHIBITION 001 · 2025–2026</p>
@@ -293,6 +294,59 @@
               <strong>29 · 51 · 47</strong>
             </footer>
           </article>
+          <article class="exhibition fc27-exhibition" data-exhibition="fc27" hidden>
+            <header class="exhibition-header">
+              <div>
+                <p>EXHIBITION 002 · 2026–2027</p>
+                <h2>SEASON<br />TWO</h2>
+              </div>
+              <span class="gambia-flag" role="img" aria-label="Flag of The Gambia"></span>
+            </header>
+            <div class="legacy-strip">
+              <span>THE GAMBIA</span><span>FC27 CLUBS</span><span>FIRST DEPARTURE</span><span>ARCHIVED</span>
+            </div>
+            <div class="locker-intro">
+              <div><p>PERMANENT COLLECTION · FC27</p><h3>THE FIRST DEPARTURE</h3></div>
+              <span>Wormax's career belongs to Wormax, even as Leech starts anew.</span>
+            </div>
+            <div class="locker-room fc27-locker-room" aria-label="FC27 player lockers">
+              <article class="player-locker fc27-locker" data-locker="wormax">
+                <button class="locker-trigger" type="button" aria-expanded="false">
+                  <span class="locker-lamp" aria-hidden="true"><i></i></span>
+                  <span class="locker-index">LOCKER 10</span>
+                  <span class="hanging-shirt archived-portrait" aria-hidden="true">
+                    <img src="assets/wormax-hippyhair-signing.webp" alt="" />
+                  </span>
+                  <span class="locker-role">THE FINISHER</span>
+                  <strong>WORMAX<br />HIPPYHAIR</strong>
+                  <small>OPEN LOCKER</small>
+                </button>
+                <div class="locker-record" aria-hidden="true">
+                  <header><div><p>FC27 · TRANSFERRED</p><h3>WORMAX HIPPYHAIR</h3></div><span>10</span></header>
+                  <div class="identity-tags"><span>ST · CAM</span><span>173 CM</span><span>85 OVR</span><span>NUMBER 10</span><span class="transfer-tag">TRANSFERRED · £175M</span></div>
+                  <p class="record-label">BASKET CARRIERS CAREER · FC27</p>
+                  <div class="career-locker-stats">
+                    <div><strong>58</strong><span>Appearances</span></div><div><strong>118</strong><span>Goals</span></div>
+                    <div><strong>23</strong><span>Assists</span></div><div><strong>141</strong><span>G+A</span></div>
+                    <div><strong>8.4</strong><span>Avg rating</span></div><div><strong>21</strong><span>POTM</span></div>
+                    <div><strong>58%</strong><span>Win rate</span></div><div><strong>0</strong><span>Red cards</span></div>
+                  </div>
+                  <p class="record-label">TRACKED MATCH ARCHIVE · 58 APPEARANCES</p>
+                  <div class="advanced-locker-stats">
+                    <div><span>Goals · assists</span><strong>118 · 23</strong></div><div><span>Second assists</span><strong>40</strong></div>
+                    <div><span>Shots · conversion</span><strong>226 · 52%</strong></div><div><span>Passes · accuracy</span><strong>1010/1230 · 82%</strong></div>
+                    <div><span>Through passes</span><strong>121</strong></div><div><span>Dribbles · take-ons</span><strong>903 · 195</strong></div>
+                    <div><span>Tackles · success</span><strong>37/187 · 20%</strong></div><div><span>Interceptions</span><strong>36</strong></div>
+                  </div>
+                </div>
+              </article>
+            </div>
+            <footer class="exhibition-footer">
+              <p><span>THE FIRST FC27 EXIT</span> 118 goals in 58 appearances. A new identity takes the place.</p>
+              <strong>10 · £175M</strong>
+            </footer>
+          </article>
+          </div>
         </div>
       </section>
     </main>
@@ -343,6 +397,6 @@
       </div>
     </dialog>
 
-    <script src="app.js?v=19" defer></script>
+    <script src="app.js?v=20" defer></script>
   </body>
 </html>

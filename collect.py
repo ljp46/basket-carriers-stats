@@ -255,10 +255,15 @@ def playoff_summary(record: dict[str, Any]) -> dict[str, int]:
     }
 
 
-def match_has_configured_player(raw: dict[str, Any], club_id: str, aliases: dict[str, str]) -> bool:
-    """Reject same-name clubs unless one of our configured players appears."""
+def match_has_configured_player(raw: dict[str, Any], club_id: str, config: dict[str, Any]) -> bool:
+    """Archive every match from our known club, even before a new account is named.
+
+    For other same-name club IDs, require a known player to avoid mixing clubs.
+    """
+    if str(club_id) == str(config["club_id"]):
+        return True
     own_players = raw.get("players", {}).get(str(club_id), {})
-    configured = {name.casefold() for name in aliases}
+    configured = {name.casefold() for name in config["players"]}
     return any(
         str(player.get("playername") or player_id).casefold() in configured
         for player_id, player in own_players.items()
@@ -528,7 +533,7 @@ def main() -> None:
                     "keys": sorted(response.keys()) if isinstance(response, dict) else [],
                 }
                 for raw_match in raw_matches:
-                    if not match_has_configured_player(raw_match, club_id, config["players"]):
+                    if not match_has_configured_player(raw_match, club_id, config):
                         continue
                     match = normalize_match(raw_match, match_type, candidate_config)
                     if match:
@@ -558,6 +563,13 @@ def main() -> None:
     for match in fetched:
         by_id[str(match["match_id"])] = match
     matches = sorted(by_id.values(), key=lambda match: match["timestamp"], reverse=True)
+    # Reapply identity history across the entire archive. A replacement account
+    # can be named later without losing matches that fell out of EA's recent 10.
+    for match in matches:
+        for player in match.get("players", []):
+            gamertag = player.get("gamertag")
+            if gamertag:
+                player["display_name"] = match_display_name(gamertag, match["timestamp"], config)
 
     updated_at = datetime.now(timezone.utc).isoformat()
     milestones = update_milestones(previous, profiles, matches, updated_at, config)
@@ -574,6 +586,7 @@ def main() -> None:
         },
         "last_updated": updated_at,
         "profiles": profiles,
+        "former_players": previous.get("former_players", []),
         "milestones": milestones,
         "matches": matches,
     }
