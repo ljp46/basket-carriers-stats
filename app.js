@@ -290,7 +290,9 @@ function updateMainCards() {
   const goalsAgainst = useSummary ? Number(summary.goals_against) : (archive.matches || []).reduce((sum, match) => sum + Number(match.score_against || 0), 0);
   const gd = useSummary ? Number(summary.goal_difference) : goalsFor - goalsAgainst;
   document.querySelector("#data-summary").textContent = games ? `${games} MATCHES · ${wins}W ${draws}D ${losses}L · GD ${gd >= 0 ? "+" : ""}${gd}` : "AWAITING FIRST MATCH";
-  document.querySelector("#data-status").textContent = games ? "LIVE ARCHIVE" : "SQUAD COMPLETE";
+  const lastUpdated = Date.parse(archive.last_updated || "");
+  const archiveDelayed = !Number.isFinite(lastUpdated) || Date.now() - lastUpdated > 6 * 60 * 60 * 1000;
+  document.querySelector("#data-status").textContent = archiveDelayed ? "ARCHIVE DELAYED" : games ? "LIVE ARCHIVE" : "AWAITING MATCH";
   renderLegacyTracking();
 }
 

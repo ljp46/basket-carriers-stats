@@ -16,4 +16,6 @@ Wormax Hippyhair (`Leechy1234335`) transferred for £175M after his last archive
 
 Open **Actions → Collect FC Clubs matches → Run workflow** to collect immediately after a session.
 
+The dashboard shows **ARCHIVE DELAYED** if a successful collection has not been published for six hours. If EA returns HTTP 403 to GitHub Actions, the failed run leaves `data/matches.json` unchanged. Running `python collect.py` from a connection EA accepts and committing the updated `data/` files can preserve the recent matches while the hosted collector is unavailable; EA only returns its latest 10 matches per type.
+
 This is an unofficial community project and is not affiliated with or endorsed by Electronic Arts.

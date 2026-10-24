@@ -1,19 +1,44 @@
 {
-  "checked_at": "2026-10-24T21:44:50.383803+00:00",
-  "failures": [
-    "current season search: EA request failed after three attempts: HTTP Error 403: Forbidden",
-    "club search: EA request failed after three attempts: HTTP Error 403: Forbidden",
-    "27257:overallStats: EA request failed after three attempts: HTTP Error 403: Forbidden",
-    "27257:leagueMatch: EA request failed after three attempts: HTTP Error 403: Forbidden",
-    "27257:friendlyMatch: EA request failed after three attempts: HTTP Error 403: Forbidden",
-    "27257:playoffMatch: EA request failed after three attempts: HTTP Error 403: Forbidden",
-    "members/stats: EA request failed after three attempts: HTTP Error 403: Forbidden"
-  ],
-  "match_response_shapes": {},
-  "match_type_counts": {},
-  "new_or_refreshed_matches": 0,
+  "checked_at": "2026-10-24T21:43:21.068169+00:00",
+  "failures": [],
+  "match_response_shapes": {
+    "27257:friendlyMatch": {
+      "keys": [],
+      "type": "list"
+    },
+    "27257:leagueMatch": {
+      "keys": [],
+      "type": "list"
+    },
+    "27257:playoffMatch": {
+      "keys": [],
+      "type": "list"
+    }
+  },
+  "match_type_counts": {
+    "27257:friendlyMatch": 0,
+    "27257:leagueMatch": 10,
+    "27257:playoffMatch": 0
+  },
+  "new_or_refreshed_matches": 10,
   "ok": true,
-  "overall_stats": {},
+  "overall_stats": {
+    "27257": {
+      "gamesPlayed": "58",
+      "gamesPlayedPlayoff": "0",
+      "goals": "158",
+      "goalsAgainst": "101",
+      "lastMatch0": "2",
+      "lastMatch1": "1",
+      "lastMatch2": "2",
+      "lastOpponent0": "68198",
+      "lastOpponent1": "428190",
+      "lastOpponent2": "324070",
+      "losses": "17",
+      "ties": "7",
+      "wins": "34"
+    }
+  },
   "profiles_refreshed": 2,
   "source_club_ids": [
     "27257"

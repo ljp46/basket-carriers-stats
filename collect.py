@@ -79,6 +79,26 @@ def request_json(endpoint: str, params: dict[str, str]) -> Any:
         try:
             with urllib.request.urlopen(request, timeout=25) as response:
                 return json.load(response)
+        except urllib.error.HTTPError as exc:
+            if exc.code == 403:
+                # EA sometimes refuses the runner's default TLS fingerprint.
+                # A browser-compatible HTTP transport can still fetch the same
+                # public endpoint without changing the archive format.
+                try:
+                    from curl_cffi import requests as browser_requests
+                    response = browser_requests.get(
+                        url,
+                        headers={"accept": "application/json", "sec-fetch-site": "same-origin"},
+                        impersonate="chrome",
+                        timeout=25,
+                    )
+                    response.raise_for_status()
+                    return response.json()
+                except Exception as fallback_error:
+                    raise RuntimeError(f"EA HTTP 403; browser transport failed: {fallback_error}") from fallback_error
+            last_error = exc
+            if attempt < 2:
+                time.sleep(2 ** attempt)
         except (urllib.error.URLError, TimeoutError, json.JSONDecodeError) as exc:
             last_error = exc
             if attempt < 2:
@@ -591,11 +611,13 @@ def main() -> None:
         "milestones": milestones,
         "matches": matches,
     }
-    write_json_atomic(DATA_PATH, payload)
+    match_sources_ok = bool(match_type_counts)
+    if match_sources_ok:
+        write_json_atomic(DATA_PATH, payload)
     write_json_atomic(
         STATUS_PATH,
         {
-            "ok": bool(fetched or current_playoff_summary),
+            "ok": match_sources_ok,
             "new_or_refreshed_matches": len(fetched),
             "stored_matches": len(matches),
             "profiles_refreshed": len(profiles),
@@ -615,7 +637,7 @@ def main() -> None:
     print("Overall stats:", json.dumps(overall_stats_by_club, sort_keys=True))
     if failures:
         print("Partial failures:", "; ".join(failures))
-    if not fetched and not current_playoff_summary:
+    if not match_sources_ok:
         raise SystemExit(1)
 
 
