@@ -1,5 +1,5 @@
 {
-  "checked_at": "2026-10-21T01:39:53.354106+00:00",
+  "checked_at": "2026-10-24T21:43:21.068169+00:00",
   "failures": [],
   "match_response_shapes": {
     "27257:friendlyMatch": {
@@ -39,7 +39,7 @@
       "wins": "34"
     }
   },
-  "profiles_refreshed": 3,
+  "profiles_refreshed": 2,
   "source_club_ids": [
     "27257"
   ],

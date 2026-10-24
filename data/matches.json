@@ -69,7 +69,7 @@
       "transfer_fee_gbp": 175000000
     }
   ],
-  "last_updated": "2026-10-21T01:39:53.354106+00:00",
+  "last_updated": "2026-10-24T21:43:21.068169+00:00",
   "matches": [
     {
       "human_players": 3,
@@ -5323,25 +5323,6 @@
         "games_played": 58,
         "goals": 28,
         "motm": 19,
-        "red_cards": 0,
-        "win_rate": 58
-      }
-    },
-    {
-      "display_name": "Wormax",
-      "gamertag": "Leechy1234335",
-      "height_cm": 173,
-      "nationality_id": "14",
-      "overall": 85,
-      "position_id": "25",
-      "preferred_position": "forward",
-      "pro_name": "W. HIPPYHAIR",
-      "season": {
-        "assists": 23,
-        "average_rating": 8.4,
-        "games_played": 58,
-        "goals": 118,
-        "motm": 21,
         "red_cards": 0,
         "win_rate": 58
       }
