@@ -38,6 +38,25 @@ def request_json(endpoint: str, params: dict[str, str]) -> Any:
         try:
             with urllib.request.urlopen(request, timeout=30) as response:
                 return json.load(response)
+        except urllib.error.HTTPError as exc:
+            if exc.code == 403:
+                # Same fallback as collect.py: EA can refuse the runner's
+                # default TLS fingerprint but accept a browser-like one.
+                try:
+                    from curl_cffi import requests as browser_requests
+                    response = browser_requests.get(
+                        url,
+                        headers={"accept": "application/json", "sec-fetch-site": "same-origin"},
+                        impersonate="chrome",
+                        timeout=30,
+                    )
+                    response.raise_for_status()
+                    return response.json()
+                except Exception as fallback_error:
+                    raise RuntimeError(f"EA HTTP 403; browser transport failed: {fallback_error}") from fallback_error
+            last_error = exc
+            if attempt < 2:
+                time.sleep(2**attempt)
         except (urllib.error.URLError, TimeoutError, json.JSONDecodeError) as exc:
             last_error = exc
             if attempt < 2:
