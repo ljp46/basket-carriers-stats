@@ -518,15 +518,6 @@ def main() -> None:
         source_club_ids.update(matching_club_ids(club_search, config["club_name"]))
     except RuntimeError as exc:
         failures.append(f"club search: {exc}")
-    if not club_id:
-        try:
-            name_search = request_json(
-                "clubs/search",
-                {"platform": config["platform"], "clubName": config["club_name"]},
-            )
-            source_club_ids.update(matching_club_ids(name_search, config["club_name"]))
-        except RuntimeError as exc:
-            failures.append(f"clubs/search: {exc}")
 
     match_type_counts: dict[str, int] = {}
     match_response_shapes: dict[str, Any] = {}
