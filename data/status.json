@@ -1,15 +1,48 @@
 {
-  "checked_at": "2026-10-29T21:55:08.963755+00:00",
-  "failures": [
-    "members/stats: no club named 'WACKY WOMBATS' with a configured player yet"
+  "checked_at": "2026-10-29T22:14:19.093559+00:00",
+  "failures": [],
+  "match_response_shapes": {
+    "1991204:friendlyMatch": {
+      "keys": [],
+      "type": "list"
+    },
+    "1991204:leagueMatch": {
+      "keys": [],
+      "type": "list"
+    },
+    "1991204:playoffMatch": {
+      "keys": [],
+      "type": "list"
+    }
+  },
+  "match_type_counts": {
+    "1991204:friendlyMatch": 0,
+    "1991204:leagueMatch": 1,
+    "1991204:playoffMatch": 0
+  },
+  "new_or_refreshed_matches": 1,
+  "ok": true,
+  "overall_stats": {
+    "1991204": {
+      "gamesPlayed": "1",
+      "gamesPlayedPlayoff": "0",
+      "goals": "3",
+      "goalsAgainst": "1",
+      "lastMatch0": "1",
+      "lastMatch1": "-1",
+      "lastMatch2": "-1",
+      "lastOpponent0": "1855210",
+      "lastOpponent1": "-1",
+      "lastOpponent2": "-1",
+      "losses": "0",
+      "ties": "0",
+      "wins": "1"
+    }
+  },
+  "profiles_refreshed": 2,
+  "source_club_ids": [
+    "1991204"
   ],
-  "match_response_shapes": {},
-  "match_type_counts": {},
-  "new_or_refreshed_matches": 0,
-  "ok": false,
-  "overall_stats": {},
-  "profiles_refreshed": 0,
-  "source_club_ids": [],
-  "stored_matches": 0,
-  "waiting_for_club": true
+  "stored_matches": 1,
+  "waiting_for_club": false
 }
