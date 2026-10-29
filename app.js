@@ -6,12 +6,17 @@ const lockers = [...document.querySelectorAll("[data-locker]")];
 const squadCards = [...document.querySelectorAll("[data-player]")];
 const dossier = document.querySelector("#player-dossier");
 
+const CLUB_NAME = "WACKY WOMBATS";
+const LEGACY_ARCHIVE = "data/archive/basket-carriers-fc27.json";
+
+// Everyone starts from zero at Wacky Wombats, so no season offsets apply.
 const PLAYER_META = {
-  Lamin: { name: "LAMIN JAWARA", number: "47", image: "assets/car-door-signing.webp", position: "CM / CDM", seasonOffset: { apps: 5, goals: 2, assists: 2, motm: 1 } },
-  Trey: { name: "TREY OSHIWAMBO", number: "88", image: "assets/trey-oshiwambo-signing.webp?v=2", position: "CAM / LW" },
+  Magician: { name: "LITTLE MAGICIAN", number: "88", image: "assets/little-magician-signing.webp", position: "CM / CAM" },
+  Banks: { name: "ROBIN BANKS", number: "32", image: "assets/robin-banks-signing.webp", position: "ST" },
+  Lamin: { name: "LAMIN JAWARA", number: "47", image: "assets/lamin-jawara-wombats.webp", position: "CM / CDM" },
 };
 
-const PLAYER_ORDER = ["Lamin", "Trey"];
+const PLAYER_ORDER = ["Magician", "Banks", "Lamin"];
 const MILESTONE_THRESHOLDS = {
   apps: [10, 25, 50, 75, 100, 150, 200, 250, 300, 400, 500],
   goals: [10, 25, 50, 75, 100, 150, 200, 250, 300, 400, 500],
@@ -31,6 +36,7 @@ const CLUB_RECORDS = [
 const emptyStats = () => ({ apps: 0, goals: 0, assists: 0, motm: 0, redCards: 0, ratingTotal: 0, averageRating: 0, seconds: 0, secondAssists: 0, shots: 0, passesMade: 0, passesAttempted: 0, throughPasses: 0, dribbles: 0, takeOns: 0, tacklesMade: 0, tacklesAttempted: 0, interceptions: 0, wins: 0, draws: 0, losses: 0 });
 
 let archive = { matches: [], profiles: [], last_updated: null };
+let legacy = { former_players: [] };
 let currentPlayer = null;
 let currentScope = sessionStorage.getItem("bc-stat-scope") || "fc27";
 
@@ -38,7 +44,7 @@ function showRoute(name) {
   const target = pages.some((page) => page.dataset.page === name) ? name : "main";
   pages.forEach((page) => { const active = page.dataset.page === target; page.hidden = !active; page.classList.toggle("active", active); });
   routeLinks.forEach((link) => { const active = link.dataset.route === target; link.classList.toggle("active", active); if (link.closest("nav")) link.setAttribute("aria-current", active ? "page" : "false"); });
-  document.title = target === "museum" ? "THE MUSEUM — Basket Carriers" : "BASKET CARRIERS — SEASON TWO";
+  document.title = target === "museum" ? "THE MUSEUM — Wacky Wombats" : "WACKY WOMBATS — FC27";
   document.body.dataset.route = target;
 }
 
@@ -159,7 +165,8 @@ function nextMilestone(stats) {
 function renderLegacyTracking() {
   const totals = new Map(PLAYER_ORDER.map((player) => [player, officialSeasonStats(player)]));
   const recordsByPlayer = new Map(PLAYER_ORDER.map((player) => [player, []]));
-  const formerPlayers = (archive.former_players || []).filter((player) => !PLAYER_ORDER.includes(player.display_name));
+  // Retired identities stay separate from active ones, even when a display name is reused.
+  const formerPlayers = [...(legacy.former_players || []), ...(archive.former_players || [])];
   const formerStats = formerPlayers.map((player) => ({
     player: player.display_name,
     name: player.name,
@@ -248,7 +255,7 @@ function renderDossier() {
   dossier.querySelector("#dossier-position").textContent = meta.position;
   dossier.querySelector("#dossier-height").textContent = profile.height_cm ? `${profile.height_cm} CM` : "—";
   dossier.querySelector("#dossier-minutes").textContent = stats.seconds === null ? `${formatNumber(aggregate(currentPlayer, archive.matches || []).seconds / 60)} FC27` : formatNumber(stats.seconds / 60);
-  dossier.querySelector("#dossier-scope-label").textContent = currentScope === "session" ? "LATEST SESSION" : currentScope === "career" ? "BASKET CARRIERS CAREER" : "FC27 RECORD";
+  dossier.querySelector("#dossier-scope-label").textContent = currentScope === "session" ? "LATEST SESSION" : currentScope === "career" ? "WACKY WOMBATS CAREER" : "FC27 RECORD";
   dossier.querySelector("#dossier-updated").textContent = archive.last_updated ? `UPDATED ${new Date(archive.last_updated).toLocaleString("en-GB", { day: "2-digit", month: "short", hour: "2-digit", minute: "2-digit" }).toUpperCase()}` : "AWAITING LIVE ARCHIVE";
   dossier.querySelectorAll("[data-scope]").forEach((button) => button.classList.toggle("active", button.dataset.scope === currentScope));
   dossier.querySelectorAll("[data-dossier-stat]").forEach((element) => {
@@ -290,17 +297,24 @@ function updateMainCards() {
   const goalsAgainst = useSummary ? Number(summary.goals_against) : (archive.matches || []).reduce((sum, match) => sum + Number(match.score_against || 0), 0);
   const gd = useSummary ? Number(summary.goal_difference) : goalsFor - goalsAgainst;
   document.querySelector("#data-summary").textContent = games ? `${games} MATCHES · ${wins}W ${draws}D ${losses}L · GD ${gd >= 0 ? "+" : ""}${gd}` : "AWAITING FIRST MATCH";
-  document.querySelector("#data-status").textContent = "FINAL ARCHIVE";
+  const lastUpdated = Date.parse(archive.last_updated || "");
+  const archiveDelayed = !Number.isFinite(lastUpdated) || Date.now() - lastUpdated > 6 * 60 * 60 * 1000;
+  document.querySelector("#data-status").textContent = !archive.club ? "WAITING FOR CLUB" : archiveDelayed ? "ARCHIVE DELAYED" : games ? "LIVE ARCHIVE" : "AWAITING MATCH";
   renderLegacyTracking();
 }
 
 async function loadArchive() {
   try {
-    // Basket Carriers is retired; this page now shows its frozen FC27 archive.
-    // The collector writes the Wacky Wombats archive to data/matches.json.
-    const response = await fetch(`data/archive/basket-carriers-fc27.json?ts=${Date.now()}`, { cache: "no-store" });
-    if (!response.ok) throw new Error("archive unavailable");
-    archive = await response.json();
+    const [live, frozen] = await Promise.all([
+      fetch(`data/matches.json?ts=${Date.now()}`, { cache: "no-store" }),
+      fetch(LEGACY_ARCHIVE, { cache: "no-store" }),
+    ]);
+    if (!live.ok || !frozen.ok) throw new Error("archive unavailable");
+    const current = await live.json();
+    legacy = await frozen.json();
+    // Until the collector finds Wacky Wombats, data/matches.json still holds the
+    // retired Basket Carriers archive, which must not count for the new squad.
+    if (String(current.club?.name || "").toUpperCase() === CLUB_NAME) archive = current;
     updateMainCards();
   } catch (error) {
     document.querySelector("#data-summary").textContent = "ARCHIVE TEMPORARILY UNAVAILABLE";

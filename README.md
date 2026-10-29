@@ -10,7 +10,9 @@ The squad moved to a new club, WACKY WOMBATS. The collector now archives that cl
 
 `club_id` in `config.json` is blank until the club's ID is known. Each run searches EA for the exact club name and only accepts a same-name club whose matches include a configured player. The first match found stores the ID in `data/matches.json`, and later runs reuse it. Until then the run stays green and reports `waiting_for_club` in `data/status.json`.
 
-Basket Carriers is retired. Its FC27 archive is frozen in `data/archive/basket-carriers-fc27.json` (with its old config alongside), and the current dashboard reads that file. The collector never writes to it.
+Basket Carriers is retired. Its FC27 archive is frozen in `data/archive/basket-carriers-fc27.json` (with its old config alongside), and the collector never writes to it. That file's `former_players` holds the frozen careers of Wormax, Trey and Basket Carriers-era Lamin, which the dashboard shows in the museum and on the honours wall. The main page shows the Wacky Wombats squad from `data/matches.json` and ignores that file until it holds the new club.
+
+Lamin's Wacky Wombats image is his Basket Carriers portrait recoloured into the new kit, with the new crest. Replace `assets/lamin-jawara-wombats.webp` with an in-game screenshot whenever one is available.
 
 ## Player changes
 
