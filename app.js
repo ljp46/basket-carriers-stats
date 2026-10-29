@@ -290,15 +290,15 @@ function updateMainCards() {
   const goalsAgainst = useSummary ? Number(summary.goals_against) : (archive.matches || []).reduce((sum, match) => sum + Number(match.score_against || 0), 0);
   const gd = useSummary ? Number(summary.goal_difference) : goalsFor - goalsAgainst;
   document.querySelector("#data-summary").textContent = games ? `${games} MATCHES · ${wins}W ${draws}D ${losses}L · GD ${gd >= 0 ? "+" : ""}${gd}` : "AWAITING FIRST MATCH";
-  const lastUpdated = Date.parse(archive.last_updated || "");
-  const archiveDelayed = !Number.isFinite(lastUpdated) || Date.now() - lastUpdated > 6 * 60 * 60 * 1000;
-  document.querySelector("#data-status").textContent = archiveDelayed ? "ARCHIVE DELAYED" : games ? "LIVE ARCHIVE" : "AWAITING MATCH";
+  document.querySelector("#data-status").textContent = "FINAL ARCHIVE";
   renderLegacyTracking();
 }
 
 async function loadArchive() {
   try {
-    const response = await fetch(`data/matches.json?ts=${Date.now()}`, { cache: "no-store" });
+    // Basket Carriers is retired; this page now shows its frozen FC27 archive.
+    // The collector writes the Wacky Wombats archive to data/matches.json.
+    const response = await fetch(`data/archive/basket-carriers-fc27.json?ts=${Date.now()}`, { cache: "no-store" });
     if (!response.ok) throw new Error("archive unavailable");
     archive = await response.json();
     updateMainCards();

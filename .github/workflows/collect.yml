@@ -36,8 +36,25 @@ jobs:
         run: python collect.py
       - name: Preserve updated archive
         run: |
-          if git diff --quiet -- data; then
-            echo "No data changes"
+          # Every run refreshes last_updated/checked_at. Only commit when
+          # something else changed; the Pages deploy below still publishes
+          # the fresh timestamp so the dashboard does not show ARCHIVE DELAYED.
+          if python - <<'EOF'
+          import json, subprocess, sys
+          volatile = {"data/matches.json": "last_updated", "data/status.json": "checked_at"}
+          for path, key in volatile.items():
+              try:
+                  old = json.loads(subprocess.run(["git", "show", f"HEAD:{path}"], capture_output=True, check=True).stdout)
+              except subprocess.CalledProcessError:
+                  sys.exit(1)
+              new = json.load(open(path, encoding="utf-8"))
+              old.pop(key, None)
+              new.pop(key, None)
+              if old != new:
+                  sys.exit(1)
+          EOF
+          then
+            echo "No data changes beyond refresh timestamps"
             exit 0
           fi
           git config user.name "basket-carriers-bot"

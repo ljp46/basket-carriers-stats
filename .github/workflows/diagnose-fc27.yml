@@ -19,6 +19,8 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
+      - name: Install browser-compatible HTTP transport
+        run: python -m pip install curl_cffi==0.16.1
       - name: Inspect FC27 endpoints
         run: python diagnose_fc27.py
       - name: Preserve diagnostic report
