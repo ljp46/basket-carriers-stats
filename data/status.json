@@ -1,47 +1,16 @@
 {
-  "checked_at": "2026-10-29T21:51:19.345847+00:00",
-  "failures": [],
-  "match_response_shapes": {
-    "27257:friendlyMatch": {
-      "keys": [],
-      "type": "list"
-    },
-    "27257:leagueMatch": {
-      "keys": [],
-      "type": "list"
-    },
-    "27257:playoffMatch": {
-      "keys": [],
-      "type": "list"
-    }
-  },
-  "match_type_counts": {
-    "27257:friendlyMatch": 0,
-    "27257:leagueMatch": 10,
-    "27257:playoffMatch": 0
-  },
-  "new_or_refreshed_matches": 10,
-  "ok": true,
-  "overall_stats": {
-    "27257": {
-      "gamesPlayed": "58",
-      "gamesPlayedPlayoff": "0",
-      "goals": "158",
-      "goalsAgainst": "101",
-      "lastMatch0": "2",
-      "lastMatch1": "1",
-      "lastMatch2": "2",
-      "lastOpponent0": "68198",
-      "lastOpponent1": "428190",
-      "lastOpponent2": "324070",
-      "losses": "17",
-      "ties": "7",
-      "wins": "34"
-    }
-  },
-  "profiles_refreshed": 2,
-  "source_club_ids": [
-    "27257"
+  "checked_at": "2026-10-29T21:53:32.498867+00:00",
+  "failures": [
+    "clubs/search: EA HTTP 403; browser transport failed: HTTP Error 404: ",
+    "members/stats: no club named 'WACKY WOMBATS' with a configured player yet"
   ],
-  "stored_matches": 58
+  "match_response_shapes": {},
+  "match_type_counts": {},
+  "new_or_refreshed_matches": 0,
+  "ok": false,
+  "overall_stats": {},
+  "profiles_refreshed": 0,
+  "source_club_ids": [],
+  "stored_matches": 0,
+  "waiting_for_club": true
 }
