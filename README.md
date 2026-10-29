@@ -8,7 +8,7 @@ The collector runs hourly through GitHub Actions, keeps matches beyond EA's roll
 
 The squad moved to a new club, WACKY WOMBATS. The collector now archives that club, with `kidljp46` as Little Magician (88), `Leechy1234335` as Robin Banks (32) and `Sidney257965`/`Joe97618` as Lamin Jawara. Everyone starts from zero at the new club.
 
-`club_id` in `config.json` is blank until the club's ID is known. Each run searches EA for the exact club name and only accepts a same-name club whose matches include a configured player. The first match found stores the ID in `data/matches.json`, and later runs reuse it. Until then the run stays green and reports `waiting_for_club` in `data/status.json`.
+The club ID is `1991204`, found by name after the first match on 29 October 2026 and now set in `config.json`. For a future club, `club_id` can be left blank: each run then searches EA for the exact club name and only accepts a same-name club whose matches include a configured player. The first match found stores the ID in `data/matches.json`, and later runs reuse it. Until then the run stays green and reports `waiting_for_club` in `data/status.json`.
 
 Basket Carriers is retired. Its FC27 archive is frozen in `data/archive/basket-carriers-fc27.json` (with its old config alongside), and the collector never writes to it. That file's `former_players` holds the frozen careers of Wormax, Trey and Basket Carriers-era Lamin, which the dashboard shows in the museum and on the honours wall. The main page shows the Wacky Wombats squad from `data/matches.json` and ignores that file until it holds the new club.
 
