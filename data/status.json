@@ -1,7 +1,6 @@
 {
-  "checked_at": "2026-10-29T21:53:32.498867+00:00",
+  "checked_at": "2026-10-29T21:55:08.963755+00:00",
   "failures": [
-    "clubs/search: EA HTTP 403; browser transport failed: HTTP Error 404: ",
     "members/stats: no club named 'WACKY WOMBATS' with a configured player yet"
   ],
   "match_response_shapes": {},
