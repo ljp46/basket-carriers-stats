@@ -12,8 +12,8 @@ const LEGACY_ARCHIVE = "data/archive/basket-carriers-fc27.json";
 // Everyone starts from zero at Wacky Wombats, so no season offsets apply.
 const PLAYER_META = {
   Magician: { name: "LITTLE MAGICIAN", number: "88", image: "assets/little-magician-signing.webp?v=2", position: "CM / CAM" },
-  Banks: { name: "ROBIN BANKS", number: "32", image: "assets/robin-banks-signing.webp?v=2", position: "ST" },
-  Lamin: { name: "LAMIN JAWARA", number: "47", image: "assets/lamin-jawara-wombats.webp?v=2", position: "CM / CDM" },
+  Banks: { name: "ROBIN BANKS", number: "32", image: "assets/robin-banks-signing.webp?v=3", position: "ST" },
+  Lamin: { name: "LAMIN JAWARA", number: "47", image: "assets/lamin-jawara-wombats.webp?v=3", position: "CM / CDM" },
 };
 
 const PLAYER_ORDER = ["Magician", "Banks", "Lamin"];
