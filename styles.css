@@ -1079,8 +1079,6 @@ a { color: inherit; }
   right: 5px;
   height: 244px;
 }
-/* Banks's card shot is a wide volley, so it gets more height to read at card size. */
-.banks-player .squad-card-art img { right: -26px; height: 318px; }
 .door-art {
   display: grid;
   place-items: center;
@@ -1213,7 +1211,6 @@ a { color: inherit; }
   .squad-card-art { min-height: 285px; }
   .squad-card-art img { right: -5px; bottom: 0; width: auto; height: 275px; max-width: none; opacity: .82; }
   .returning-player .squad-card-art img { right: -2px; height: 262px; }
-  .banks-player .squad-card-art img { right: -30px; height: 300px; }
   .door-art::before { right: -8px; width: 105px; height: 155px; }
   .door-art span { margin-left: 22px; font-size: 3.8rem; }
   .pending-player { min-height: 178px; display: block; }
@@ -1362,4 +1359,7 @@ a { color: inherit; }
 .transfer-wire-trey::after { content: "88"; }
 @media (max-width:720px) {
   .crest-stamp { width: 88px; margin-bottom: 22px; }
+  /* Stats stay readable where the portrait overlaps them on narrow cards. */
+  .squad-card-body { position: relative; z-index: 6; }
+  .player-stat-slots b { text-shadow: 0 1px 6px rgba(0,0,0,.85); }
 }

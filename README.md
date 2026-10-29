@@ -12,7 +12,7 @@ The club ID is `1991204`, found by name after the first match on 29 October 2026
 
 Basket Carriers is retired. Its FC27 archive is frozen in `data/archive/basket-carriers-fc27.json` (with its old config alongside), and the collector never writes to it. That file's `former_players` holds the frozen careers of Wormax, Trey and Basket Carriers-era Lamin, which the dashboard shows in the museum and on the honours wall. The main page shows the Wacky Wombats squad from `data/matches.json` and ignores that file until it holds the new club.
 
-Lamin's Wacky Wombats image is his Basket Carriers portrait recoloured into the new kit, with the new crest. Replace `assets/lamin-jawara-wombats.webp` with an in-game screenshot whenever one is available.
+Player images in `assets/` are 800×1200 transparent cutouts, bottom-aligned. When replacing one, keep that format and bump its `?v=` query in `index.html` and `app.js` so browsers fetch the new file.
 
 ## Player changes
 
