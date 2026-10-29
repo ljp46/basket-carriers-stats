@@ -1,0 +1,33 @@
+{
+  "club_id": "27257",
+  "club_name": "BASKET CARRIERS",
+  "platform": "common-gen5",
+  "session_gap_minutes": 60,
+  "players": {
+    "kidljp46": "Trey",
+    "Joe97618": "Lamin",
+    "Sidney257965": "Lamin"
+  },
+  "player_identity_history": {
+    "Joe97618": [
+      {
+        "display_name": "Door",
+        "through_timestamp": 1789862799
+      }
+    ],
+    "Leechy1234335": [
+      {
+        "display_name": "Wormax",
+        "through_timestamp": 1791920363
+      }
+    ]
+  },
+  "season_stat_offsets": {
+    "Lamin": {
+      "games_played": 5,
+      "goals": 2,
+      "assists": 2,
+      "motm": 1
+    }
+  }
+}

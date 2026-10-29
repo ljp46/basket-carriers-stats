@@ -4,6 +4,14 @@ Automated EA SPORTS FC 27 Clubs match archive and dashboard for BASKET CARRIERS,
 
 The collector runs hourly through GitHub Actions, keeps matches beyond EA's rolling recent-match window, and publishes the dashboard through GitHub Pages. The dashboard shows the current squad, session and player totals, milestone honours, record watch, departures, and a museum for former player identities.
 
+## Wacky Wombats (from 29 October 2026)
+
+The squad moved to a new club, WACKY WOMBATS. The collector now archives that club, with `kidljp46` as Little Magician (88), `Leechy1234335` as Robin Banks (32) and `Sidney257965`/`Joe97618` as Lamin Jawara. Everyone starts from zero at the new club.
+
+`club_id` in `config.json` is blank until the club's ID is known. Each run searches EA for the exact club name and only accepts a same-name club whose matches include a configured player. The first match found stores the ID in `data/matches.json`, and later runs reuse it. Until then the run stays green and reports `waiting_for_club` in `data/status.json`.
+
+Basket Carriers is retired. Its FC27 archive is frozen in `data/archive/basket-carriers-fc27.json` (with its old config alongside), and the current dashboard reads that file. The collector never writes to it.
+
 ## Player changes
 
 The fictional player identity owns the stats, not the human controlling the EA account. For a new identity, archive the outgoing player's career and move their card to the museum. Add the new account to `config.json` only when its gamertag and player identity are known; its stats must begin at its own registration point. Never map a replacement account to the former player's display name or transfer the former player's EA career totals.

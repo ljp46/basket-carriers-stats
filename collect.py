@@ -486,11 +486,17 @@ def main() -> None:
         raise SystemExit("Missing or invalid config.json")
 
     previous = load_json(DATA_PATH, {"matches": [], "profiles": []})
-    if str(previous.get("club", {}).get("club_id")) != str(config["club_id"]):
+    previous_club = previous.get("club", {})
+    same_club = str(previous_club.get("name", "")).casefold().strip() == config["club_name"].casefold().strip()
+    # A new club can be configured before its ID is known. The first run that
+    # finds it by name stores the ID in data/matches.json for later runs.
+    club_id = str(config.get("club_id") or (previous_club.get("club_id") if same_club else "") or "")
+    if not same_club or str(previous_club.get("club_id")) != club_id:
         previous = {"matches": [], "profiles": [], "milestones": []}
+    config = {**config, "club_id": club_id}
     fetched: list[dict[str, Any]] = []
     failures: list[str] = []
-    source_club_ids = {str(config["club_id"])}
+    source_club_ids = {club_id} if club_id else set()
     current_playoff_summary: dict[str, int] | None = previous.get("club", {}).get("playoff_summary")
     overall_stats_by_club: dict[str, dict[str, Any]] = {}
     try:
@@ -512,6 +518,15 @@ def main() -> None:
         source_club_ids.update(matching_club_ids(club_search, config["club_name"]))
     except RuntimeError as exc:
         failures.append(f"club search: {exc}")
+    if not club_id:
+        try:
+            name_search = request_json(
+                "clubs/search",
+                {"platform": config["platform"], "clubName": config["club_name"]},
+            )
+            source_club_ids.update(matching_club_ids(name_search, config["club_name"]))
+        except RuntimeError as exc:
+            failures.append(f"clubs/search: {exc}")
 
     match_type_counts: dict[str, int] = {}
     match_response_shapes: dict[str, Any] = {}
@@ -563,10 +578,13 @@ def main() -> None:
             except RuntimeError as exc:
                 failures.append(f"{source_key}: {exc}")
 
-    active_club_id = max(newest_by_club, key=newest_by_club.get, default=str(config["club_id"]))
+    active_club_id = max(newest_by_club, key=newest_by_club.get, default=club_id)
+    waiting_for_club = not active_club_id
 
     profiles = previous.get("profiles", [])
     try:
+        if waiting_for_club:
+            raise RuntimeError(f"no club named {config['club_name']!r} with a configured player yet")
         member_response = request_json(
             "members/stats",
             {"platform": config["platform"], "clubId": active_club_id},
@@ -611,13 +629,14 @@ def main() -> None:
         "milestones": milestones,
         "matches": matches,
     }
-    match_sources_ok = bool(match_type_counts)
+    match_sources_ok = bool(match_type_counts) and not waiting_for_club
     if match_sources_ok:
         write_json_atomic(DATA_PATH, payload)
     write_json_atomic(
         STATUS_PATH,
         {
             "ok": match_sources_ok,
+            "waiting_for_club": waiting_for_club,
             "new_or_refreshed_matches": len(fetched),
             "stored_matches": len(matches),
             "profiles_refreshed": len(profiles),
@@ -637,6 +656,11 @@ def main() -> None:
     print("Overall stats:", json.dumps(overall_stats_by_club, sort_keys=True))
     if failures:
         print("Partial failures:", "; ".join(failures))
+    if waiting_for_club:
+        # Not an outage: the club has no findable matches yet. Leave the
+        # archive untouched and keep the run green until the first match.
+        print(f"Waiting for {config['club_name']} to appear in EA's club search.")
+        return
     if not match_sources_ok:
         raise SystemExit(1)
 

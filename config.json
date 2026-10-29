@@ -1,33 +1,14 @@
 {
-  "club_id": "27257",
-  "club_name": "BASKET CARRIERS",
+  "club_id": "",
+  "club_name": "WACKY WOMBATS",
   "platform": "common-gen5",
   "session_gap_minutes": 60,
   "players": {
-    "kidljp46": "Trey",
-    "Joe97618": "Lamin",
-    "Sidney257965": "Lamin"
+    "kidljp46": "Magician",
+    "Leechy1234335": "Banks",
+    "Sidney257965": "Lamin",
+    "Joe97618": "Lamin"
   },
-  "player_identity_history": {
-    "Joe97618": [
-      {
-        "display_name": "Door",
-        "through_timestamp": 1789862799
-      }
-    ],
-    "Leechy1234335": [
-      {
-        "display_name": "Wormax",
-        "through_timestamp": 1791920363
-      }
-    ]
-  },
-  "season_stat_offsets": {
-    "Lamin": {
-      "games_played": 5,
-      "goals": 2,
-      "assists": 2,
-      "motm": 1
-    }
-  }
+  "player_identity_history": {},
+  "season_stat_offsets": {}
 }
