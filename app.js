@@ -212,11 +212,12 @@ function renderLegacyTracking() {
     </article>`;
   }).join("");
 
-  milestoneHost.innerHTML = candidates.map(({ name, number, archived, stats }) => {
+  // Only the current squad has a wall; retired identities keep their honours in the museum.
+  milestoneHost.innerHTML = activeStats.map(({ name, number, stats }) => {
     const achieved = achievedMilestones(stats);
-    const next = archived ? null : nextMilestone(stats);
+    const next = nextMilestone(stats);
     return `<article class="milestone-banner ${achieved.length ? "has-honours" : ""}">
-      <header><span>${number}</span><div><small>${archived ? "ARCHIVED HONOURS" : "PLAYER HONOURS"}</small><strong>${name}</strong></div></header>
+      <header><span>${number}</span><div><small>PLAYER HONOURS</small><strong>${name}</strong></div></header>
       <div class="milestone-ribbons">${achieved.length ? achieved.map((item) => `<span><b>${item.threshold}</b>${MILESTONE_LABELS[item.metric]}</span>`).join("") : `<p>THE FIRST BANNER AWAITS.</p>`}</div>
       ${next ? `<footer><span>NEXT LANDMARK</span><b>${next.target} ${MILESTONE_LABELS[next.metric]}</b><small>${next.away} AWAY</small></footer>` : ""}
     </article>`;
