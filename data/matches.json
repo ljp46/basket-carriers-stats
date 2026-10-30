@@ -26,7 +26,7 @@
     ]
   },
   "former_players": [],
-  "last_updated": "2026-10-29T23:32:54.357640+00:00",
+  "last_updated": "2026-10-30T02:00:03.420284+00:00",
   "matches": [
     {
       "human_players": 3,
@@ -436,6 +436,24 @@
       "player": "Banks",
       "threshold": 10,
       "value_when_detected": 12
+    },
+    {
+      "baseline": false,
+      "celebrate_match_id": "150586776630419",
+      "detected_at": "2026-10-30T02:00:03.420284+00:00",
+      "metric": "assists",
+      "player": "Magician",
+      "threshold": 10,
+      "value_when_detected": 10
+    },
+    {
+      "baseline": false,
+      "celebrate_match_id": "150586776630419",
+      "detected_at": "2026-10-30T02:00:03.420284+00:00",
+      "metric": "contributions",
+      "player": "Magician",
+      "threshold": 10,
+      "value_when_detected": 13
     }
   ],
   "profiles": [
@@ -449,9 +467,9 @@
       "preferred_position": "midfielder",
       "pro_name": "Sid",
       "season": {
-        "assists": 0,
-        "average_rating": 5.1,
-        "games_played": 2,
+        "assists": 1,
+        "average_rating": 6.1,
+        "games_played": 3,
         "goals": 0,
         "motm": 0,
         "red_cards": 0,
@@ -463,18 +481,18 @@
       "gamertag": "kidljp46",
       "height_cm": 169,
       "nationality_id": "146",
-      "overall": 83,
+      "overall": 84,
       "position_id": "14",
       "preferred_position": "midfielder",
       "pro_name": "L. Magician",
       "season": {
-        "assists": 8,
-        "average_rating": 9.6,
-        "games_played": 4,
-        "goals": 0,
-        "motm": 2,
+        "assists": 10,
+        "average_rating": 9.7,
+        "games_played": 5,
+        "goals": 3,
+        "motm": 3,
         "red_cards": 0,
-        "win_rate": 75
+        "win_rate": 80
       }
     },
     {
@@ -487,13 +505,13 @@
       "preferred_position": "forward",
       "pro_name": "rob",
       "season": {
-        "assists": 0,
+        "assists": 3,
         "average_rating": 9.7,
-        "games_played": 4,
-        "goals": 12,
+        "games_played": 5,
+        "goals": 15,
         "motm": 2,
         "red_cards": 0,
-        "win_rate": 75
+        "win_rate": 80
       }
     }
   ]
