@@ -111,6 +111,10 @@ function officialSeasonStats(player) {
   const season = profileFor(player).season || {};
   if (!Object.keys(season).length) return detailed;
   const offset = PLAYER_META[player]?.seasonOffset || {};
+  // The match archive is the source of truth. EA's season totals lag behind its
+  // match list, so they only fill in when they count more games than the archive
+  // holds, i.e. matches were missed while collection was down.
+  if (Number(season.games_played || 0) - Number(offset.apps || 0) <= detailed.apps) return detailed;
   const official = {
     ...detailed,
     apps: Math.max(detailed.apps, Number(season.games_played || 0) - Number(offset.apps || 0)),
