@@ -33,7 +33,7 @@ const CLUB_RECORDS = [
   { key: "motm", label: "POTM AWARDS", value: 43, holder: "RICKY BOBBY" },
 ];
 
-const emptyStats = () => ({ apps: 0, goals: 0, assists: 0, motm: 0, redCards: 0, ratingTotal: 0, averageRating: 0, seconds: 0, secondAssists: 0, shots: 0, passesMade: 0, passesAttempted: 0, throughPasses: 0, dribbles: 0, takeOns: 0, tacklesMade: 0, tacklesAttempted: 0, interceptions: 0, wins: 0, draws: 0, losses: 0 });
+const emptyStats = () => ({ archivedRows: 0, apps: 0, goals: 0, assists: 0, motm: 0, redCards: 0, ratingTotal: 0, averageRating: 0, seconds: 0, secondAssists: 0, shots: 0, passesMade: 0, passesAttempted: 0, throughPasses: 0, dribbles: 0, takeOns: 0, tacklesMade: 0, tacklesAttempted: 0, interceptions: 0, wins: 0, draws: 0, losses: 0 });
 
 let archive = { matches: [], profiles: [], last_updated: null };
 let legacy = { former_players: [] };
@@ -73,6 +73,10 @@ function aggregate(player, matches) {
   matches.forEach((match) => {
     const row = (match.players || []).find((item) => item.display_name === player);
     if (!row) return;
+    totals.archivedRows += 1;
+    // A player EA logs with 0 minutes (e.g. joined as the opponent quit) never
+    // took the pitch, so the row doesn't count as an appearance.
+    if (row.seconds_played !== undefined && Number(row.seconds_played) === 0) return;
     totals.apps += 1;
     totals.goals += Number(row.goals || 0); totals.assists += Number(row.assists || 0);
     totals.motm += Number(row.motm || 0); totals.redCards += Number(row.red_cards || 0);
@@ -114,7 +118,7 @@ function officialSeasonStats(player) {
   // The match archive is the source of truth. EA's season totals lag behind its
   // match list, so they only fill in when they count more games than the archive
   // holds, i.e. matches were missed while collection was down.
-  if (Number(season.games_played || 0) - Number(offset.apps || 0) <= detailed.apps) return detailed;
+  if (Number(season.games_played || 0) - Number(offset.apps || 0) <= detailed.archivedRows) return detailed;
   const official = {
     ...detailed,
     apps: Math.max(detailed.apps, Number(season.games_played || 0) - Number(offset.apps || 0)),
