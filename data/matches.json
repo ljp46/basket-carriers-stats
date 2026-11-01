@@ -5,13 +5,13 @@
     "platform": "common-gen5",
     "playoff_summary": {
       "clean_sheets": 2,
-      "draws": 1,
-      "games_played": 5,
+      "draws": 2,
+      "games_played": 6,
       "goal_difference": 11,
-      "goals_against": 9,
-      "goals_for": 20,
+      "goals_against": 10,
+      "goals_for": 21,
       "losses": 0,
-      "points": 13,
+      "points": 14,
       "wins": 4
     }
   },
@@ -26,8 +26,95 @@
     ]
   },
   "former_players": [],
-  "last_updated": "2026-10-30T02:00:03.420284+00:00",
+  "last_updated": "2026-11-01T21:14:18.446241+00:00",
   "matches": [
+    {
+      "human_players": 3,
+      "match_id": "159330183600097",
+      "match_type": "leagueMatch",
+      "opponent": {
+        "club_id": "1987423",
+        "human_players": 5,
+        "name": "GruevsGrafters"
+      },
+      "played_at": "2026-11-01T20:58:14+00:00",
+      "players": [
+        {
+          "archetype_id": "8",
+          "assists": 0,
+          "display_name": "Lamin",
+          "dribbles_completed": 17,
+          "gamertag": "Sidney257965",
+          "goals": 0,
+          "interceptions": 0,
+          "motm": 0,
+          "passes_attempted": 20,
+          "passes_made": 17,
+          "player_id": "1796485428",
+          "position_group": "midfielder",
+          "rating": 7.1,
+          "red_cards": 0,
+          "second_assists": 0,
+          "seconds_played": 5506,
+          "shots": 0,
+          "tackles_attempted": 1,
+          "tackles_made": 1,
+          "take_ons": 0,
+          "through_passes": 1
+        },
+        {
+          "archetype_id": "8",
+          "assists": 0,
+          "display_name": "Magician",
+          "dribbles_completed": 42,
+          "gamertag": "kidljp46",
+          "goals": 0,
+          "interceptions": 2,
+          "motm": 1,
+          "passes_attempted": 52,
+          "passes_made": 40,
+          "player_id": "1009209437400",
+          "position_group": "midfielder",
+          "rating": 8.5,
+          "red_cards": 0,
+          "second_assists": 1,
+          "seconds_played": 5506,
+          "shots": 2,
+          "tackles_attempted": 4,
+          "tackles_made": 0,
+          "take_ons": 6,
+          "through_passes": 8
+        },
+        {
+          "archetype_id": "12",
+          "assists": 0,
+          "display_name": "Banks",
+          "dribbles_completed": 23,
+          "gamertag": "Leechy1234335",
+          "goals": 1,
+          "interceptions": 1,
+          "motm": 0,
+          "passes_attempted": 32,
+          "passes_made": 28,
+          "player_id": "1010349940276",
+          "position_group": "forward",
+          "rating": 7.9,
+          "red_cards": 0,
+          "second_assists": 3,
+          "seconds_played": 5506,
+          "shots": 4,
+          "tackles_attempted": 6,
+          "tackles_made": 1,
+          "take_ons": 10,
+          "through_passes": 4
+        }
+      ],
+      "result": "D",
+      "score_against": 1,
+      "score_for": 1,
+      "timestamp": 1793566694,
+      "winner_by_dnf": false
+    },
     {
       "human_players": 3,
       "match_id": "150586776630419",
@@ -468,12 +555,12 @@
       "pro_name": "Sid",
       "season": {
         "assists": 1,
-        "average_rating": 6.1,
-        "games_played": 3,
+        "average_rating": 6.4,
+        "games_played": 4,
         "goals": 0,
         "motm": 0,
         "red_cards": 0,
-        "win_rate": 100
+        "win_rate": 75
       }
     },
     {
@@ -487,12 +574,12 @@
       "pro_name": "L. Magician",
       "season": {
         "assists": 10,
-        "average_rating": 9.7,
-        "games_played": 5,
+        "average_rating": 9.5,
+        "games_played": 6,
         "goals": 3,
-        "motm": 3,
+        "motm": 4,
         "red_cards": 0,
-        "win_rate": 80
+        "win_rate": 66
       }
     },
     {
@@ -506,12 +593,12 @@
       "pro_name": "rob",
       "season": {
         "assists": 3,
-        "average_rating": 9.7,
-        "games_played": 5,
-        "goals": 15,
+        "average_rating": 9.4,
+        "games_played": 6,
+        "goals": 16,
         "motm": 2,
         "red_cards": 0,
-        "win_rate": 80
+        "win_rate": 66
       }
     }
   ]
