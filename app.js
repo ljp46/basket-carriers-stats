@@ -38,13 +38,15 @@ const emptyStats = () => ({ archivedRows: 0, apps: 0, goals: 0, assists: 0, motm
 let archive = { matches: [], profiles: [], last_updated: null };
 let legacy = { former_players: [] };
 let currentPlayer = null;
+let compareScope = "fc27";
+let compareMode = "total";
 let currentScope = sessionStorage.getItem("bc-stat-scope") || "fc27";
 
 function showRoute(name) {
   const target = pages.some((page) => page.dataset.page === name) ? name : "main";
   pages.forEach((page) => { const active = page.dataset.page === target; page.hidden = !active; page.classList.toggle("active", active); });
   routeLinks.forEach((link) => { const active = link.dataset.route === target; link.classList.toggle("active", active); if (link.closest("nav")) link.setAttribute("aria-current", active ? "page" : "false"); });
-  document.title = target === "museum" ? "THE MUSEUM — Wacky Wombats" : "WACKY WOMBATS — FC27";
+  document.title = target === "museum" ? "THE MUSEUM — Wacky Wombats" : target === "compare" ? "HEAD TO HEAD — Wacky Wombats" : "WACKY WOMBATS — FC27";
   document.body.dataset.route = target;
 }
 
@@ -250,6 +252,102 @@ function renderLegacyTracking() {
   });
 }
 
+// Head to head: one row per stat, one column per current player.
+// kind sets formatting; per90 rows switch to a rate in Per 90 mode; best marks
+// rows where the highest value leads (rows without it are never highlighted).
+const ratio = (made, attempted) => (attempted ? (made / attempted) * 100 : null);
+const COMPARE_GROUPS = [
+  ["OUTPUT", [
+    { label: "Appearances", kind: "count", value: (s) => s.apps, best: true },
+    { label: "Minutes", kind: "count", value: (s) => (s.seconds === null ? null : s.seconds / 60), best: true },
+    { label: "Goals", kind: "count", value: (s) => s.goals, per90: true, best: true },
+    { label: "Assists", kind: "count", value: (s) => s.assists, per90: true, best: true },
+    { label: "Goal contributions", kind: "count", value: (s) => s.goals + s.assists, per90: true, best: true },
+    { label: "Second assists", kind: "count", value: (s) => s.secondAssists, per90: true, best: true },
+    { label: "Player of the match", kind: "count", value: (s) => s.motm, per90: true, best: true },
+    { label: "Average rating", kind: "rating", value: (s) => (s.apps ? s.averageRating : null), best: true },
+    { label: "Match record", kind: "text", value: (s) => (s.apps ? `${s.wins}W ${s.draws}D ${s.losses}L` : null) },
+    { label: "Win rate", kind: "pct", value: (s) => ratio(s.wins, s.apps), best: true },
+  ]],
+  ["SHOOTING", [
+    { label: "Shots", kind: "count", value: (s) => s.shots, per90: true, best: true },
+    { label: "Conversion", kind: "pct", value: (s) => ratio(s.goals, s.shots), best: true },
+  ]],
+  ["PASSING + CREATION", [
+    { label: "Passes completed", kind: "count", value: (s) => s.passesMade, per90: true, best: true },
+    { label: "Pass accuracy", kind: "pct", value: (s) => ratio(s.passesMade, s.passesAttempted), best: true },
+    { label: "Through passes", kind: "count", value: (s) => s.throughPasses, per90: true, best: true },
+  ]],
+  ["POSSESSION", [
+    { label: "Dribbles", kind: "count", value: (s) => s.dribbles, per90: true, best: true },
+    { label: "Take-ons", kind: "count", value: (s) => s.takeOns, per90: true, best: true },
+  ]],
+  ["DEFENDING", [
+    { label: "Tackles won", kind: "count", value: (s) => s.tacklesMade, per90: true, best: true },
+    { label: "Tackle success", kind: "pct", value: (s) => ratio(s.tacklesMade, s.tacklesAttempted), best: true },
+    { label: "Interceptions", kind: "count", value: (s) => s.interceptions, per90: true, best: true },
+    { label: "Red cards", kind: "count", value: (s) => s.redCards },
+  ]],
+];
+
+function compareValue(row, stats) {
+  const raw = row.value(stats);
+  if (raw === null || raw === undefined || Number.isNaN(raw)) return null;
+  if (compareMode !== "per90" || !row.per90) return raw;
+  return stats.seconds ? (raw * 5400) / stats.seconds : null;
+}
+
+function formatCompare(row, value) {
+  if (value === null) return "—";
+  if (row.kind === "text") return value;
+  if (row.kind === "pct") return `${Math.round(value)}%`;
+  if (row.kind === "rating") return value.toFixed(1);
+  return compareMode === "per90" && row.per90 ? value.toFixed(2) : String(Math.round(value));
+}
+
+function renderCompare() {
+  const table = document.querySelector("#compare-table");
+  if (!table) return;
+  const columns = PLAYER_ORDER.map((player) => ({ player, meta: PLAYER_META[player], stats: scopeStats(player, compareScope) }));
+  const head = `<thead><tr><th scope="col"><span class="compare-corner">${compareMode === "per90" ? "PER 90 MINUTES" : "TOTALS"}</span></th>${columns.map(({ meta }) => {
+    const [first, ...rest] = meta.name.split(" ");
+    return `<th scope="col"><b>${meta.number}</b><span>${first}</span><strong>${rest.join(" ")}</strong></th>`;
+  }).join("")}</tr></thead>`;
+  const body = COMPARE_GROUPS.map(([group, rows], groupIndex) => {
+    const lines = rows.map((row) => {
+      const values = columns.map(({ stats }) => compareValue(row, stats));
+      const numeric = values.filter((value) => typeof value === "number");
+      const top = numeric.length ? Math.max(...numeric) : null;
+      // Highlight a leader only when someone is ahead; a row where everyone is level shows no gold.
+      const leads = row.best && top > 0 && numeric.some((value) => value !== top);
+      const cells = values.map((value) => {
+        const leader = leads && value !== null && Math.abs(value - top) < 1e-9;
+        return `<td class="${[leader && "is-leader", row.kind === "text" && "is-text"].filter(Boolean).join(" ")}">${formatCompare(row, value)}</td>`;
+      }).join("");
+      return `<tr><th scope="row">${row.label}${compareMode === "per90" && row.per90 ? "<small>/90</small>" : ""}</th>${cells}</tr>`;
+    }).join("");
+    return `<tbody><tr class="compare-group"><th colspan="${columns.length + 1}" scope="rowgroup"><span>${String(groupIndex + 1).padStart(2, "0")}</span>${group}</th></tr>${lines}</tbody>`;
+  }).join("");
+  table.innerHTML = head + body;
+
+  const sessionMatches = recentSession(archive.matches || []);
+  const total = (archive.matches || []).length;
+  const scopeText = compareScope === "session"
+    ? (sessionMatches.length ? `LATEST SESSION · ${sessionMatches.length} MATCH${sessionMatches.length === 1 ? "" : "ES"} · ${new Date(sessionMatches[0].timestamp * 1000).toLocaleDateString("en-GB", { day: "2-digit", month: "short" }).toUpperCase()}` : "NO SESSION YET")
+    : `${compareScope === "career" ? "WACKY WOMBATS CAREER" : "FC27 RECORD"} · ${total} MATCH${total === 1 ? "" : "ES"}`;
+  document.querySelector("#compare-context").textContent = compareMode === "per90"
+    ? `${scopeText} · RATES USE MINUTES PLAYED, SO SHORT SPELLS SWING THEM`
+    : scopeText;
+  document.querySelectorAll("[data-compare-scope]").forEach((button) => {
+    const active = button.dataset.compareScope === compareScope;
+    button.classList.toggle("active", active); button.setAttribute("aria-pressed", String(active));
+  });
+  document.querySelectorAll("[data-compare-mode]").forEach((button) => {
+    const active = button.dataset.compareMode === compareMode;
+    button.classList.toggle("active", active); button.setAttribute("aria-pressed", String(active));
+  });
+}
+
 function renderDossier() {
   if (!currentPlayer) return;
   const meta = PLAYER_META[currentPlayer];
@@ -310,6 +408,7 @@ function updateMainCards() {
   const archiveDelayed = !Number.isFinite(lastUpdated) || Date.now() - lastUpdated > 6 * 60 * 60 * 1000;
   document.querySelector("#data-status").textContent = !archive.club ? "WAITING FOR CLUB" : archiveDelayed ? "ARCHIVE DELAYED" : games ? "LIVE ARCHIVE" : "AWAITING MATCH";
   renderLegacyTracking();
+  renderCompare();
 }
 
 async function loadArchive() {
@@ -349,6 +448,9 @@ squadCards.forEach((card) => {
   card.addEventListener("click", () => openDossier(card.dataset.player));
   card.addEventListener("keydown", (event) => { if (event.key === "Enter" || event.key === " ") { event.preventDefault(); openDossier(card.dataset.player); } });
 });
+
+document.querySelectorAll("[data-compare-scope]").forEach((button) => button.addEventListener("click", () => { compareScope = button.dataset.compareScope; renderCompare(); }));
+document.querySelectorAll("[data-compare-mode]").forEach((button) => button.addEventListener("click", () => { compareMode = button.dataset.compareMode; renderCompare(); }));
 
 dossier.querySelector(".dossier-close").addEventListener("click", () => dossier.close());
 dossier.addEventListener("click", (event) => { if (event.target === dossier) dossier.close(); });

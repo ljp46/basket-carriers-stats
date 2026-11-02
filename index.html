@@ -9,7 +9,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&amp;family=DM+Mono:wght@400;500&amp;family=Inter:wght@400;500;600;700;800;900&amp;display=swap" rel="stylesheet" />
     <link rel="icon" type="image/png" href="assets/wacky-wombats-crest-64.png" />
-    <link rel="stylesheet" href="styles.css?v=30" />
+    <link rel="stylesheet" href="styles.css?v=31" />
   </head>
   <body>
     <div class="noise" aria-hidden="true"></div>
@@ -21,7 +21,8 @@
       </a>
       <nav class="route-nav" aria-label="Primary navigation">
         <a href="#main" data-route="main" class="active"><span>01</span> Main</a>
-        <a href="#museum" data-route="museum"><span>02</span> Museum</a>
+        <a href="#compare" data-route="compare"><span>02</span> Compare</a>
+        <a href="#museum" data-route="museum"><span>03</span> Museum</a>
       </nav>
       <div class="system-state"><i></i> WACKY WOMBATS · FC27</div>
     </header>
@@ -423,6 +424,33 @@
           </div>
         </div>
       </section>
+
+      <section class="route-page compare-page" data-page="compare" aria-labelledby="compare-title" hidden>
+        <div class="compare-intro">
+          <div>
+            <p class="overline">WACKY WOMBATS · FC27 SQUAD</p>
+            <h1 id="compare-title">HEAD TO<br /><strong>HEAD</strong></h1>
+          </div>
+          <p>Every tracked stat for the current squad, side by side. Gold marks the leader in each row.</p>
+        </div>
+
+        <div class="compare-controls">
+          <div class="compare-toggle" role="group" aria-label="Statistics scope">
+            <button type="button" data-compare-scope="session" aria-pressed="false">SESSION</button>
+            <button type="button" data-compare-scope="fc27" class="active" aria-pressed="true">FC27</button>
+            <button type="button" data-compare-scope="career" aria-pressed="false">CAREER</button>
+          </div>
+          <div class="compare-toggle" role="group" aria-label="Totals or per 90 minutes">
+            <button type="button" data-compare-mode="total" class="active" aria-pressed="true">TOTALS</button>
+            <button type="button" data-compare-mode="per90" aria-pressed="false">PER 90</button>
+          </div>
+        </div>
+        <p class="compare-context" id="compare-context">LOADING FC27 RECORD</p>
+
+        <div class="compare-table-wrap">
+          <table class="compare-table" id="compare-table"></table>
+        </div>
+      </section>
     </main>
 
     <dialog class="player-dossier" id="player-dossier" aria-labelledby="dossier-name">
@@ -471,6 +499,6 @@
       </div>
     </dialog>
 
-    <script src="app.js?v=26" defer></script>
+    <script src="app.js?v=27" defer></script>
   </body>
 </html>
