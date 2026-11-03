@@ -1,5 +1,5 @@
 {
-  "checked_at": "2026-11-03T01:38:56.854317+00:00",
+  "checked_at": "2026-11-03T23:28:46.587942+00:00",
   "failures": [],
   "match_response_shapes": {
     "1991204:friendlyMatch": {
@@ -24,25 +24,25 @@
   "ok": true,
   "overall_stats": {
     "1991204": {
-      "gamesPlayed": "20",
+      "gamesPlayed": "21",
       "gamesPlayedPlayoff": "0",
-      "goals": "72",
-      "goalsAgainst": "57",
+      "goals": "75",
+      "goalsAgainst": "59",
       "lastMatch0": "1",
-      "lastMatch1": "2",
+      "lastMatch1": "1",
       "lastMatch2": "2",
-      "lastOpponent0": "1632029",
-      "lastOpponent1": "1459697",
-      "lastOpponent2": "581613",
+      "lastOpponent0": "1847016",
+      "lastOpponent1": "1632029",
+      "lastOpponent2": "1459697",
       "losses": "5",
       "ties": "6",
-      "wins": "9"
+      "wins": "10"
     }
   },
   "profiles_refreshed": 3,
   "source_club_ids": [
     "1991204"
   ],
-  "stored_matches": 20,
+  "stored_matches": 21,
   "waiting_for_club": false
 }
