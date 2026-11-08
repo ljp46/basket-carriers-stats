@@ -6,13 +6,13 @@
     "playoff_summary": {
       "clean_sheets": 4,
       "draws": 6,
-      "games_played": 34,
-      "goal_difference": 43,
-      "goals_against": 86,
-      "goals_for": 129,
-      "losses": 7,
-      "points": 69,
-      "wins": 21
+      "games_played": 36,
+      "goal_difference": 39,
+      "goals_against": 97,
+      "goals_for": 136,
+      "losses": 8,
+      "points": 72,
+      "wins": 22
     }
   },
   "event_code_status": {
@@ -26,8 +26,182 @@
     ]
   },
   "former_players": [],
-  "last_updated": "2026-11-07T23:42:37.579946+00:00",
+  "last_updated": "2026-11-08T06:14:16.449264+00:00",
   "matches": [
+    {
+      "human_players": 3,
+      "match_id": "175300233810029",
+      "match_type": "leagueMatch",
+      "opponent": {
+        "club_id": "1797346",
+        "human_players": 4,
+        "name": "Hounslow"
+      },
+      "played_at": "2026-11-08T00:07:49+00:00",
+      "players": [
+        {
+          "archetype_id": "8",
+          "assists": 0,
+          "display_name": "Lamin",
+          "dribbles_completed": 15,
+          "gamertag": "Sidney257965",
+          "goals": 0,
+          "interceptions": 4,
+          "motm": 0,
+          "passes_attempted": 20,
+          "passes_made": 17,
+          "player_id": "1796485428",
+          "position_group": "midfielder",
+          "rating": 7.6,
+          "red_cards": 0,
+          "second_assists": 0,
+          "seconds_played": 5551,
+          "shots": 0,
+          "tackles_attempted": 2,
+          "tackles_made": 1,
+          "take_ons": 1,
+          "through_passes": 0
+        },
+        {
+          "archetype_id": "10",
+          "assists": 2,
+          "display_name": "Magician",
+          "dribbles_completed": 20,
+          "gamertag": "kidljp46",
+          "goals": 2,
+          "interceptions": 0,
+          "motm": 0,
+          "passes_attempted": 30,
+          "passes_made": 26,
+          "player_id": "1009209437400",
+          "position_group": "midfielder",
+          "rating": 9.8,
+          "red_cards": 0,
+          "second_assists": 2,
+          "seconds_played": 5551,
+          "shots": 4,
+          "tackles_attempted": 2,
+          "tackles_made": 0,
+          "take_ons": 6,
+          "through_passes": 8
+        },
+        {
+          "archetype_id": "12",
+          "assists": 1,
+          "display_name": "Banks",
+          "dribbles_completed": 24,
+          "gamertag": "Leechy1234335",
+          "goals": 3,
+          "interceptions": 2,
+          "motm": 1,
+          "passes_attempted": 29,
+          "passes_made": 22,
+          "player_id": "1010349940276",
+          "position_group": "forward",
+          "rating": 10.0,
+          "red_cards": 0,
+          "second_assists": 0,
+          "seconds_played": 5551,
+          "shots": 8,
+          "tackles_attempted": 2,
+          "tackles_made": 0,
+          "take_ons": 7,
+          "through_passes": 1
+        }
+      ],
+      "result": "W",
+      "score_against": 4,
+      "score_for": 5,
+      "timestamp": 1794096469,
+      "winner_by_dnf": false
+    },
+    {
+      "human_players": 3,
+      "match_id": "175078621270163",
+      "match_type": "leagueMatch",
+      "opponent": {
+        "club_id": "597399",
+        "human_players": 5,
+        "name": "Avengers B Team"
+      },
+      "played_at": "2026-11-07T23:49:48+00:00",
+      "players": [
+        {
+          "archetype_id": "8",
+          "assists": 0,
+          "display_name": "Lamin",
+          "dribbles_completed": 12,
+          "gamertag": "Sidney257965",
+          "goals": 0,
+          "interceptions": 1,
+          "motm": 0,
+          "passes_attempted": 15,
+          "passes_made": 12,
+          "player_id": "1796485428",
+          "position_group": "midfielder",
+          "rating": 6.8,
+          "red_cards": 0,
+          "second_assists": 0,
+          "seconds_played": 4378,
+          "shots": 0,
+          "tackles_attempted": 1,
+          "tackles_made": 0,
+          "take_ons": 4,
+          "through_passes": 0
+        },
+        {
+          "archetype_id": "10",
+          "assists": 0,
+          "display_name": "Magician",
+          "dribbles_completed": 16,
+          "gamertag": "kidljp46",
+          "goals": 0,
+          "interceptions": 2,
+          "motm": 0,
+          "passes_attempted": 0,
+          "passes_made": 0,
+          "player_id": "1009209437400",
+          "position_group": "midfielder",
+          "rating": 7.2,
+          "red_cards": 0,
+          "second_assists": 0,
+          "seconds_played": 4374,
+          "shots": 0,
+          "tackles_attempted": 0,
+          "tackles_made": 0,
+          "take_ons": 8,
+          "through_passes": 1
+        },
+        {
+          "archetype_id": "12",
+          "assists": 0,
+          "display_name": "Banks",
+          "dribbles_completed": 21,
+          "gamertag": "Leechy1234335",
+          "goals": 0,
+          "interceptions": 1,
+          "motm": 0,
+          "passes_attempted": 0,
+          "passes_made": 0,
+          "player_id": "1010349940276",
+          "position_group": "forward",
+          "rating": 7.5,
+          "red_cards": 0,
+          "second_assists": 1,
+          "seconds_played": 4378,
+          "shots": 0,
+          "tackles_attempted": 0,
+          "tackles_made": 0,
+          "take_ons": 4,
+          "through_passes": 3
+        }
+      ],
+      "result": "L",
+      "score_against": 7,
+      "score_for": 2,
+      "timestamp": 1794095388,
+      "winner_by_dnf": false
+    },
     {
       "human_players": 3,
       "match_id": "175140489240288",
@@ -3032,6 +3206,15 @@
       "player": "Banks",
       "threshold": 10,
       "value_when_detected": 11
+    },
+    {
+      "baseline": false,
+      "celebrate_match_id": "175300233810029",
+      "detected_at": "2026-11-08T06:14:16.449264+00:00",
+      "metric": "contributions",
+      "player": "Banks",
+      "threshold": 100,
+      "value_when_detected": 103
     }
   ],
   "profiles": [
@@ -3047,11 +3230,11 @@
       "season": {
         "assists": 4,
         "average_rating": 6.8,
-        "games_played": 25,
+        "games_played": 27,
         "goals": 4,
         "motm": 0,
         "red_cards": 1,
-        "win_rate": 56
+        "win_rate": 55
       }
     },
     {
@@ -3064,10 +3247,10 @@
       "preferred_position": "forward",
       "pro_name": "L. Magician",
       "season": {
-        "assists": 68,
-        "average_rating": 9.3,
-        "games_played": 34,
-        "goals": 25,
+        "assists": 70,
+        "average_rating": 9.2,
+        "games_played": 36,
+        "goals": 27,
         "motm": 11,
         "red_cards": 0,
         "win_rate": 61
@@ -3083,11 +3266,11 @@
       "preferred_position": "forward",
       "pro_name": "rob",
       "season": {
-        "assists": 17,
+        "assists": 18,
         "average_rating": 9.1,
-        "games_played": 34,
-        "goals": 82,
-        "motm": 11,
+        "games_played": 36,
+        "goals": 85,
+        "motm": 12,
         "red_cards": 0,
         "win_rate": 61
       }
